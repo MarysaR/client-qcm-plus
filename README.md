@@ -1,11 +1,3 @@
-Parfait, merci pour cette précision. Je vais m’inspirer de ce modèle clair et structuré pour te proposer un README adapté au projet **client-qcm-plus**.
-
----
-
-Voici une proposition de README pour **client-qcm-plus** basée sur ta structure logic, adaptée à un projet React + TypeScript + Tailwind + Vite, avec les scripts d’analyse, formatage, et développement.
-
----
-
 ```markdown
 # QCM-PLUS Client
 
