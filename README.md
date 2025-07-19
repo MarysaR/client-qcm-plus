@@ -2,16 +2,20 @@
 
 ## Rôle dans l'architecture
 
-Ce package contient la couche **interface utilisateur** de l'application QCM-PLUS.
+### Présentation
+
+client-qcm-plus est l’interface utilisateur de l’application QCM-PLUS, développée en React + TypeScript avec Vite et TailwindCSS.
+
+Elle consomme l’API REST exposée par le backend (back-qcm-plus) et s’appuie sur les règles métier du domaine pur (logic-qcm-plus).
 
 ### Responsabilités
 
-- Interface intuitive pour répondre à des QCM
-- Navigation entre les pages (React Router DOM)
-- Affichage des résultats et feedback utilisateur
-- Communication avec l'API REST backend (via axios)
-- Intégration des règles métier partagées (via `logic-qcm-plus`)
-- Gestion du style via TailwindCSS
+- Interface interactive de réponse aux QCM
+- Navigation entre les écrans (React Router DOM)
+- Affichage des résultats, feedback utilisateur
+- Communication avec l’API backend (Axios)
+- Application des règles métier (logic-qcm-plus)
+- Design UI avec TailwindCSS + PrimeReact
 
 ### Architecture hexagonale
 
@@ -38,8 +42,10 @@ Ce package contient la couche **interface utilisateur** de l'application QCM-PLU
 Cloner le projet puis installer les dépendances :
 
 ```bash
-git clone https://github.com/ton-org/client-qcm-plus.git
+git clone https://github.com/MarysaR/client-qcm-plus.git
+
 cd client-qcm-plus
+
 npm install
 ```
 
@@ -141,8 +147,31 @@ npm run create:branch
 
 ---
 
+## Docker
+
+### Build de l’image
+
+```bash
+npm run build
+```
+
+Puis, dans le dossier du projet :
+
+```bash
+docker build -t client-qcm-plus .
+```
+
+### Lancer le conteneur
+
+```bash
+docker run --rm -p 5173:5173 client-qcm-plus
+```
+
+> L'application est alors accessible à l'adresse [http://localhost:5173](http://localhost:5173)
+
 ## Bonnes pratiques
 
+- Utiliser `npm run create:branch` pour créer des branches valides
 - Exécuter `npm run lint` régulièrement
 - Utiliser `npm run format` avant chaque commit
 - Vérifier le bon lien avec le package `logic-qcm-plus` (`npm link logic-qcm-plus`)
