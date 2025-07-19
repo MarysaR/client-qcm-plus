@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  client:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: http://localhost:3000
+    container_name: client-qcm-plus
+    ports:
+      - '5173:5173'
+    restart: unless-stopped
