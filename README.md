@@ -1,34 +1,33 @@
-```markdown
 # QCM-PLUS Client
 
 ## Rôle dans l'architecture
 
-Ce package contient la couche **interface utilisateur** de l’application QCM-PLUS.
+Ce package contient la couche **interface utilisateur** de l'application QCM-PLUS.
 
 ### Responsabilités
 
 - Interface intuitive pour répondre à des QCM
+- Navigation entre les pages (React Router DOM)
 - Affichage des résultats et feedback utilisateur
-- Communication avec l’API REST backend (via axios)
+- Communication avec l'API REST backend (via axios)
 - Intégration des règles métier partagées (via `logic-qcm-plus`)
 - Gestion du style via TailwindCSS
 
 ### Architecture hexagonale
-```
 
 ```
         ┌──────────────┐
         │    CLIENT    │   (React + Vite)
         └──────┬───────┘
-               │
-               ▼
-        ┌──────────────┐
-        │    LOGIC     │   (Domaine métier pur)
-        └──────────────┘
-               │
+               │ HTTP requests
                ▼
         ┌──────────────┐
         │    BACKEND   │   (API REST Express)
+        └──────┬───────┘
+               │ uses
+               ▼
+        ┌──────────────┐
+        │    LOGIC     │   (Domaine métier pur)
         └──────────────┘
 ```
 
@@ -40,9 +39,7 @@ Cloner le projet puis installer les dépendances :
 
 ```bash
 git clone https://github.com/ton-org/client-qcm-plus.git
-
 cd client-qcm-plus
-
 npm install
 ```
 
@@ -61,12 +58,12 @@ npm link
 ### 2. Puis dans le dossier `client-qcm-plus` :
 
 ```bash
-npm link logic
+npm link logic-qcm-plus
 ```
 
 ---
 
-## Démarrage de l’application
+## Démarrage de l'application
 
 ```bash
 npm run dev
@@ -78,6 +75,18 @@ Cela lance le serveur Vite à l'adresse :
 ---
 
 ## Scripts disponibles
+
+### Développement
+
+```bash
+npm run dev
+```
+
+### Build de production
+
+```bash
+npm run build
+```
 
 ### Analyse du code (lint)
 
@@ -103,16 +112,32 @@ npm run format:check
 npm run format
 ```
 
+### Créer une branche avec convention
+
+```bash
+npm run create:branch
+```
+
 ---
 
 ## Stack technique
 
-- **React** (avec JSX et TypeScript)
-- **Vite** pour le bundling et le développement
-- **TailwindCSS** pour le style
-- **PrimeReact** pour les composants UI (tableaux, boutons, etc.)
-- **Axios** pour les appels HTTP
-- **ESLint + Prettier** pour la qualité du code
+### Dépendances principales
+
+- **React 19.1.0** (avec JSX et TypeScript)
+- **React Router DOM 7.7.0** pour la navigation
+- **Vite 7.0.1** pour le bundling et le développement
+- **TailwindCSS 4.1.11** pour le style
+- **PrimeReact 10.9.6** pour les composants UI (tableaux, boutons, etc.)
+- **PrimeIcons 7.0.0** pour les icônes
+- **Axios 1.10.0** pour les appels HTTP
+
+### Outils de développement
+
+- **TypeScript 5.8.3** pour le typage statique
+- **ESLint 9.30.1 + Prettier 3.6.2** pour la qualité du code
+- **PostCSS 8.5.6 + Autoprefixer 10.4.21** pour le CSS
+- **@vitejs/plugin-react 4.6.0** pour l'intégration React/Vite
 
 ---
 
@@ -120,8 +145,9 @@ npm run format
 
 - Exécuter `npm run lint` régulièrement
 - Utiliser `npm run format` avant chaque commit
-- Vérifier le bon lien avec le package `logic` (`npm link logic`)
+- Vérifier le bon lien avec le package `logic-qcm-plus` (`npm link logic-qcm-plus`)
+- Utiliser `npm run create:branch` pour créer des branches avec convention
 - Séparer clairement logique métier et affichage
-- Ne jamais manipuler l’état métier sans passer par `logic`
+- Ne jamais manipuler l'état métier sans passer par `logic-qcm-plus`
 
 ---
