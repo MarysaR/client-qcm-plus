@@ -1,21 +1,20 @@
 import { useEffect, useState } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import { GetUsersUseCase, Result } from 'logic';
+import { fetchUsers } from '../services/userService';
 
 export default function UsersPage() {
   const [users, setUsers] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const useCase = new GetUsersUseCase();
-    const result: Result<string[], Error> = useCase.execute();
-
-    if (result.isOk()) {
-      setUsers(result.value);
-    } else {
-      setError(result.error.message);
-    }
+    fetchUsers()
+      .then((data) => {
+        setUsers(data.users);
+      })
+      .catch((err) => {
+        setError(err.message);
+      });
   }, []);
 
   return (

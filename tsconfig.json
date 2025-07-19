@@ -12,7 +12,8 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
-      "logic": ["../logic-qcm-plus/src"]
+      "logic/*": ["vendor/logic-qcm-plus/src/*"],
+      "logic": ["vendor/logic-qcm-plus/src/index.ts"]
     }
   },
   "include": ["src"]
