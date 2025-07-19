@@ -1,10 +1,10 @@
-import api from "./api";
+import api from './api';
 
 export async function pingServer() {
   try {
-    const response = await api.get("/ping");
-    console.log("Ping response:", response.data);
+    const response = await api.get('/ping');
+    console.log('Ping response:', response.data);
   } catch (error) {
-    console.error("Ping failed:", error);
+    console.error('Ping failed:', error);
   }
 }
