@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  build-test-lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Récupération du code source (checkout)
+        uses: actions/checkout@v4
+
+      - name: Cloner logic-qcm-plus
+        run: |
+          git clone https://github.com/MarysaR/logic-qcm-plus.git ../logic-qcm-plus
+
+      - name: Copier logic-qcm-plus dans vendor/
+        run: |
+          mkdir -p vendor
+          cp -R ../logic-qcm-plus vendor/logic-qcm-plus
+
+      - name: Configuration de Node.js (version 20)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Installation des dépendances (npm ci)
+        run: npm ci
+
+      - name: Compilation du code TypeScript
+        run: npm run build
+
+      - name: Analyse statique avec ESLint
+        run: npm run lint
+
+      - name: Vérification du formatage avec Prettier
+        run: npm run format:check
