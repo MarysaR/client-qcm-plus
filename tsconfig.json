@@ -16,5 +16,5 @@
       "logic": ["vendor/logic-qcm-plus/src/index.ts"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "types"]
 }
