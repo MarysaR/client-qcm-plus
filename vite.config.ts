@@ -14,4 +14,12 @@ export default defineConfig({
       logic: path.resolve(__dirname, 'vendor/logic-qcm-plus/src'),
     },
   },
+  server: {
+    proxy: {
+      '/users': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
+      },
+    },
+  },
 });
