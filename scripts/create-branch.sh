@@ -7,7 +7,7 @@
 # Vérifie que l'on est bien dans un dépôt Git
 if ! git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
   echo "Erreur : ce répertoire n'est pas un dépôt Git."
-  exit 1
+  exit 1 
 fi
 
 # Vérifie les arguments
