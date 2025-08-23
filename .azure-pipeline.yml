@@ -1,0 +1,26 @@
+trigger:
+  branches:
+    include:
+      - develop
+      - main
+
+pool:
+  name: Default
+
+steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '20.x'
+    displayName: 'Utiliser Node.js'
+
+  - script: npm ci
+    displayName: 'Installer les dépendances'
+
+  - script: npm run lint
+    displayName: 'Vérifier le lint'
+
+  - script: npm run format:check
+    displayName: 'Vérifier le formatage'
+
+  - script: npm run build
+    displayName: 'Compiler le projet'
