@@ -51,24 +51,6 @@ npm install
 
 ---
 
-## Lier avec la logique métier (`logic`)
-
-Ce projet dépend du package `logic-qcm-plus`. Pour le relier localement :
-
-### 1. Dans le dossier `logic-qcm-plus` :
-
-```bash
-npm link
-```
-
-### 2. Puis dans le dossier `client-qcm-plus` :
-
-```bash
-npm link logic-qcm-plus
-```
-
----
-
 ## Démarrage de l'application
 
 ```bash
