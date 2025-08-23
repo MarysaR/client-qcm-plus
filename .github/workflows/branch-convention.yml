@@ -1,11 +1,9 @@
+name: Branch Convention
+
 on:
   push:
     branches:
       - '**'
-  pull_request:
-    branches:
-      - develop
-      - main
 
 jobs:
   branch-convention:
@@ -13,23 +11,14 @@ jobs:
     steps:
       - name: Vérification de la convention de nommage des branches
         run: |
-          # Si c'est un push -> on lit GITHUB_REF
-          if [[ "$GITHUB_EVENT_NAME" == "push" ]]; then
-            branch_name="${GITHUB_REF#refs/heads/}"
-          else
-            # Si c'est une PR -> on lit GITHUB_HEAD_REF (branche source de la PR)
-            branch_name="$GITHUB_HEAD_REF"
-          fi
-
+          branch_name="${GITHUB_REF#refs/heads/}"
           echo "Branche en cours : $branch_name"
 
-          # Interdire push direct sur main ou develop
-          if [[ "$GITHUB_EVENT_NAME" == "push" && ( "$branch_name" == "main" || "$branch_name" == "develop" ) ]]; then
+          if [[ "$branch_name" == "main" || "$branch_name" == "develop" ]]; then
             echo "::error ::Push direct interdit sur la branche '$branch_name'. Utilisez une PR."
             exit 1
           fi
 
-          # Vérifier la convention de nommage
           if [[ ! "$branch_name" =~ ^(feat|fix|chore|refactor)/ ]]; then
             echo "::error ::Nom de branche non conforme : '$branch_name'. Préfixes autorisés : feat/, fix/, chore/, refactor/"
             exit 1
