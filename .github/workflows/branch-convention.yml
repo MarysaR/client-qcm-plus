@@ -13,13 +13,17 @@ jobs:
         run: |
           branch_name="${GITHUB_REF#refs/heads/}"
           echo "Branche en cours : $branch_name"
+          echo "Event : $GITHUB_EVENT_NAME"
 
-          if [[ "$branch_name" == "main" || "$branch_name" == "develop" ]]; then
+          commit_message=$(jq -r .head_commit.message < $GITHUB_EVENT_PATH)
+          echo "Dernier commit : $commit_message"
+
+          if [[ ("$branch_name" == "main" || "$branch_name" == "develop") && "$commit_message" != Merge\ pull\ request* ]]; then
             echo "::error ::Push direct interdit sur la branche '$branch_name'. Utilisez une PR."
             exit 1
           fi
 
-          if [[ ! "$branch_name" =~ ^(feat|fix|chore|refactor)/ ]]; then
+          if [[ ! "$branch_name" =~ ^(feat|fix|chore|refactor)/ ]] && [[ "$branch_name" != "main" ]] && [[ "$branch_name" != "develop" ]]; then
             echo "::error ::Nom de branche non conforme : '$branch_name'. Préfixes autorisés : feat/, fix/, chore/, refactor/"
             exit 1
           fi
