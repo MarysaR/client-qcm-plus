@@ -43,7 +43,7 @@ const CustomSidebar: React.FC<{ role: string }> = ({ role }) => {
                                         marginTop: '2rem',
                                         display: 'flex',
                                         justifyContent: 'center',
-                                        width: '100%', // Ensure it takes full width for centering
+                                        width: '100%',
                                     }}
                                     title="Ouvrir le menu"
                                 ></i>
