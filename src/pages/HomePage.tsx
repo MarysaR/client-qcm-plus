@@ -9,9 +9,12 @@ const HomePage: React.FC = () => {
       className="homepage background-image"
       style={{
         display: 'flex',
-        height: '100vh', 
-        overflow: 'hidden', 
+        height: '100vh',
+        width: '100vw', 
+        overflow: 'hidden',
         position: 'relative',
+        margin: 0, 
+        padding: 0,
       }}
     >
       {/* Image de fond */}
@@ -21,16 +24,14 @@ const HomePage: React.FC = () => {
         className="background-image"
         style={{
           position: 'absolute',
+          top: 0,
+          left: 0,
           width: '100%',
-          height: '100%',
+          height: '100%', 
           objectFit: 'cover',
           zIndex: 0,
         }}
       />
-
-      {/* Sidebar */}
-      <CustomSidebar role="Admin" />
-
       {/* Contenu principal */}
       <div
         className="content"
@@ -66,6 +67,8 @@ const HomePage: React.FC = () => {
         />
       </div>
     </div>
+
+
   );
 };
 
