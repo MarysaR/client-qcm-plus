@@ -5,11 +5,13 @@
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "module": "ESNext",
     "moduleResolution": "Node",
+    "ignoreDeprecations": "6.0",
     "strict": true,
     "jsx": "react-jsx",
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
+
     "baseUrl": ".",
     "paths": {
       "logic/*": ["vendor/logic-qcm-plus/src/*"],
