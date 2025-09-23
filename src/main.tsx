@@ -16,8 +16,7 @@ import StatisticsPage from './pages/StatisticsPage';
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <BrowserRouter>
-
-    {/* TODO: Passer le role en props dynamiquement */}
+      {/* TODO: Passer le role en props dynamiquement */}
       {/* Sidebar*/}
       <CustomSidebar role="Stagiaire" />
 
