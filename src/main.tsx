@@ -13,8 +13,10 @@ import CustomSidebar from './components/CustomSidebar';
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <BrowserRouter>
+
+    //TODO: Passer le role en props dynamiquement
       {/* Sidebar*/}
-      <CustomSidebar role="Admin" />
+      <CustomSidebar role="Stagiaire" />
 
       {/* Routes */}
       <Routes>
