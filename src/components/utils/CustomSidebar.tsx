@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Sidebar } from 'primereact/sidebar';
 import { Button } from 'primereact/button';
 import { Ripple } from 'primereact/ripple';
-import '../styles/style.css';
+import '../../styles/style.css';
 import { useNavigate } from 'react-router-dom';
 
 const CustomSidebar: React.FC<{ role: string }> = ({ role }) => {
