@@ -1,74 +1,26 @@
-import React, { useState } from 'react';
-import CustomSidebar from '../components/CustomSidebar';
+import React from 'react';
+import '../styles/style.css';
 
 const HomePage: React.FC = () => {
-  const [sidebarVisible, setSidebarVisible] = useState(false);
-
   return (
-    <div
-      className="homepage background-image"
-      style={{
-        display: 'flex',
-        height: '100vh',
-        width: '100vw', 
-        overflow: 'hidden',
-        position: 'relative',
-        margin: 0, 
-        padding: 0,
-      }}
-    >
+    <div className="homepage">
       {/* Image de fond */}
       <img
         src="src/assets/images/fond.png"
         alt="Background"
         className="background-image"
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%', 
-          objectFit: 'cover',
-          zIndex: 0,
-        }}
       />
+
       {/* Contenu principal */}
-      <div
-        className="content"
-        style={{
-          alignContent: 'center',
-          position: 'fixed',
-          top: '50%',
-          left: '55%',
-          transform: 'translate(-50%, -50%)',
-          display: 'flex',
-          alignItems: 'center',
-          zIndex: 1,
-        }}
-      >
-        <h1
-          style={{
-            margin: 0,
-            color: '#C8C8C6',
-            fontFamily: 'Inter sans-serif',
-          }}
-        >
-          Bienvenue sur
-        </h1>
+      <div className="content">
+        <h1>Bienvenue sur</h1>
         <img
           src="src/assets/images/LogoQCM+SansFond.png"
           alt="Logo"
           className="logo"
-          style={{
-            marginLeft: '5px',
-            width: '20em',
-            height: 'auto',
-          }}
         />
       </div>
     </div>
-
-
   );
 };
 
