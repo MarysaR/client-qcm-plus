@@ -4,14 +4,14 @@ import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import HomePage from './pages/HomePage';
-import UsersPage from './pages/UsersPage';
+import HomePage from './pages/home/HomePage';
+import UsersPage from './pages/users/UsersPage';
 import './styles/tailwind.css';
-import Footer from './components/Footer';
-import CustomSidebar from './components/CustomSidebar';
-import ProfilPage from './pages/ProfilPage';
-import QuestionnairesPage from './pages/QuestionnairesPage';
-import StatisticsPage from './pages/StatisticsPage';
+import Footer from './components/footer/Footer';
+import CustomSidebar from './components/utils/CustomSidebar';
+import ProfilPage from './pages/profil/ProfilPage';
+import QuestionnairesPage from './pages/questionnaires/QuestionnairesPage';
+import StatisticsPage from './pages/statistics/StatisticsPage';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
