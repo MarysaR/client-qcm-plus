@@ -9,6 +9,9 @@ import UsersPage from './pages/UsersPage';
 import './styles/tailwind.css';
 import Footer from './components/Footer';
 import CustomSidebar from './components/CustomSidebar';
+import ProfilPage from './pages/ProfilPage';
+import QuestionnairesPage from './pages/QuestionnairesPage';
+import StatisticsPage from './pages/StatisticsPage';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
@@ -22,6 +25,9 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/users" element={<UsersPage />} />
+        <Route path="/profil" element={<ProfilPage />} />
+        <Route path="/questionnaires" element={<QuestionnairesPage />} />
+        <Route path="/statistics" element={<StatisticsPage />} />
       </Routes>
 
       {/* Footer */}
