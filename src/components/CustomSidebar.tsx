@@ -3,20 +3,22 @@ import { Sidebar } from 'primereact/sidebar';
 import { Button } from 'primereact/button';
 import { Ripple } from 'primereact/ripple';
 import '../styles/style.css';
+import { useNavigate } from 'react-router-dom';
 
 const CustomSidebar: React.FC<{ role: string }> = ({ role }) => {
     const [isCollapsed, setIsCollapsed] = useState(true);
+    const navigate = useNavigate();
 
     const menuItems = role 
         ? [
-            { icon: 'pi pi-user', label: 'Profil' },
-            { icon: 'pi pi-question-circle', label: 'Questionnaires' },
-            { icon: 'pi pi-chart-bar', label: 'Statistiques' },
+            { icon: 'pi pi-user', label: 'Profil', path: '/profile' },
+            { icon: 'pi pi-question-circle', label: 'Questionnaires', path: '/questionnaires' },
+            { icon: 'pi pi-chart-bar', label: 'Statistiques', path: '/statistics' },
         ]
         : [
-            { icon: 'pi pi-user', label: 'Profil' },
-            { icon: 'pi pi-users', label: 'Stagiaires' },
-            { icon: 'pi pi-question-circle', label: 'Questionnaires' },
+            { icon: 'pi pi-user', label: 'Profil', path: '/profile' },
+            { icon: 'pi pi-users', label: 'Stagiaires', path: '/users' },
+            { icon: 'pi pi-question-circle', label: 'Questionnaires', path: '/questionnaires' },
         ];
 
     return (
@@ -64,7 +66,8 @@ const CustomSidebar: React.FC<{ role: string }> = ({ role }) => {
                 <div className="sidebar-menu">
                     {menuItems.map((item, index) => (
                         <div key={index} className="menu-item">
-                            <a className="p-ripple">
+                            <a className="p-ripple"
+                            onClick={() => navigate(item.path)} >
                                 <i className={item.icon}></i>
                                 <span>{item.label}</span>
                                 <Ripple />
