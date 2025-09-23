@@ -11,12 +11,12 @@ const CustomSidebar: React.FC<{ role: string }> = ({ role }) => {
 
     const menuItems = role 
         ? [
-            { icon: 'pi pi-user', label: 'Profil', path: '/profile' },
+            { icon: 'pi pi-user', label: 'Profil', path: '/profil' },
             { icon: 'pi pi-question-circle', label: 'Questionnaires', path: '/questionnaires' },
             { icon: 'pi pi-chart-bar', label: 'Statistiques', path: '/statistics' },
         ]
         : [
-            { icon: 'pi pi-user', label: 'Profil', path: '/profile' },
+            { icon: 'pi pi-user', label: 'Profil', path: '/profil' },
             { icon: 'pi pi-users', label: 'Stagiaires', path: '/users' },
             { icon: 'pi pi-question-circle', label: 'Questionnaires', path: '/questionnaires' },
         ];
