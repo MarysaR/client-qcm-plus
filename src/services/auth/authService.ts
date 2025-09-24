@@ -1,32 +1,39 @@
 import { AuthUser, LoginCredentials } from '../../../types/auth';
-const STORAGE_KEY = 'mock_auth_user';
 
-// Jeu d'utilisateurs mock
-const MOCK_USERS: Array<{ username: string; password: string; role?: string }> =
-  [
-    { username: 'admin', password: 'REMOVED', role: 'ADMIN' },
-    { username: 'user', password: 'REMOVED', role: 'USER' },
-  ];
+const STORAGE_KEY = 'mock_auth_user';
+const MODE = import.meta.env.VITE_AUTH_MODE; // 'mock'
 
 function delay(ms: number) {
   return new Promise((res) => setTimeout(res, ms));
 }
 
+function toStableId(input: string): string {
+  // ID stable dérivé du username (aucun secret)
+  return 'mock-' + input.toLowerCase().replace(/[^a-z0-9_-]/g, '');
+}
+
 export async function loginMock(creds: LoginCredentials): Promise<AuthUser> {
-  await delay(600); // petite latence simulée
-  const found = MOCK_USERS.find(
-    (u) =>
-      u.username.toLowerCase() === creds.username.toLowerCase() &&
-      u.password === creds.password
-  );
-  if (!found) {
+  if (MODE !== 'mock') {
+    // Mode réel pas encore implémenté
+    throw new Error('AUTH_NOT_IMPLEMENTED');
+  }
+
+  await delay(300);
+
+  if (!creds.username?.trim() || !creds.password?.trim()) {
     throw new Error('INVALID_CREDENTIALS');
   }
+
+  const role = creds.username.toLowerCase().includes('admin')
+    ? 'ADMIN'
+    : 'USER';
+
   const user: AuthUser = {
-    id: crypto.randomUUID(),
-    username: found.username,
-    role: found.role,
+    id: toStableId(creds.username),
+    username: creds.username,
+    role,
   };
+
   localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
   return user;
 }
@@ -44,4 +51,5 @@ export function loadSession(): AuthUser | null {
 export function clearSession() {
   localStorage.removeItem(STORAGE_KEY);
 }
+
 export { loginMock as _loginMockInternal };

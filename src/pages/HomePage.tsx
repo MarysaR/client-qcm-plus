@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { Button } from 'primereact/button';
 
 const HomePage: React.FC = () => {
   const { user, logout } = useAuth();
@@ -13,12 +14,12 @@ const HomePage: React.FC = () => {
             <span className="text-sm text-gray-600">
               {user.username} {user.role && `(${user.role})`}
             </span>
-            <button
+            <Button
               onClick={logout}
               className="text-sm bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded"
             >
               Déconnexion
-            </button>
+            </Button>
           </div>
         )}
       </div>

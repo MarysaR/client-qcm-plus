@@ -1,39 +1,53 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { Card } from 'primereact/card';
 import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
 import { Button } from 'primereact/button';
 import { Toast } from 'primereact/toast';
 import { useAuth } from '../../context/AuthContext';
+import styles from '../../authForm.module.css';
 interface FormState {
   username: string;
   password: string;
 }
 
-const initial: FormState = { username: '', password: '' };
-
 const AuthForm: React.FC = () => {
   const { login, error } = useAuth();
-  const [form, setForm] = useState<FormState>(initial);
+  const [form, setForm] = useState<FormState>({ username: '', password: '' });
   const [submitting, setSubmitting] = useState(false);
+  const [showErrors, setShowErrors] = useState(false);
   const toast = useRef<Toast | null>(null);
+  const userRef = useRef<HTMLInputElement | null>(null);
 
-  function update<K extends keyof FormState>(k: K, v: string) {
+  useEffect(() => {
+    const t = setTimeout(() => userRef.current?.focus(), 30);
+    return () => clearTimeout(t);
+  }, []);
+
+  function update<K extends keyof FormState>(k: K, v: FormState[K]) {
     setForm((f) => ({ ...f, [k]: v }));
   }
 
+  const usernameError =
+    showErrors && !form.username.trim() ? "Nom d'utilisateur requis" : null;
+  const passwordError =
+    showErrors && !form.password.trim() ? 'Mot de passe requis' : null;
+  const hasFormError = !!usernameError || !!passwordError;
+
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!form.username.trim() || !form.password.trim()) {
+    setShowErrors(true);
+    if (hasFormError || !form.username.trim() || !form.password.trim()) {
       toast.current?.show({
         severity: 'warn',
         summary: 'Champs requis',
-        detail: 'Veuillez remplir tous les champs',
+        detail: 'Veuillez remplir les deux champs',
       });
       return;
     }
     setSubmitting(true);
     try {
-      await login(form);
+      await login({ username: form.username.trim(), password: form.password });
       toast.current?.show({
         severity: 'success',
         summary: 'Succès',
@@ -50,57 +64,115 @@ const AuthForm: React.FC = () => {
     }
   }
 
+  const header = (
+    <div className={styles.header}>
+      <h1 className={styles.title}>Connexion</h1>
+      <p className={styles.subtitle}>Accédez à votre espace</p>
+    </div>
+  );
+
   return (
-    <div className="w-full max-w-sm mx-auto">
+    <div className={styles.screen}>
       <Toast ref={toast} />
-      <form
-        onSubmit={onSubmit}
-        className="space-y-5 bg-white p-6 rounded shadow border"
-      >
-        <h1 className="text-xl font-semibold text-center">Connexion</h1>
+      <Card header={header} className={styles.card}>
+        <form
+          onSubmit={onSubmit}
+          noValidate
+          aria-label="Formulaire de connexion"
+          className={styles.form}
+        >
+          {/* Username */}
+          <div className={styles.fieldGroup}>
+            <label htmlFor="username" className={styles.label}>
+              Nom d&apos;utilisateur
+            </label>
+            <InputText
+              id="username"
+              ref={userRef}
+              value={form.username}
+              onChange={(e) => update('username', e.target.value)}
+              onBlur={() => setShowErrors((v) => v || !form.username.trim())}
+              placeholder="ex: admin"
+              aria-invalid={!!usernameError}
+              aria-describedby={usernameError ? 'username-help' : undefined}
+              className={`${styles.input} ${
+                usernameError ? styles.inputInvalid : ''
+              }`}
+              autoComplete="username"
+              disabled={submitting}
+            />
+            {usernameError && (
+              <small
+                id="username-help"
+                className={styles.errorMsg}
+                role="alert"
+              >
+                {usernameError}
+              </small>
+            )}
+          </div>
 
-        <div className="flex flex-col gap-2">
-          <label htmlFor="username" className="text-sm font-medium">
-            Nom dutilisateur
-          </label>
-          <InputText
-            id="username"
-            value={form.username}
-            onChange={(e) => update('username', e.target.value)}
-            autoComplete="username"
-            className="w-full"
-            placeholder="admin"
+          {/* Password */}
+          <div className={styles.fieldGroup}>
+            <label htmlFor="password" className={styles.label}>
+              Mot de passe
+            </label>
+            <Password
+              id="password"
+              value={form.password}
+              onChange={(e) => update('password', e.target.value)}
+              onBlur={() => setShowErrors((v) => v || !form.password.trim())}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter')
+                  onSubmit(e as unknown as React.FormEvent);
+              }}
+              placeholder="Mot de passe"
+              feedback={false}
+              toggleMask
+              inputClassName={`${styles.input} ${
+                passwordError ? styles.inputInvalid : ''
+              }`}
+              pt={{ panel: { className: styles.passwordPanel } }}
+              aria-invalid={!!passwordError}
+              aria-describedby={passwordError ? 'password-help' : undefined}
+              disabled={submitting}
+            />
+            {passwordError && (
+              <small
+                id="password-help"
+                className={styles.errorMsg}
+                role="alert"
+              >
+                {passwordError}
+              </small>
+            )}
+          </div>
+
+          {/* Global auth error */}
+          {error && !hasFormError && (
+            <div role="alert" className={styles.globalError}>
+              {error}
+            </div>
+          )}
+
+          <Button
+            type="submit"
+            label={submitting ? 'Connexion...' : 'Se connecter'}
+            loading={submitting}
+            disabled={
+              submitting ||
+              hasFormError ||
+              !form.username.trim() ||
+              !form.password.trim()
+            }
+            className={styles.submitBtn}
           />
-        </div>
 
-        <div className="flex flex-col gap-2">
-          <label htmlFor="password" className="text-sm font-medium">
-            Mot de passe
-          </label>
-          <Password
-            id="password"
-            value={form.password}
-            onChange={(e) => update('password', e.target.value)}
-            toggleMask
-            feedback={false}
-            inputClassName="w-full"
-            placeholder="REMOVED"
-          />
-        </div>
-
-        {error && <div className="text-red-600 text-sm -mt-2">{error}</div>}
-
-        <Button
-          type="submit"
-          label={submitting ? 'Connexion...' : 'Se connecter'}
-          loading={submitting}
-          className="w-full"
-        />
-
-        <p className="text-xs text-gray-500 text-center">
-          Utilisateurs mock: admin/REMOVED ou user/REMOVED
-        </p>
-      </form>
+          <p className={styles.note}>
+            Démonstration mock : identifiants libres (non vides).
+          </p>
+        </form>
+      </Card>
     </div>
   );
 };
