@@ -191,3 +191,90 @@
     color: #FFFFFF;
     font-size: 10px;
 }
+
+/* Logo en haut à droite */
+.logo-top-right {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 200px;
+    height: auto;
+    z-index: 1;
+}
+
+/* Page de création d'utilisateur */
+.create-user-page {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Titre en haut à gauche */
+.create-user-page .page-title {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: #FFFFFF;
+    font-size: 24px;
+    font-family: 'Inter', sans-serif;
+    z-index: 1;
+}
+
+/* Conteneur du formulaire */
+.create-user-page .form-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+/* Formulaire */
+.create-user-page .user-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Champs du formulaire */
+.create-user-page .form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.create-user-page .form-group label {
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #333;
+}
+
+.create-user-page .form-group input {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Bouton Créer */
+.create-user-page .create-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #176113;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 40px;
+}
+
+.create-user-page .create-button:hover {
+    background-color: #104d0d;
+}

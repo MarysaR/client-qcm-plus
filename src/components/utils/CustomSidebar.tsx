@@ -9,7 +9,7 @@ const CustomSidebar: React.FC<{ role: string }> = ({ role }) => {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const navigate = useNavigate();
 
-  const menuItems = role
+  const menuItems = role === 'Stagiaire'
     ? [
         { icon: 'pi pi-user', label: 'Profil', path: '/profil' },
         {

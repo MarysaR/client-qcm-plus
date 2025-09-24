@@ -12,13 +12,14 @@ import CustomSidebar from './components/utils/CustomSidebar';
 import ProfilPage from './pages/profil/ProfilPage';
 import QuestionnairesPage from './pages/questionnaires/QuestionnairesPage';
 import StatisticsPage from './pages/statistics/StatisticsPage';
+import CreateUserPage from './pages/users/CreateUserPage';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <BrowserRouter>
       {/* TODO: Passer le role en props dynamiquement */}
       {/* Sidebar*/}
-      <CustomSidebar role="Stagiaire" />
+      <CustomSidebar role="Admin" />
 
       {/* Routes */}
       <Routes>
@@ -27,6 +28,8 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         <Route path="/profil" element={<ProfilPage />} />
         <Route path="/questionnaires" element={<QuestionnairesPage />} />
         <Route path="/statistics" element={<StatisticsPage />} />
+
+        <Route path="/new" element={<CreateUserPage />} />
       </Routes>
 
       {/* Footer */}
