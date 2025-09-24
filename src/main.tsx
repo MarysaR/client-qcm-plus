@@ -16,6 +16,7 @@ import StatisticsPage from './pages/statistics/StatisticsPage';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
+<<<<<<< HEAD
     <BrowserRouter>
       {/* TODO: Passer le role en props dynamiquement */}
       {/* Sidebar*/}
@@ -47,6 +48,15 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <AuthProvider>
       <BrowserRouter>
+=======
+    <AuthProvider>
+      <BrowserRouter>
+        {/* TODO: Passer le role en props dynamiquement */}
+        {/* Sidebar*/}
+        <CustomSidebar role="Stagiaire" />
+
+        {/* Routes */}
+>>>>>>> cef77d9 (Resolve conflicts)
         <Routes>
           <Route
             path="/"
@@ -65,7 +75,17 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
             }
           />
           <Route path="/login" element={<AuthPage />} />
+<<<<<<< HEAD
         </Routes>
+=======
+          <Route path="/profil" element={<ProfilPage />} />
+          <Route path="/questionnaires" element={<QuestionnairesPage />} />
+          <Route path="/statistics" element={<StatisticsPage />} />
+        </Routes>
+
+        {/* Footer */}
+        <Footer />
+>>>>>>> cef77d9 (Resolve conflicts)
       </BrowserRouter>
     </AuthProvider>
 >>>>>>> 6cdabfd (authentification en mock)
