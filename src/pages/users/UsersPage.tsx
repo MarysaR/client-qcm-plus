@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import { fetchUsers } from '../services/userService';
+import { fetchUsers } from '../../services/userService';
 
 export default function UsersPage() {
   const [users, setUsers] = useState<string[]>([]);
