@@ -5,7 +5,7 @@ import { Password } from 'primereact/password';
 import { Button } from 'primereact/button';
 import { Toast } from 'primereact/toast';
 import { useAuth } from '../../context/AuthContext';
-import styles from '../../authForm.module.css';
+import styles from '../../styles/authForm.module.css';
 interface FormState {
   username: string;
   password: string;
