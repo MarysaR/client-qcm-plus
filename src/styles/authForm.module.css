@@ -1,0 +1,141 @@
+.screen {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  background: #f5f5f5;
+  padding: 1rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.card {
+  width: 100%;
+  max-width: 340px;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 4px 14px -2px rgba(0,0,0,0.06);
+  transition: box-shadow .25s, transform .25s, border-color .25s;
+  padding-bottom: .75rem;
+}
+
+.card:focus-within {
+  box-shadow: 0 6px 18px -2px rgba(0,0,0,0.09);
+  border-color: #c7d2fe;
+}
+
+.header {
+  text-align: center;
+  padding-top: .6rem;
+  user-select: none;
+}
+
+.title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #1e293b;
+  letter-spacing: -.5px;
+  margin: 0;
+}
+
+.subtitle {
+  margin: .15rem 0 0;
+  font-size: .7rem;
+  color: #64748b;
+}
+
+.form {
+  margin-top: .4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.35rem;
+}
+
+.fieldGroup {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: .4rem;
+  align-items: center;
+}
+
+.label {
+  font-size: .7rem;
+  font-weight: 500;
+  color: #334155;
+  text-align: center;
+  letter-spacing: .2px;
+}
+
+.input {
+  width: 100%;
+  height: 2.85rem;
+  font-size: .8rem;
+  text-align: center;
+  border-radius: .55rem !important;
+  transition: box-shadow .2s, border-color .2s;
+}
+
+.input:focus {
+  box-shadow: 0 0 0 2px #e0e7ff;
+  border-color: #6366f1;
+}
+
+.inputInvalid {
+  border-color: #dc2626 !important;
+  box-shadow: 0 0 0 1px rgba(220,38,38,.35);
+}
+
+.passwordPanel {
+  font-size: .65rem;
+}
+
+.errorMsg {
+  color: #dc2626;
+  font-size: .65rem;
+  line-height: 1.1;
+  text-align: center;
+  font-weight: 500;
+}
+
+.globalError {
+  width: 100%;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+  font-size: .7rem;
+  padding: .5rem .65rem;
+  border-radius: .5rem;
+  text-align: center;
+}
+
+.submitBtn {
+  width: 100%;
+  height: 2.9rem;
+  font-size: .8rem;
+  font-weight: 600;
+  letter-spacing: .3px;
+  border-radius: .65rem !important;
+  transition: transform .15s, box-shadow .25s;
+}
+
+.submitBtn:enabled:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px -4px rgba(0,0,0,0.15);
+}
+
+.submitBtn:enabled:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 8px -2px rgba(0,0,0,0.18);
+}
+
+.note {
+  margin-top: .15rem;
+  font-size: .6rem;
+  color: #94a3b8;
+  text-align: center;
+  user-select: none;
+  line-height: 1rem;
+  max-width: 90%;
+}

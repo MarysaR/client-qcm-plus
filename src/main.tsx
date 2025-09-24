@@ -1,5 +1,5 @@
 import React from 'react';
-import 'primereact/resources/themes/lara-light-indigo/theme.css'; // ou autre thème
+import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import ReactDOM from 'react-dom/client';
@@ -12,25 +12,45 @@ import CustomSidebar from './components/utils/CustomSidebar';
 import ProfilPage from './pages/profil/ProfilPage';
 import QuestionnairesPage from './pages/questionnaires/QuestionnairesPage';
 import StatisticsPage from './pages/statistics/StatisticsPage';
+import { AuthProvider } from './context/AuthContext';
+import ProtectedRoute from './routes/ProtectedRoute';
+import AuthPage from './pages/auth/AuthPage';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <BrowserRouter>
-      {/* TODO: Passer le role en props dynamiquement */}
-      {/* Sidebar*/}
-      <CustomSidebar role="Stagiaire" />
+    <AuthProvider>
+      <BrowserRouter>
+        {/* TODO: Passer le role en props dynamiquement */}
+        {/* Sidebar*/}
+        <CustomSidebar role="Stagiaire" />
 
-      {/* Routes */}
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/users" element={<UsersPage />} />
-        <Route path="/profil" element={<ProfilPage />} />
-        <Route path="/questionnaires" element={<QuestionnairesPage />} />
-        <Route path="/statistics" element={<StatisticsPage />} />
-      </Routes>
+        {/* Routes */}
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <HomePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/users"
+            element={
+              <ProtectedRoute>
+                <UsersPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/login" element={<AuthPage />} />
+          <Route path="/profil" element={<ProfilPage />} />
+          <Route path="/questionnaires" element={<QuestionnairesPage />} />
+          <Route path="/statistics" element={<StatisticsPage />} />
+        </Routes>
 
-      {/* Footer */}
-      <Footer />
-    </BrowserRouter>
+        {/* Footer */}
+        <Footer />
+      </BrowserRouter>
+    </AuthProvider>
   </React.StrictMode>
 );
