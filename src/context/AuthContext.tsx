@@ -1,55 +1,38 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import type {
-  AuthContextType,
-  AuthUser,
-  LoginCredentials,
-} from '../../types/auth';
-import {
-  loginMock,
-  loadSession,
-  clearSession,
-} from '../services/auth/authService';
+import React, { createContext, useContext, useState } from 'react';
+
+import { TokenClaims } from 'logic-qcm-plus';
+import { AuthContextType } from 'src/components/utils/AuthContextType';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [user, setUser] = useState<AuthUser | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [token, setToken] = useState<string | null>(null);
+  const [claims, setClaims] = useState<TokenClaims | null>(null);
 
-  useEffect(() => {
-    const existing = loadSession();
-    if (existing) setUser(existing);
-    setLoading(false);
-  }, []);
+  async function login(token: string, claims: TokenClaims) {
+    setToken(token);
+    setClaims(claims);
 
-  async function login(creds: LoginCredentials) {
-    setError(null);
-    try {
-      const u = await loginMock(creds);
-      setUser(u);
-    } catch {
-      setError('Identifiants invalides');
-      throw new Error('INVALID_CREDENTIALS');
-    }
+    localStorage.setItem('authToken', token);
+    localStorage.setItem('authClaims', JSON.stringify(claims));
   }
 
   function logout() {
-    clearSession();
-    setUser(null);
+    setToken(null);
+    setClaims(null);
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('authClaims');
   }
 
   return (
     <AuthContext.Provider
       value={{
-        user,
-        isAuthenticated: !!user,
+        token,
+        claims,
         login,
         logout,
-        loading,
-        error,
       }}
     >
       {children}
@@ -57,7 +40,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 };
 
-export function useAuth(): AuthContextType {
+export function useAuth() {
   const ctx = useContext(AuthContext);
   if (!ctx) throw new Error('useAuth must be used inside AuthProvider');
   return ctx;
