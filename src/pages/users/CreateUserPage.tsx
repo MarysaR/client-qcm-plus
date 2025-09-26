@@ -4,8 +4,8 @@ import { createUser } from '../../services/userService';
 
 const CreateUserPage: React.FC = () => {
     const [login, setLogin] = useState('');
-    const [nom, setNom] = useState('');
-    const [prenom, setPrenom] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [company, setCompany] = useState('');
     const [password, setPassword] = useState('');
@@ -17,8 +17,8 @@ const CreateUserPage: React.FC = () => {
         const newErrors: string[] = [];
 
         if (!login) newErrors.push('Le champ "Login" est requis.');
-        if (!nom) newErrors.push('Le champ "Nom" est requis.');
-        if (!prenom) newErrors.push('Le champ "Prénom" est requis.');
+        if (!firstName) newErrors.push('Le champ "Nom" est requis.');
+        if (!lastName) newErrors.push('Le champ "Prénom" est requis.');
         if (!email) newErrors.push('Le champ "Email" est requis.');
         if (!company) newErrors.push('Le champ "Entreprise" est requis.');
         if (!password) newErrors.push('Le champ "Mot de passe" est requis.');
@@ -43,24 +43,32 @@ const CreateUserPage: React.FC = () => {
     };
 
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault(); 
-
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+    
         if (validateForm()) {
-
-            const userData = { login, nom, prenom, email, company, password };
-            const response = createUser(userData);
-            console.log('Utilisateur créé avec succès :', response);
-            alert({response});
-
-            setLogin('');
-            setNom('');
-            setPrenom('');
-            setEmail('');
-            setPassword('');
-            setCompany('');
-            setConfirmPassword('');
-            setErrors([]);
+            try {
+                const userData = { login, firstName, lastName, email, company, password };
+                const response = await createUser(userData);
+                console.log('Utilisateur créé avec succès :', response);
+                alert('Utilisateur créé avec succès !');
+    
+                setLogin('');
+                setFirstName('');
+                setLastName('');
+                setEmail('');
+                setPassword('');
+                setCompany('');
+                setConfirmPassword('');
+                setErrors([]);
+            } catch (error: any) {
+                if (error.response && error.response.message) {
+                    alert(`Erreur : ${error.response.message}`);
+                } else {
+                    alert('Une erreur est survenue lors de la création de l\'utilisateur.');
+                }
+                console.error('Erreur lors de la création de l\'utilisateur :', error);
+            }
         }
     };
 
@@ -101,25 +109,36 @@ const CreateUserPage: React.FC = () => {
                         />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="nom">Nom</label>
+                        <label htmlFor="firstName">Nom</label>
                         <input
                             type="text"
-                            id="nom"
-                            name="nom"
+                            id="firstName"
+                            name="firstName"
                             placeholder="Entrez le nom"
-                            value={nom}
-                            onChange={(e) => setNom(e.target.value)}
+                            value={firstName}
+                            onChange={(e) => setFirstName(e.target.value)}
                         />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="prenom">Prénom</label>
+                        <label htmlFor="lastName">Prénom</label>
                         <input
                             type="text"
-                            id="prenom"
-                            name="prenom"
+                            id="lastName"
+                            name="lastName"
                             placeholder="Entrez le prénom"
-                            value={prenom}
-                            onChange={(e) => setPrenom(e.target.value)}
+                            value={lastName}
+                            onChange={(e) => setLastName(e.target.value)}
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="company">Compagnie</label>
+                        <input
+                            type="text"
+                            id="company"
+                            name="company"
+                            placeholder="Entrez la compagnie"
+                            value={company}
+                            onChange={(e) => setCompany(e.target.value)}
                         />
                     </div>
                     <div className="form-group">
