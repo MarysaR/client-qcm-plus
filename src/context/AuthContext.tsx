@@ -1,64 +1,47 @@
-// import React, { createContext, useContext, useEffect, useState } from 'react';
-// import type {
-//   AuthContextType,
-//   AuthUser,
-//   LoginCredentials,
-// } from '../../types/auth';
-// import {
-//   loginMock,
-//   loadSession,
-//   clearSession,
-// } from '../services/auth/authService';
+import React, { createContext, useContext, useState } from 'react';
 
-// const AuthContext = createContext<AuthContextType | undefined>(undefined);
+import { TokenClaims } from 'logic-qcm-plus';
+import { AuthContextType } from 'src/components/utils/AuthContextType';
 
-// export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
-//   children,
-// }) => {
-//   const [user, setUser] = useState<AuthUser | null>(null);
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState<string | null>(null);
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-//   useEffect(() => {
-//     const existing = loadSession();
-//     if (existing) setUser(existing);
-//     setLoading(false);
-//   }, []);
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const [token, setToken] = useState<string | null>(null);
+  const [claims, setClaims] = useState<TokenClaims | null>(null);
 
-//   async function login(creds: LoginCredentials) {
-//     setError(null);
-//     try {
-//       const u = await loginMock(creds);
-//       setUser(u);
-//     } catch {
-//       setError('Identifiants invalides');
-//       throw new Error('INVALID_CREDENTIALS');
-//     }
-//   }
+  async function login(token: string, claims: TokenClaims) {
+    setToken(token);
+    setClaims(claims);
 
-//   function logout() {
-//     clearSession();
-//     setUser(null);
-//   }
+    localStorage.setItem('authToken', token);
+    localStorage.setItem('authClaims', JSON.stringify(claims));
+  }
 
-//   return (
-//     <AuthContext.Provider
-//       value={{
-//         user,
-//         isAuthenticated: !!user,
-//         login,
-//         logout,
-//         loading,
-//         error,
-//       }}
-//     >
-//       {children}
-//     </AuthContext.Provider>
-//   );
-// };
+  function logout() {
+    setToken(null);
+    setClaims(null);
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('authClaims');
+  }
 
-// export function useAuth(): AuthContextType {
-//   const ctx = useContext(AuthContext);
-//   if (!ctx) throw new Error('useAuth must be used inside AuthProvider');
-//   return ctx;
-// }
+  return (
+    <AuthContext.Provider
+      value={{
+        token,
+        claims,
+        login,
+        logout,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+export function useAuth() {
+  const ctx = useContext(AuthContext);
+  if (!ctx) throw new Error('useAuth must be used inside AuthProvider');
+  return ctx;
+}
