@@ -1,19 +1,16 @@
 export interface AuthUser {
   id: string;
-  username: string;
+  email: string;
   role?: string;
 }
 
-export interface LoginCredentials {
-  username: string;
-  password: string;
-}
+export type AuthErrorCode =
+  | 'INVALID_CREDENTIALS'
+  | 'MISSING_FIELDS'
+  | 'AUTH_NOT_IMPLEMENTED'
+  | 'INVALID_SESSION';
 
-export interface AuthContextType {
-  user: AuthUser | null;
-  isAuthenticated: boolean;
-  login: (c: LoginCredentials) => Promise<void>;
-  logout: () => void;
-  loading: boolean;
-  error: string | null;
+export interface LoginCredentials {
+  email: string;
+  password: string;
 }
