@@ -16,24 +16,6 @@ import CreateUserPage from './pages/users/CreateUserPage';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <BrowserRouter>
-      {/* TODO: Passer le role en props dynamiquement */}
-      {/* Sidebar*/}
-      <CustomSidebar role="Admin" />
-
-      {/* Routes */}
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/users" element={<UsersPage />} />
-        <Route path="/profil" element={<ProfilPage />} />
-        <Route path="/questionnaires" element={<QuestionnairesPage />} />
-        <Route path="/statistics" element={<StatisticsPage />} />
-
-        <Route path="/new" element={<CreateUserPage />} />
-      </Routes>
-
-      {/* Footer */}
-      <Footer />
-    </BrowserRouter>
-  </React.StrictMode>
+    <HomePage />
+  </React.StrictMode>,
 );
