@@ -1,36 +1,57 @@
-import React, { createContext, useContext, useState } from 'react';
-
-import { TokenClaims } from 'logic-qcm-plus';
-import { AuthContextType } from 'src/components/utils/AuthContextType';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { User, AppError, Result, TechnicalError, Err } from 'logic-qcm-plus';
+import { AuthContextType } from '../types/AuthContextType';
+import { authService } from '../services/auth/authService';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [token, setToken] = useState<string | null>(null);
-  const [claims, setClaims] = useState<TokenClaims | null>(null);
+  const [user, setUser] = useState<User | null>(null);
 
-  async function login(token: string, claims: TokenClaims) {
-    setToken(token);
-    setClaims(claims);
+  useEffect(() => {
+    const token = authService.getToken();
+    if (!token) return;
 
-    localStorage.setItem('authToken', token);
-    localStorage.setItem('authClaims', JSON.stringify(claims));
+    authService.me().then((res) => {
+      if (res.isOk()) {
+        setUser(res.value);
+      } else {
+        authService.clearToken();
+      }
+    });
+  }, []);
+
+  async function login(
+    email: string,
+    password: string
+  ): Promise<Result<void, AppError>> {
+    const result = await authService.login({ email, password });
+    if (result.isOk()) {
+      const meResult = await authService.me();
+      if (meResult.isOk()) {
+        setUser(meResult.value);
+      }
+    }
+
+    return result;
   }
 
-  function logout() {
-    setToken(null);
-    setClaims(null);
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('authClaims');
+  async function logout(): Promise<Result<void, AppError>> {
+    const result = await authService.logout();
+    if (result.isOk()) {
+      setUser(null);
+    }
+
+    return result;
   }
 
   return (
     <AuthContext.Provider
       value={{
-        token,
-        claims,
+        user,
+        isAuthenticated: !!user,
         login,
         logout,
       }}
@@ -42,6 +63,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
 export function useAuth() {
   const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error('useAuth must be used inside AuthProvider');
+  if (!ctx)
+    return Err.of(
+      new TechnicalError('useAuth must be used inside AuthProvider')
+    );
+
   return ctx;
 }
