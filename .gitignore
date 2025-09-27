@@ -21,4 +21,4 @@ Thumbs.db
 
 # Autre
 *.swp
-vendor
+vendor/logic-qcm-plus
