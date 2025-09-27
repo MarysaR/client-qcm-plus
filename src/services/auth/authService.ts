@@ -1,81 +1,113 @@
-import { AuthErrorCode, AuthUser, LoginCredentials } from '../../../types/auth';
-import { Result, Ok, Err } from 'logic-qcm-plus';
+import {
+  Result,
+  Ok,
+  Err,
+  AppError,
+  PermissionDeniedError,
+  TechnicalError,
+  User,
+} from 'logic-qcm-plus';
+import { LOGIN, LOGOUT, ME } from '../../constants/endpoints';
+import { TOKEN_KEY } from '../../constants/storage';
+import { httpRequest } from '../../utils/httpClient';
+import { mapHttpResult } from '../../utils/httpResultMapper';
+import { mapHttpError, parseJsonSafe } from '../../utils/httpUtils';
 
-const STORAGE_KEY = 'mock_auth_user';
-const MODE = import.meta.env.VITE_AUTH_MODE;
+export const authService = {
+  getToken(): string | null {
+    return localStorage.getItem(TOKEN_KEY);
+  },
 
-export class AuthError extends Error {
-  constructor(
-    public code: AuthErrorCode,
-    message: string,
-    public details?: unknown
-  ) {
-    super(message);
-    this.name = 'AuthError';
-  }
-}
-function delay(ms: number) {
-  return new Promise((res) => setTimeout(res, ms));
-}
+  setToken(token: string): void {
+    localStorage.setItem(TOKEN_KEY, token);
+  },
 
-function toStableId(input: string): string {
-  // ID stable dérivé du username (aucun secret)
-  return 'mock-' + input.toLowerCase().replace(/[^a-z0-9_-]/g, '');
-}
+  clearToken(): void {
+    localStorage.removeItem(TOKEN_KEY);
+  },
 
-export async function loginMock(
-  creds: LoginCredentials
-): Promise<Result<AuthUser, AuthError>> {
-  if (MODE && MODE !== 'mock') {
-    return Err.of<AuthUser, AuthError>(
-      new AuthError('AUTH_NOT_IMPLEMENTED', 'Mode non implémenté')
-    );
-  }
+  async login(creds: {
+    email: string;
+    password: string;
+  }): Promise<Result<void, AppError>> {
+    const resResult = await httpRequest(LOGIN, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(creds),
+    });
 
-  await delay(300);
+    return mapHttpResult<void>(resResult, async (res) => {
+      if (!res.ok) {
+        const body = await parseJsonSafe<{ error?: string }>(res);
+        const message = body?.error ?? "Échec de l'authentification";
+        return Err.of(mapHttpError(res.status, message));
+      }
 
-  if (!creds.email?.trim() || !creds.password?.trim()) {
-    return Err.of<AuthUser, AuthError>(
-      new AuthError(
-        'MISSING_FIELDS',
-        'Nom d’utilisateur et mot de passe requis'
-      )
-    );
-  }
+      const body = await parseJsonSafe<{ token: string }>(res);
+      if (!body || !body.token) {
+        return Err.of(
+          new TechnicalError('Réponse invalide du serveur (token manquant)')
+        );
+      }
 
-  const role = creds.email.toLowerCase().includes('admin')
-    ? 'ADMIN'
-    : 'STAGIAIRE';
+      this.setToken(body.token);
 
-  const user: AuthUser = {
-    id: toStableId(creds.email),
-    email: creds.email,
-    role,
-  };
+      return Ok.of(undefined);
+    });
+  },
 
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
-  return Ok.of<AuthUser, AuthError>(user);
-}
+  async me(): Promise<Result<User, AppError>> {
+    const token = this.getToken();
+    if (!token) {
+      return Err.of(new PermissionDeniedError('Aucun token présent'));
+    }
 
-export function loadSession(): Result<AuthUser, AuthError> {
-  const raw = localStorage.getItem(STORAGE_KEY);
-  if (!raw) {
-    return Err.of<AuthUser, AuthError>(
-      new AuthError('INVALID_SESSION', 'Aucune session trouvée')
-    );
-  }
-  try {
-    const user = JSON.parse(raw) as AuthUser;
-    return Ok.of<AuthUser, AuthError>(user);
-  } catch {
-    return Err.of<AuthUser, AuthError>(
-      new AuthError('INVALID_SESSION', 'Session invalide')
-    );
-  }
-}
+    const resResult = await httpRequest(ME, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
-export function clearSession() {
-  localStorage.removeItem(STORAGE_KEY);
-}
+    return mapHttpResult<User>(resResult, async (res) => {
+      if (!res.ok) {
+        const body = await parseJsonSafe<{ error?: string }>(res);
+        const message =
+          body?.error ?? "Impossible de récupérer l'utilisateur courant";
+        return Err.of(mapHttpError(res.status, message));
+      }
 
-export { loginMock as _loginMockInternal };
+      const user = await parseJsonSafe<User>(res);
+      if (!user) {
+        return Err.of(
+          new TechnicalError(
+            'Réponse invalide du serveur (utilisateur manquant)'
+          )
+        );
+      }
+
+      return Ok.of(user);
+    });
+  },
+
+  async logout(): Promise<Result<void, AppError>> {
+    const token = this.getToken();
+    this.clearToken();
+
+    if (!token) {
+      return Ok.of(undefined);
+    }
+
+    const resResult = await httpRequest(LOGOUT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token }),
+    });
+
+    return mapHttpResult<void>(resResult, async (res) => {
+      if (!res.ok) {
+        const body = await parseJsonSafe<{ error?: string }>(res);
+        const message = body?.error ?? 'Erreur lors de la déconnexion';
+        return Err.of(mapHttpError(res.status, message));
+      }
+      return Ok.of(undefined);
+    });
+  },
+};
