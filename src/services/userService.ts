@@ -1,4 +1,5 @@
 import api from './api';
+import { AppError, ValidationError, AlreadyExistError, TechnicalError, UnknownError } from 'logic-qcm-plus';
 
 export const fetchUsers = async () => {
   const response = await api.get('/users', {
@@ -20,17 +21,21 @@ export const createUser = async (userData: {
   createdAt?: Date;
   roleid?: 2;
 }) => {
-  try {
-    const response = await api.post('/users', userData, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+  const response = await fetch('/api/users', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(userData),
+});
 
-    const data = response.data;
-    return data;
-  } catch (error) {
-    console.error('Erreur lors de la création de l\'utilisateur :', error);
-    throw error;
-  }
+if (response.status === 400) {
+    throw new ValidationError('Les données fournies sont invalides.');
+} else if (response.status === 409) {
+    throw new AlreadyExistError('Un utilisateur avec cet email existe déjà.');
+} else if (response.status === 500) {
+    throw new TechnicalError('Une erreur interne est survenue.');
+} else if (!response.ok) {
+    throw new UnknownError('Une erreur inconnue est survenue.');
+}
+
+return response.json();
 };

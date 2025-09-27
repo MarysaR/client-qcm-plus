@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import '../../styles/style.css';
 import { createUser } from '../../services/userService';
+import { AppError, ValidationError, AlreadyExistError, TechnicalError, UnknownError } from 'logic-qcm-plus';
 
 const CreateUserPage: React.FC = () => {
     const [login, setLogin] = useState('');
@@ -46,13 +47,41 @@ const CreateUserPage: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
     
-        if (validateForm()) {
-            try {
-                const userData = { login, firstName, lastName, email, company, password };
-                const response = await createUser(userData);
+    //     if (validateForm()) {
+    //         try {
+    //             const userData = { login, firstName, lastName, email, company, password };
+    //             const response = await createUser(userData);
+    //             console.log('Utilisateur créé avec succès :', response);
+    //             alert('Utilisateur créé avec succès !');
+    
+    //             setLogin('');
+    //             setFirstName('');
+    //             setLastName('');
+    //             setEmail('');
+    //             setPassword('');
+    //             setCompany('');
+    //             setConfirmPassword('');
+    //             setErrors([]);
+    //         } catch (error: any) {
+    //             if (error.response && error.response.message) {
+    //                 alert(`Erreur : ${error.response.message}`);
+    //             } else {
+    //                 alert('Une erreur est survenue lors de la création de l\'utilisateur.');
+    //             }
+    //             console.error('Erreur lors de la création de l\'utilisateur :', error);
+    //         }
+    //     }
+    // };
+
+    if (validateForm()) {
+        const userData = { login, firstName, lastName, email, company, password };
+
+        createUser(userData)
+            .then((response) => {
                 console.log('Utilisateur créé avec succès :', response);
                 alert('Utilisateur créé avec succès !');
-    
+
+                // Réinitialiser les champs
                 setLogin('');
                 setFirstName('');
                 setLastName('');
@@ -61,14 +90,23 @@ const CreateUserPage: React.FC = () => {
                 setCompany('');
                 setConfirmPassword('');
                 setErrors([]);
-            } catch (error: any) {
-                if (error.response && error.response.message) {
-                    alert(`Erreur : ${error.response.message}`);
+            })
+            .catch((error: AppError) => {
+                // Gérer les erreurs personnalisées
+                if (error instanceof ValidationError) {
+                    alert(`Erreur de validation : ${error.message}`);
+                } else if (error instanceof AlreadyExistError) {
+                    alert(`Erreur : ${error.message}`);
+                } else if (error instanceof TechnicalError) {
+                    alert(`Erreur technique : ${error.message}`);
+                } else if (error instanceof UnknownError) {
+                    alert(`Erreur inconnue : ${error.message}`);
                 } else {
-                    alert('Une erreur est survenue lors de la création de l\'utilisateur.');
+                    alert('Une erreur inattendue est survenue.');
                 }
+
                 console.error('Erreur lors de la création de l\'utilisateur :', error);
-            }
+            });
         }
     };
 
