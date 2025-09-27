@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { User, AppError, Result, TechnicalError, Err } from 'logic-qcm-plus';
+import { User, AppError, Result } from 'logic-qcm-plus';
 import { AuthContextType } from '../types/AuthContextType';
 import { authService } from '../services/auth/authService';
 
@@ -63,10 +63,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
 export function useAuth() {
   const ctx = useContext(AuthContext);
-  if (!ctx)
-    return Err.of(
-      new TechnicalError('useAuth must be used inside AuthProvider')
-    );
+  if (!ctx) throw new Error('useAuth must be used inside AuthProvider');
 
   return ctx;
 }
