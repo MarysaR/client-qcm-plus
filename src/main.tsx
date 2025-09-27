@@ -8,7 +8,7 @@ import HomePage from './pages/home/HomePage';
 import UsersPage from './pages/users/UsersPage';
 import './styles/tailwind.css';
 import Footer from './components/footer/Footer';
-import CustomSidebar from './components/utils/CustomSidebar';
+import CustomSidebar from './components/sidebar/CustomSidebar';
 import ProfilPage from './pages/profil/ProfilPage';
 import QuestionnairesPage from './pages/questionnaires/QuestionnairesPage';
 import StatisticsPage from './pages/statistics/StatisticsPage';
@@ -43,7 +43,14 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
             }
           />
           <Route path="/login" element={<AuthPage />} />
-          <Route path="/profil" element={<ProfilPage />} />
+          <Route
+            path="/me"
+            element={
+              <ProtectedRoute>
+                <ProfilPage />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/questionnaires" element={<QuestionnairesPage />} />
           <Route path="/statistics" element={<StatisticsPage />} />
         </Routes>
