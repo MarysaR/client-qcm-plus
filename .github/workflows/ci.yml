@@ -56,7 +56,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd client-qcm-plus
+          npm install ../logic/logic-qcm-plus-*.tgz
           npm install
 
       - name: Build client
