@@ -1,8 +1,16 @@
-trigger:
-  branches:
-    include:
-      - develop
-      - main
+trigger: none # ANNOTATION: on désactive le déclenchement automatique direct
+pr: none # ANNOTATION: pas déclenché par une PR
+
+resources:
+  pipelines:
+    - pipeline: logicBuild
+      source: MarysaR.logic-qcm-plus # ANNOTATION: nom exact du pipeline logic
+      project: qcm-plus # ANNOTATION: projet DevOps
+      trigger:
+        branches:
+          include:
+            - develop
+            - main
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -10,26 +18,24 @@ pool:
 steps:
   - task: NodeTool@0
     inputs:
-      versionSpec: '20.x'
-    displayName: 'Utiliser Node.js'
+      versionSpec: '20.19.1'
+    displayName: 'Utiliser Node.js 20.19.1'
 
-  - script: npm ci
-    displayName: 'Installer les dépendances (racine)'
+  - checkout: self
+    displayName: 'Checkout client-qcm-plus'
 
-  - script: |
-      cd logic-qcm-plus
-      npm ci
-      npm run build
-    displayName: 'Build logic-qcm-plus'
-
-  - script: |
-      rm -rf client-qcm-plus/vendor/logic-qcm-plus
-      ln -s ../../logic-qcm-plus client-qcm-plus/vendor/logic-qcm-plus
-    displayName: 'Recréer le symlink logic-qcm-plus'
+  - download: current
+    artifact: logicPackage
+    displayName: 'Télécharger artefact logic-qcm-plus'
 
   - script: |
       cd client-qcm-plus
       npm ci
+      npm install $(Pipeline.Workspace)/logicPackage/logic-qcm-plus-*.tgz
+    displayName: 'Installer dépendances + logic-qcm-plus'
+
+  - script: |
+      cd client-qcm-plus
       npm run lint
       npm run format:check
       npm run build
