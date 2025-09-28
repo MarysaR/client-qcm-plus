@@ -1,11 +1,20 @@
-trigger: none # ANNOTATION: on désactive le déclenchement automatique direct
-pr: none # ANNOTATION: pas déclenché par une PR
+trigger:
+  branches:
+    include:
+      - develop
+      - main
+
+pr:
+  branches:
+    include:
+      - develop
+      - main
 
 resources:
   pipelines:
     - pipeline: logicBuild
-      source: MarysaR.logic-qcm-plus # ANNOTATION: nom exact du pipeline logic
-      project: qcm-plus # ANNOTATION: projet DevOps
+      source: MarysaR.logic-qcm-plus # nom du pipeline logic
+      project: qcm-plus # ton projet Azure DevOps
       trigger:
         branches:
           include:
