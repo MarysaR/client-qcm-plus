@@ -16,11 +16,25 @@ steps:
   - script: npm ci
     displayName: 'Installer les dépendances'
 
+  - script: |
+      cd logic-qcm-plus
+      npm ci
+      npm run build
+    displayName: 'Build logic-qcm-plus'
+
+  - script: |
+      mkdir -p client-qcm-plus/vendor/logic-qcm-plus
+      cp -R logic-qcm-plus/src client-qcm-plus/vendor/logic-qcm-plus/
+    displayName: 'Copier src logic-qcm-plus vers vendor'
+
   - script: npm run lint
     displayName: 'Vérifier le lint'
 
   - script: npm run format:check
     displayName: 'Vérifier le formatage'
 
-  - script: npm run build
-    displayName: 'Compiler le projet'
+  - script: |
+      cd client-qcm-plus
+      npm ci
+      npm run build
+    displayName: 'Compiler le client'
