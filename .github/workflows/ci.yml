@@ -56,15 +56,14 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd client-qcm-plus
           npm ci
-          npm install ../logic/logic-qcm-plus-*.tgz
+          npm install ./logic/logic-qcm-plus-*.tgz
 
       - name: Build client
-        run: cd client-qcm-plus && npm run build
+        run: npm run build
 
       - name: Lint
-        run: cd client-qcm-plus && npm run lint
+        run: npm run lint
 
       - name: Format check
-        run: cd client-qcm-plus && npm run format:check
+        run: npm run format:check
