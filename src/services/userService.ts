@@ -1,7 +1,6 @@
 import { USERS } from '../constants/endpoints';
 import api from './api';
 import {
-  AppError,
   AlreadyExistError,
   TechnicalError,
   UnknownError,

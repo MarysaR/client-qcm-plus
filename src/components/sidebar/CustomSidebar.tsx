@@ -8,7 +8,7 @@ import '../../styles/style.css';
 
 import { useAuth } from '../../context/AuthContext';
 
-const CustomSidebar: React.FC<{}> = () => {
+const CustomSidebar: React.FC = () => {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const toast = useRef<Toast>(null);
   const navigate = useNavigate();
