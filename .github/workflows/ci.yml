@@ -39,6 +39,10 @@ jobs:
   client:
     runs-on: ubuntu-latest
     needs: logic
+    defaults:
+      run:
+        working-directory: client-qcm-plus
+
     steps:
       - name: Checkout client-qcm-plus
         uses: actions/checkout@v4
@@ -56,7 +60,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          npm install ../logic/logic-qcm-plus-*.tgz
+          npm install ./logic/logic-qcm-plus-*.tgz
           npm install
 
       - name: Build client
