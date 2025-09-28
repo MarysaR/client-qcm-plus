@@ -12,7 +12,7 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
-      "logic-qcm-plus": ["vendor/logic-qcm-plus/dist"]
+      "logic-qcm-plus": ["vendor/logic-qcm-plus/src"]
     },
     "typeRoots": [
       "src/types",

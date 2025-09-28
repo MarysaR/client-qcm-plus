@@ -11,7 +11,7 @@ export default defineConfig({
   plugins: [tailwindcss(), react()],
   resolve: {
     alias: {
-      'logic-qcm-plus': path.resolve(__dirname, 'vendor/logic-qcm-plus/dist'),
+      'logic-qcm-plus': path.resolve(__dirname, 'vendor/logic-qcm-plus/src'),
     },
   },
   server: {

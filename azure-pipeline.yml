@@ -23,6 +23,11 @@ steps:
     displayName: 'Build logic-qcm-plus'
 
   - script: |
+      rm -rf client-qcm-plus/vendor/logic-qcm-plus
+      ln -s ../../logic-qcm-plus client-qcm-plus/vendor/logic-qcm-plus
+    displayName: 'Recréer le symlink logic-qcm-plus'
+
+  - script: |
       cd client-qcm-plus
       npm ci
       npm run lint
