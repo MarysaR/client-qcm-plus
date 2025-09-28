@@ -8,7 +8,9 @@ const AuthPage: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isAuthenticated) navigate('/', { replace: true });
+    if (isAuthenticated) {
+      navigate('/me', { replace: true });
+    }
   }, [isAuthenticated, navigate]);
 
   return (

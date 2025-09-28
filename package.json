@@ -18,12 +18,12 @@
   "description": "",
   "dependencies": {
     "axios": "^1.10.0",
+    "logic-qcm-plus": "file:../logic-qcm-plus/logic-qcm-plus-1.0.0.tgz",
     "primeicons": "^7.0.0",
     "primereact": "^10.9.6",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "react-router-dom": "^7.7.0",
-    "logic-qcm-plus": "file:../logic-qcm-plus"
+    "react-router-dom": "^7.7.0"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.11",

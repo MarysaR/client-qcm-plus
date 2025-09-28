@@ -6,21 +6,22 @@ import { Button } from 'primereact/button';
 import { Toast } from 'primereact/toast';
 import { useAuth } from '../../context/AuthContext';
 import styles from '../../styles/authForm.module.css';
+
 interface FormState {
-  username: string;
+  email: string;
   password: string;
 }
 
 const AuthForm: React.FC = () => {
-  const { login, error } = useAuth();
-  const [form, setForm] = useState<FormState>({ username: '', password: '' });
+  const { login } = useAuth();
+  const [form, setForm] = useState<FormState>({ email: '', password: '' });
   const [submitting, setSubmitting] = useState(false);
   const [showErrors, setShowErrors] = useState(false);
   const toast = useRef<Toast | null>(null);
-  const userRef = useRef<HTMLInputElement | null>(null);
+  const emailRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
-    const t = setTimeout(() => userRef.current?.focus(), 30);
+    const t = setTimeout(() => emailRef.current?.focus(), 30);
     return () => clearTimeout(t);
   }, []);
 
@@ -28,16 +29,17 @@ const AuthForm: React.FC = () => {
     setForm((f) => ({ ...f, [k]: v }));
   }
 
-  const usernameError =
-    showErrors && !form.username.trim() ? "Nom d'utilisateur requis" : null;
+  const emailError =
+    showErrors && !form.email.trim() ? 'Adresse email requise' : null;
   const passwordError =
     showErrors && !form.password.trim() ? 'Mot de passe requis' : null;
-  const hasFormError = !!usernameError || !!passwordError;
+  const hasFormError = !!emailError || !!passwordError;
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setShowErrors(true);
-    if (hasFormError || !form.username.trim() || !form.password.trim()) {
+
+    if (hasFormError) {
       toast.current?.show({
         severity: 'warn',
         summary: 'Champs requis',
@@ -45,23 +47,26 @@ const AuthForm: React.FC = () => {
       });
       return;
     }
+
     setSubmitting(true);
-    try {
-      await login({ username: form.username.trim(), password: form.password });
+
+    const result = await login(form.email.trim(), form.password);
+
+    if (result.isOk()) {
       toast.current?.show({
         severity: 'success',
         summary: 'Succès',
         detail: 'Connexion réussie',
       });
-    } catch {
+    } else {
       toast.current?.show({
         severity: 'error',
         summary: 'Erreur',
-        detail: 'Identifiants invalides',
+        detail: result.error.message,
       });
-    } finally {
-      setSubmitting(false);
     }
+
+    setSubmitting(false);
   }
 
   const header = (
@@ -81,33 +86,29 @@ const AuthForm: React.FC = () => {
           aria-label="Formulaire de connexion"
           className={styles.form}
         >
-          {/* Username */}
+          {/* Email */}
           <div className={styles.fieldGroup}>
-            <label htmlFor="username" className={styles.label}>
-              Nom d&apos;utilisateur
+            <label htmlFor="email" className={styles.label}>
+              Adresse email
             </label>
             <InputText
-              id="username"
-              ref={userRef}
-              value={form.username}
-              onChange={(e) => update('username', e.target.value)}
-              onBlur={() => setShowErrors((v) => v || !form.username.trim())}
-              placeholder="ex: admin"
-              aria-invalid={!!usernameError}
-              aria-describedby={usernameError ? 'username-help' : undefined}
+              id="email"
+              ref={emailRef}
+              value={form.email}
+              onChange={(e) => update('email', e.target.value)}
+              onBlur={() => setShowErrors((v) => v || !form.email.trim())}
+              placeholder="ex: admin@example.com"
+              aria-invalid={!!emailError}
+              aria-describedby={emailError ? 'email-help' : undefined}
               className={`${styles.input} ${
-                usernameError ? styles.inputInvalid : ''
+                emailError ? styles.inputInvalid : ''
               }`}
-              autoComplete="username"
+              autoComplete="email"
               disabled={submitting}
             />
-            {usernameError && (
-              <small
-                id="username-help"
-                className={styles.errorMsg}
-                role="alert"
-              >
-                {usernameError}
+            {emailError && (
+              <small id="email-help" className={styles.errorMsg} role="alert">
+                {emailError}
               </small>
             )}
           </div>
@@ -148,13 +149,6 @@ const AuthForm: React.FC = () => {
             )}
           </div>
 
-          {/* Global auth error */}
-          {error && !hasFormError && (
-            <div role="alert" className={styles.globalError}>
-              {error}
-            </div>
-          )}
-
           <Button
             type="submit"
             label={submitting ? 'Connexion...' : 'Se connecter'}
@@ -162,15 +156,11 @@ const AuthForm: React.FC = () => {
             disabled={
               submitting ||
               hasFormError ||
-              !form.username.trim() ||
+              !form.email.trim() ||
               !form.password.trim()
             }
             className={styles.submitBtn}
           />
-
-          <p className={styles.note}>
-            Démonstration mock : identifiants libres (non vides).
-          </p>
         </form>
       </Card>
     </div>
