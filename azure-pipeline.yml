@@ -24,11 +24,12 @@ steps:
 
   - task: DownloadPipelineArtifact@2
     inputs:
-      buildType: 'latest'
+      buildType: 'specific'
       project: 'qcm-plus'
       definition: 7
-      artifact: 'logicPackage'
-      path: '$(Pipeline.Workspace)/logic'
+      buildVersionToDownload: 'latest'
+      artifactName: 'logicPackage'
+      targetPath: '$(Pipeline.Workspace)/logic'
     displayName: 'Télécharger dernier artefact logic-qcm-plus'
 
   - script: |
