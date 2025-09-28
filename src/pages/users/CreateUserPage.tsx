@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../../styles/style.css';
 import { createUser } from '../../services/userService';
-import { AppError, ValidationError, AlreadyExistError, TechnicalError, UnknownError } from 'logic-qcm-plus';
+import { AppError, ValidationError, AlreadyExistError, TechnicalError, UnknownError, PermissionDeniedError } from 'logic-qcm-plus';
 
 const CreateUserPage: React.FC = () => {
     const [login, setLogin] = useState('');
@@ -45,38 +45,21 @@ const CreateUserPage: React.FC = () => {
 
 
     const handleSubmit = async (e: React.FormEvent) => {
+
+        const claims = localStorage.getItem('authClaims');
+        const currentUserRoleId = claims ? JSON.parse(claims).roleId : null;
+
+        if(currentUserRoleId != 1 || currentUserRoleId == null) {
+            alert('Vous n\'avez pas la permission de créer un utilisateur.');
+            return new PermissionDeniedError('Vous n\'avez pas la permission de créer un utilisateur.');
+        }
+
         e.preventDefault();
-    
-    //     if (validateForm()) {
-    //         try {
-    //             const userData = { login, firstName, lastName, email, company, password };
-    //             const response = await createUser(userData);
-    //             console.log('Utilisateur créé avec succès :', response);
-    //             alert('Utilisateur créé avec succès !');
-    
-    //             setLogin('');
-    //             setFirstName('');
-    //             setLastName('');
-    //             setEmail('');
-    //             setPassword('');
-    //             setCompany('');
-    //             setConfirmPassword('');
-    //             setErrors([]);
-    //         } catch (error: any) {
-    //             if (error.response && error.response.message) {
-    //                 alert(`Erreur : ${error.response.message}`);
-    //             } else {
-    //                 alert('Une erreur est survenue lors de la création de l\'utilisateur.');
-    //             }
-    //             console.error('Erreur lors de la création de l\'utilisateur :', error);
-    //         }
-    //     }
-    // };
 
     if (validateForm()) {
         const userData = { login, firstName, lastName, email, company, password };
 
-        createUser(userData)
+        createUser(userData, currentUserRoleId )
             .then((response) => {
                 console.log('Utilisateur créé avec succès :', response);
                 alert('Utilisateur créé avec succès !');

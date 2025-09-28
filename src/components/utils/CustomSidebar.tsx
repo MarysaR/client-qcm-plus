@@ -4,12 +4,15 @@ import { Button } from 'primereact/button';
 import { Ripple } from 'primereact/ripple';
 import '../../styles/style.css';
 import { useNavigate } from 'react-router-dom';
+import { TokenClaims } from 'logic-qcm-plus';
 
-const CustomSidebar: React.FC<{ role: string }> = ({ role }) => {
+const CustomSidebar: React.FC<{}> = () => {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const navigate = useNavigate();
+  const claims = JSON.parse(localStorage.getItem('authClaims') || '{}') as TokenClaims;
+  const role = claims?.roleId || null;
 
-  const menuItems = role === 'Stagiaire'
+  const menuItems = role == 1
     ? [
         { icon: 'pi pi-user', label: 'Profil', path: '/profil' },
         {
