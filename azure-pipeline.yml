@@ -10,17 +10,6 @@ pr:
       - develop
       - main
 
-resources:
-  pipelines:
-    - pipeline: logicBuild
-      source: MarysaR.logic-qcm-plus # nom du pipeline logic
-      project: qcm-plus # ton projet Azure DevOps
-      trigger:
-        branches:
-          include:
-            - develop
-            - main
-
 pool:
   vmImage: 'ubuntu-latest'
 
@@ -33,14 +22,19 @@ steps:
   - checkout: self
     displayName: 'Checkout client-qcm-plus'
 
-  - download: current
-    artifact: logicPackage
-    displayName: 'Télécharger artefact logic-qcm-plus'
+  - task: DownloadPipelineArtifact@2
+    inputs:
+      buildType: 'latest'
+      project: 'qcm-plus'
+      definition: 7
+      artifact: 'logicPackage'
+      path: '$(Pipeline.Workspace)/logic'
+    displayName: 'Télécharger dernier artefact logic-qcm-plus'
 
   - script: |
       cd client-qcm-plus
       npm ci
-      npm install $(Pipeline.Workspace)/logicPackage/logic-qcm-plus-*.tgz
+      npm install $(Pipeline.Workspace)/logic/logic-qcm-plus-*.tgz
     displayName: 'Installer dépendances + logic-qcm-plus'
 
   - script: |
