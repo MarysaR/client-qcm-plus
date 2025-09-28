@@ -4,23 +4,43 @@ trigger:
       - develop
       - main
 
+pr:
+  branches:
+    include:
+      - develop
+      - main
+
 pool:
   vmImage: 'ubuntu-latest'
 
 steps:
   - task: NodeTool@0
     inputs:
-      versionSpec: '20.x'
-    displayName: 'Utiliser Node.js'
+      versionSpec: '20.19.1'
+    displayName: 'Utiliser Node.js 20.19.1'
 
-  - script: npm ci
-    displayName: 'Installer les dépendances'
+  - checkout: self
+    displayName: 'Checkout client-qcm-plus'
 
-  - script: npm run lint
-    displayName: 'Vérifier le lint'
+  - task: DownloadPipelineArtifact@2
+    inputs:
+      buildType: 'specific'
+      project: 'qcm-plus'
+      definition: 7
+      buildVersionToDownload: 'latest'
+      artifactName: 'logicPackage'
+      targetPath: '$(Pipeline.Workspace)/logic'
+    displayName: 'Télécharger dernier artefact logic-qcm-plus'
 
-  - script: npm run format:check
-    displayName: 'Vérifier le formatage'
+  - script: |
+      cd client-qcm-plus
+      npm ci
+      npm install $(Pipeline.Workspace)/logic/logic-qcm-plus-*.tgz
+    displayName: 'Installer dépendances + logic-qcm-plus'
 
-  - script: npm run build
-    displayName: 'Compiler le projet'
+  - script: |
+      cd client-qcm-plus
+      npm run lint
+      npm run format:check
+      npm run build
+    displayName: 'Build client-qcm-plus'

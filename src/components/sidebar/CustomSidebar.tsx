@@ -1,13 +1,38 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Sidebar } from 'primereact/sidebar';
 import { Button } from 'primereact/button';
 import { Ripple } from 'primereact/ripple';
-import '../../styles/style.css';
+import { Toast } from 'primereact/toast';
 import { useNavigate } from 'react-router-dom';
+import '../../styles/style.css';
+
+import { useAuth } from '../../context/AuthContext';
 
 const CustomSidebar: React.FC<{ role: string }> = ({ role }) => {
   const [isCollapsed, setIsCollapsed] = useState(true);
+  const toast = useRef<Toast>(null);
   const navigate = useNavigate();
+  const { logout } = useAuth();
+
+  const handleLogout = async () => {
+    const result = await logout();
+    if (result.isOk()) {
+      toast.current?.show({
+        severity: 'success',
+        summary: 'Succès',
+        detail: 'Vous avez été déconnecté',
+        life: 3000,
+      });
+      navigate('/login');
+    } else {
+      toast.current?.show({
+        severity: 'error',
+        summary: 'Erreur',
+        detail: result.error.message,
+        life: 4000,
+      });
+    }
+  };
 
   const menuItems = role
     ? [
@@ -88,7 +113,7 @@ const CustomSidebar: React.FC<{ role: string }> = ({ role }) => {
 
         {/*Déconnexion */}
         <div className="sidebar-logout">
-          <a className="p-ripple">
+          <a className="p-ripple" onClick={handleLogout}>
             <i className="pi pi-sign-out"></i>
             <span>Logout</span>
             <Ripple />

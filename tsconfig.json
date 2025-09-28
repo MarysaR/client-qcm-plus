@@ -12,11 +12,11 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "typeRoots": [
-      "./src/types",
+      "src/types",
       "./node_modules/@types",
       "../logic-qcm-plus/dist/types"
     ],
     "types": ["node", "react"]
   },
-  "include": ["src", "types"]
+  "include": ["src", "src/types", "vite-env.d.ts"]
 }
