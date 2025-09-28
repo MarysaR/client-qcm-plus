@@ -8,7 +8,7 @@ import '../../styles/style.css';
 
 import { useAuth } from '../../context/AuthContext';
 
-const CustomSidebar: React.FC<{ role: string }> = ({ role }) => {
+const CustomSidebar: React.FC<{}> = () => {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const toast = useRef<Toast>(null);
   const navigate = useNavigate();
@@ -34,25 +34,33 @@ const CustomSidebar: React.FC<{ role: string }> = ({ role }) => {
     }
   };
 
-  const menuItems = role
-    ? [
-        { icon: 'pi pi-user', label: 'Profil', path: '/profil' },
-        {
-          icon: 'pi pi-question-circle',
-          label: 'Questionnaires',
-          path: '/questionnaires',
-        },
-        { icon: 'pi pi-chart-bar', label: 'Statistiques', path: '/statistics' },
-      ]
-    : [
-        { icon: 'pi pi-user', label: 'Profil', path: '/profil' },
-        { icon: 'pi pi-users', label: 'Stagiaires', path: '/users' },
-        {
-          icon: 'pi pi-question-circle',
-          label: 'Questionnaires',
-          path: '/questionnaires',
-        },
-      ];
+  const claims = localStorage.getItem('authClaims');
+  const currentUserRoleId = claims ? JSON.parse(claims).roleId : null;
+
+  const menuItems =
+    currentUserRoleId == 2
+      ? [
+          { icon: 'pi pi-user', label: 'Profil', path: '/profil' },
+          {
+            icon: 'pi pi-question-circle',
+            label: 'Questionnaires',
+            path: '/questionnaires',
+          },
+          {
+            icon: 'pi pi-chart-bar',
+            label: 'Statistiques',
+            path: '/statistics',
+          },
+        ]
+      : [
+          { icon: 'pi pi-user', label: 'Profil', path: '/profil' },
+          { icon: 'pi pi-users', label: 'Stagiaires', path: '/users' },
+          {
+            icon: 'pi pi-question-circle',
+            label: 'Questionnaires',
+            path: '/questionnaires',
+          },
+        ];
 
   return (
     <div className="custom-sidebar-container">
