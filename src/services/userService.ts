@@ -1,6 +1,7 @@
 import api from './api';
 import { AppError, AlreadyExistError, TechnicalError, UnknownError, ValidationError } from 'logic-qcm-plus';
 
+
 export const fetchUsers = async () => {
   const response = await api.get('/users', {
     headers: {
