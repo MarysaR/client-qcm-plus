@@ -14,7 +14,7 @@ steps:
     displayName: 'Utiliser Node.js'
 
   - script: npm ci
-    displayName: 'Installer les dépendances'
+    displayName: 'Installer les dépendances (racine)'
 
   - script: |
       cd logic-qcm-plus
@@ -23,18 +23,9 @@ steps:
     displayName: 'Build logic-qcm-plus'
 
   - script: |
-      mkdir -p client-qcm-plus/vendor/logic-qcm-plus
-      cp -R logic-qcm-plus/src client-qcm-plus/vendor/logic-qcm-plus/
-    displayName: 'Copier src logic-qcm-plus vers vendor'
-
-  - script: npm run lint
-    displayName: 'Vérifier le lint'
-
-  - script: npm run format:check
-    displayName: 'Vérifier le formatage'
-
-  - script: |
       cd client-qcm-plus
       npm ci
+      npm run lint
+      npm run format:check
       npm run build
-    displayName: 'Compiler le client'
+    displayName: 'Build client-qcm-plus'
