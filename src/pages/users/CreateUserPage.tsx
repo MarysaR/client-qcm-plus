@@ -8,6 +8,8 @@ import {
   TechnicalError,
   UnknownError,
   PermissionDeniedError,
+  RoleEnum
+
 } from 'logic-qcm-plus';
 import { TOKEN_KEY } from '../../constants/storage';
 
@@ -70,9 +72,7 @@ const CreateUserPage: React.FC = () => {
 
     const currentUserRoleId = payload.roleId;
 
-    console.log('Current User Role ID:', currentUserRoleId);
-
-    if (currentUserRoleId != 1 || currentUserRoleId == null) {
+    if (currentUserRoleId != RoleEnum.ADMIN || currentUserRoleId == null) {
       alert("Vous n'avez pas la permission de créer un utilisateur.");
       return new PermissionDeniedError(
         "Vous n'avez pas la permission de créer un utilisateur."
@@ -86,10 +86,8 @@ const CreateUserPage: React.FC = () => {
 
       createUser(userData, currentUserRoleId)
         .then((response) => {
-          console.log('Utilisateur créé avec succès :', response);
           alert('Utilisateur créé avec succès !');
 
-          // Réinitialiser les champs
           setLogin('');
           setFirstName('');
           setLastName('');
@@ -100,7 +98,7 @@ const CreateUserPage: React.FC = () => {
           setErrors([]);
         })
         .catch((error: AppError) => {
-          // Gérer les erreurs personnalisées
+
           if (error instanceof ValidationError) {
             alert(`Erreur de validation : ${error.message}`);
           } else if (error instanceof AlreadyExistError) {
@@ -112,8 +110,6 @@ const CreateUserPage: React.FC = () => {
           } else {
             alert('Une erreur inattendue est survenue.');
           }
-
-          console.error("Erreur lors de la création de l'utilisateur :", error);
         });
     }
   };
