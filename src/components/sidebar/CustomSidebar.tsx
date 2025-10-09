@@ -39,8 +39,8 @@ const CustomSidebar: React.FC<{ role: string }> = ({ role }) => {
         { icon: 'pi pi-user', label: 'Profil', path: '/me' },
         {
           icon: 'pi pi-question-circle',
-          label: 'Questionnaires',
-          path: '/questionnaires',
+          label: 'Question',
+          path: '/question',
         },
         { icon: 'pi pi-chart-bar', label: 'Statistiques', path: '/statistics' },
       ]
@@ -49,8 +49,8 @@ const CustomSidebar: React.FC<{ role: string }> = ({ role }) => {
         { icon: 'pi pi-users', label: 'Stagiaires', path: '/users' },
         {
           icon: 'pi pi-question-circle',
-          label: 'Questionnaires',
-          path: '/questionnaires',
+          label: 'Question',
+          path: '/question',
         },
       ];
 

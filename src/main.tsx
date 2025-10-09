@@ -10,7 +10,6 @@ import './styles/tailwind.css';
 import Footer from './components/footer/Footer';
 import CustomSidebar from './components/sidebar/CustomSidebar';
 import ProfilPage from './pages/profil/ProfilPage';
-import QuestionnairesPage from './pages/questionnaires/QuestionnairesPage';
 import StatisticsPage from './pages/statistics/StatisticsPage';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './routes/ProtectedRoute';
@@ -25,7 +24,6 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         {/* Sidebar*/}
         <CustomSidebar role="Stagiaire" />
 
-        {/* Routes */}
         <Routes>
           <Route
             path="/"
@@ -53,27 +51,16 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
             }
           />
           <Route
-            path="/questionnaires"
-            element={
-              <ProtectedRoute>
-                <QuestionnairesPage />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/questionnaires/question"
+            path="/question"
             element={
               <ProtectedRoute>
                 <QuestionPage />
               </ProtectedRoute>
             }
           />
-
           <Route path="/statistics" element={<StatisticsPage />} />
         </Routes>
 
-        {/* Footer */}
         <Footer />
       </BrowserRouter>
     </AuthProvider>

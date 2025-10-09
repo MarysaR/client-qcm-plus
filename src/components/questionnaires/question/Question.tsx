@@ -86,8 +86,8 @@ const Question: React.FC = () => {
         <Button
           label="Voir les questions"
           className={styles.addQuestionBtn}
-          //TODO pour le GET: onClick={() =>
-          //   navigate(`/questionnaires/${questionnaireId}/questions`)
+          //TODO pour le GET Question et non pas Questionnaire: onClick={() =>
+          //   navigate(`/questions/${questionnaireId}`)
           // }
         />
       </div>
