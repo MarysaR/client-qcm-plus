@@ -36,21 +36,21 @@ const CustomSidebar: React.FC<{ role: string }> = ({ role }) => {
 
   const menuItems = role
     ? [
-        { icon: 'pi pi-user', label: 'Profil', path: '/profil' },
+        { icon: 'pi pi-user', label: 'Profil', path: '/me' },
         {
           icon: 'pi pi-question-circle',
-          label: 'Questionnaires',
-          path: '/questionnaires',
+          label: 'Question',
+          path: '/question',
         },
         { icon: 'pi pi-chart-bar', label: 'Statistiques', path: '/statistics' },
       ]
     : [
-        { icon: 'pi pi-user', label: 'Profil', path: '/profil' },
+        { icon: 'pi pi-user', label: 'Profil', path: '/me' },
         { icon: 'pi pi-users', label: 'Stagiaires', path: '/users' },
         {
           icon: 'pi pi-question-circle',
-          label: 'Questionnaires',
-          path: '/questionnaires',
+          label: 'Question',
+          path: '/question',
         },
       ];
 
@@ -85,7 +85,6 @@ const CustomSidebar: React.FC<{ role: string }> = ({ role }) => {
         dismissable={false}
         modal={false}
       >
-        {/* Header avec logo et bouton retour */}
         <div className="sidebar-header">
           <span className="logo">
             <img src="src/assets/images/LogoQCM+Premiuim.PNG" alt="Logo" />
@@ -111,7 +110,6 @@ const CustomSidebar: React.FC<{ role: string }> = ({ role }) => {
           ))}
         </div>
 
-        {/*Déconnexion */}
         <div className="sidebar-logout">
           <a className="p-ripple" onClick={handleLogout}>
             <i className="pi pi-sign-out"></i>
