@@ -1,3 +1,4 @@
+import { HTTP_STATUS } from '../constants/httpStatus';
 import { USERS } from '../constants/endpoints';
 import {
   AlreadyExistError,
@@ -6,6 +7,8 @@ import {
   ValidationError,
   PermissionDeniedError,
 } from 'logic-qcm-plus';
+import { CreateUserPayload } from 'src/components/user/createUserPayload';
+import { authService } from './auth/authService';
 
 type CreateUserResponse = {
   isOk: boolean;
@@ -13,12 +16,15 @@ type CreateUserResponse = {
 };
 
 export const createUser = async (
-  userData: any,
+  userData: CreateUserPayload,
   currentUserRoleId: number
 ): Promise<CreateUserResponse | Error> => {
+  const token = authService.getToken();
   const response = await fetch(USERS, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`,
+     },
     body: JSON.stringify({
       ...userData,
       currentUserRoleId,

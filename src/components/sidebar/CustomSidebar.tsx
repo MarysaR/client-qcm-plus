@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import '../../styles/style.css';
 
 import { useAuth } from '../../context/AuthContext';
+import { TOKEN_KEY } from '../../constants/storage';
 
 const CustomSidebar: React.FC = () => {
   const [isCollapsed, setIsCollapsed] = useState(true);
@@ -34,7 +35,19 @@ const CustomSidebar: React.FC = () => {
     }
   };
 
-  const menuItems = role
+  const token = localStorage.getItem(TOKEN_KEY);
+  let payload = null;
+
+  if (token) {
+    payload = JSON.parse(atob(token.split('.')[1]));
+  } else {
+    alert('Token non trouvé. Veuillez vous reconnecter.');
+    return null;
+  }
+
+  const role = payload.roleId;
+
+  const menuItems = role =='Stagiaire'
     ? [
         { icon: 'pi pi-user', label: 'Profil', path: '/me' },
         {

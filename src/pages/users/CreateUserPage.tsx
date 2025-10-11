@@ -2,16 +2,19 @@ import React, { useState } from 'react';
 import '../../styles/style.css';
 import { createUser } from '../../services/userService';
 import {
-  AppError,
   ValidationError,
   AlreadyExistError,
   TechnicalError,
   UnknownError,
   PermissionDeniedError,
-  RoleEnum
-
+  RoleEnum,
 } from 'logic-qcm-plus';
 import { TOKEN_KEY } from '../../constants/storage';
+import { CreateUserPayload } from 'src/components/user/createUserPayload';
+import { authService } from '../../services/auth/authService';
+import { Toast } from 'primereact/toast';
+import { useRef } from 'react';
+
 
 const CreateUserPage: React.FC = () => {
   const [login, setLogin] = useState('');
@@ -21,6 +24,7 @@ const CreateUserPage: React.FC = () => {
   const [company, setCompany] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const toast = useRef<Toast>(null);
 
   const [errors, setErrors] = useState<string[]>([]);
 
@@ -61,34 +65,43 @@ const CreateUserPage: React.FC = () => {
     const token = localStorage.getItem(TOKEN_KEY);
     let payload = null;
 
-    if (token) {
-      payload = JSON.parse(atob(token.split('.')[1]));
-    } else {
-      alert('Token non trouvé. Veuillez vous reconnecter.');
-      return new PermissionDeniedError(
-        'Token non trouvé. Veuillez vous reconnecter.'
-      );
-    }
-
-    const currentUserRoleId = payload.roleId;
-
-    if (currentUserRoleId != RoleEnum.ADMIN || currentUserRoleId == null) {
-      alert("Vous n'avez pas la permission de créer un utilisateur.");
-      return new PermissionDeniedError(
-        "Vous n'avez pas la permission de créer un utilisateur."
-      );
-    }
 
     e.preventDefault();
 
     if (validateForm()) {
-      const userData = { login, firstName, lastName, email, company, password };
-  
+      const userData: CreateUserPayload = {
+        login,
+        firstName,
+        lastName,
+        email,
+        company,
+        password,
+      };
+      const meResult = await authService.me();
+      let currentUserRoleId=0;
+
+      if (meResult.isOk()) {
+      
+        if (meResult.isErr()) {
+          toast.current?.show({ severity: 'error', summary: 'Erreur', detail: 'Accès refusé : Utilisateur non connecté.' });
+          return;
+        }
+        const currentUser = meResult.value;
+
+        //TODO: corriger le problème de comparaison de rôles une fois RoleEnum fixé
+        
+        if (currentUser.role.name.toUpperCase() != RoleEnum.ADMIN) {
+          toast.current?.show({ severity: 'error', summary: 'Erreur', detail: 'Permission refusée : seul un administrateur peut créer un utilisateur.' });
+          return;
+        }
+         currentUserRoleId = currentUser.roleId;
+      }
+      
       const result = await createUser(userData, currentUserRoleId);
-  
-      if (result.success) {
-        alert('Utilisateur créé avec succès !');
-  
+
+      if (!(result instanceof Error) && result.isOk) {
+        toast.current?.show({ severity: 'success', summary: 'Succès', detail: 'Utilisateur créé avec succès !' });
+
         setLogin('');
         setFirstName('');
         setLastName('');
@@ -97,37 +110,42 @@ const CreateUserPage: React.FC = () => {
         setCompany('');
         setConfirmPassword('');
         setErrors([]);
-      }if (!result.success) {
-        const error = result.error;
-      
+      } else {
+        const error =
+          result instanceof Error ? result : new UnknownError(result.message);
+
         switch (true) {
           case error instanceof ValidationError:
-            alert(`Erreur de validation : ${error.message}`);
+            toast.current?.show({ severity: 'error', summary: 'Erreur de validation', detail: error.message });
             break;
-      
+
           case error instanceof AlreadyExistError:
-            alert(`Erreur : ${error.message}`);
+            toast.current?.show({ severity: 'error', summary: 'Erreur', detail: error.message });
             break;
-      
+
           case error instanceof TechnicalError:
-            alert(`Erreur technique : ${error.message}`);
+            toast.current?.show({ severity: 'error', summary: 'Erreur technique', detail: error.message });
             break;
-      
+
+          case error instanceof PermissionDeniedError:
+            toast.current?.show({ severity: 'error', summary: 'Erreur', detail: `Permission refusée : ${error.message}` });
+            break;
+
           case error instanceof UnknownError:
-            alert(`Erreur inconnue : ${error.message}`);
+            toast.current?.show({ severity: 'error', summary: 'Erreur inconnue', detail: error.message });
             break;
-      
+
           default:
-            alert('Une erreur inattendue est survenue.');
+            toast.current?.show({ severity: 'error', summary: 'Erreur', detail: 'Une erreur inattendue est survenue.' });
             break;
         }
-      }
       }
     }
   };
 
   return (
     <div className="create-user-page">
+      <Toast ref={toast} />
       <img
         src="src/assets/images/fond.png"
         alt="Background"

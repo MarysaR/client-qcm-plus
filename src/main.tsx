@@ -5,7 +5,6 @@ import 'primeicons/primeicons.css';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import HomePage from './pages/home/HomePage';
-import UsersPage from './pages/users/UsersPage';
 import './styles/tailwind.css';
 import Footer from './components/footer/Footer';
 import CustomSidebar from './components/sidebar/CustomSidebar';
@@ -21,8 +20,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <AuthProvider>
       <BrowserRouter>
-        {/* Sidebar*/}
-        <CustomSidebar />
+        <CustomSidebar/>
 
         <Routes>
           <Route
@@ -30,14 +28,6 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
             element={
               <ProtectedRoute>
                 <HomePage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/users"
-            element={
-              <ProtectedRoute>
-                <UsersPage />
               </ProtectedRoute>
             }
           />
