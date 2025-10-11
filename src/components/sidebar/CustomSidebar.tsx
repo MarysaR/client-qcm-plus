@@ -47,25 +47,30 @@ const CustomSidebar: React.FC = () => {
 
   const role = payload.roleId;
 
-  const menuItems = role =='Stagiaire'
-    ? [
-        { icon: 'pi pi-user', label: 'Profil', path: '/me' },
-        {
-          icon: 'pi pi-question-circle',
-          label: 'Question',
-          path: '/question',
-        },
-        { icon: 'pi pi-chart-bar', label: 'Statistiques', path: '/statistics' },
-      ]
-    : [
-        { icon: 'pi pi-user', label: 'Profil', path: '/me' },
-        { icon: 'pi pi-users', label: 'Stagiaires', path: '/users' },
-        {
-          icon: 'pi pi-question-circle',
-          label: 'Question',
-          path: '/question',
-        },
-      ];
+  const menuItems =
+    role == 'Stagiaire'
+      ? [
+          { icon: 'pi pi-user', label: 'Profil', path: '/me' },
+          {
+            icon: 'pi pi-question-circle',
+            label: 'Question',
+            path: '/question',
+          },
+          {
+            icon: 'pi pi-chart-bar',
+            label: 'Statistiques',
+            path: '/statistics',
+          },
+        ]
+      : [
+          { icon: 'pi pi-user', label: 'Profil', path: '/me' },
+          { icon: 'pi pi-users', label: 'Stagiaires', path: '/users' },
+          {
+            icon: 'pi pi-question-circle',
+            label: 'Question',
+            path: '/question',
+          },
+        ];
 
   return (
     <div className="custom-sidebar-container">

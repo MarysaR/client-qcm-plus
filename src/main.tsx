@@ -20,7 +20,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <AuthProvider>
       <BrowserRouter>
-        <CustomSidebar/>
+        <CustomSidebar />
 
         <Routes>
           <Route

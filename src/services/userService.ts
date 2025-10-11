@@ -22,9 +22,10 @@ export const createUser = async (
   const token = authService.getToken();
   const response = await fetch(USERS, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json',
-    'Authorization': `Bearer ${token}`,
-     },
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
     body: JSON.stringify({
       ...userData,
       currentUserRoleId,

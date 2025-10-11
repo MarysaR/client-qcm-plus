@@ -9,12 +9,10 @@ import {
   PermissionDeniedError,
   RoleEnum,
 } from 'logic-qcm-plus';
-import { TOKEN_KEY } from '../../constants/storage';
 import { CreateUserPayload } from 'src/components/user/createUserPayload';
 import { authService } from '../../services/auth/authService';
 import { Toast } from 'primereact/toast';
 import { useRef } from 'react';
-
 
 const CreateUserPage: React.FC = () => {
   const [login, setLogin] = useState('');
@@ -62,10 +60,6 @@ const CreateUserPage: React.FC = () => {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    const token = localStorage.getItem(TOKEN_KEY);
-    let payload = null;
-
-
     e.preventDefault();
 
     if (validateForm()) {
@@ -78,29 +72,41 @@ const CreateUserPage: React.FC = () => {
         password,
       };
       const meResult = await authService.me();
-      let currentUserRoleId=0;
+      let currentUserRoleId = 0;
 
       if (meResult.isOk()) {
-      
         if (meResult.isErr()) {
-          toast.current?.show({ severity: 'error', summary: 'Erreur', detail: 'Accès refusé : Utilisateur non connecté.' });
+          toast.current?.show({
+            severity: 'error',
+            summary: 'Erreur',
+            detail: 'Accès refusé : Utilisateur non connecté.',
+          });
           return;
         }
         const currentUser = meResult.value;
 
         //TODO: corriger le problème de comparaison de rôles une fois RoleEnum fixé
-        
+
         if (currentUser.role.name.toUpperCase() != RoleEnum.ADMIN) {
-          toast.current?.show({ severity: 'error', summary: 'Erreur', detail: 'Permission refusée : seul un administrateur peut créer un utilisateur.' });
+          toast.current?.show({
+            severity: 'error',
+            summary: 'Erreur',
+            detail:
+              'Permission refusée : seul un administrateur peut créer un utilisateur.',
+          });
           return;
         }
-         currentUserRoleId = currentUser.roleId;
+        currentUserRoleId = currentUser.roleId;
       }
-      
+
       const result = await createUser(userData, currentUserRoleId);
 
       if (!(result instanceof Error) && result.isOk) {
-        toast.current?.show({ severity: 'success', summary: 'Succès', detail: 'Utilisateur créé avec succès !' });
+        toast.current?.show({
+          severity: 'success',
+          summary: 'Succès',
+          detail: 'Utilisateur créé avec succès !',
+        });
 
         setLogin('');
         setFirstName('');
@@ -116,27 +122,51 @@ const CreateUserPage: React.FC = () => {
 
         switch (true) {
           case error instanceof ValidationError:
-            toast.current?.show({ severity: 'error', summary: 'Erreur de validation', detail: error.message });
+            toast.current?.show({
+              severity: 'error',
+              summary: 'Erreur de validation',
+              detail: error.message,
+            });
             break;
 
           case error instanceof AlreadyExistError:
-            toast.current?.show({ severity: 'error', summary: 'Erreur', detail: error.message });
+            toast.current?.show({
+              severity: 'error',
+              summary: 'Erreur',
+              detail: error.message,
+            });
             break;
 
           case error instanceof TechnicalError:
-            toast.current?.show({ severity: 'error', summary: 'Erreur technique', detail: error.message });
+            toast.current?.show({
+              severity: 'error',
+              summary: 'Erreur technique',
+              detail: error.message,
+            });
             break;
 
           case error instanceof PermissionDeniedError:
-            toast.current?.show({ severity: 'error', summary: 'Erreur', detail: `Permission refusée : ${error.message}` });
+            toast.current?.show({
+              severity: 'error',
+              summary: 'Erreur',
+              detail: `Permission refusée : ${error.message}`,
+            });
             break;
 
           case error instanceof UnknownError:
-            toast.current?.show({ severity: 'error', summary: 'Erreur inconnue', detail: error.message });
+            toast.current?.show({
+              severity: 'error',
+              summary: 'Erreur inconnue',
+              detail: error.message,
+            });
             break;
 
           default:
-            toast.current?.show({ severity: 'error', summary: 'Erreur', detail: 'Une erreur inattendue est survenue.' });
+            toast.current?.show({
+              severity: 'error',
+              summary: 'Erreur',
+              detail: 'Une erreur inattendue est survenue.',
+            });
             break;
         }
       }
