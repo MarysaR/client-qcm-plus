@@ -6,7 +6,6 @@ import {
   ValidationError,
   PermissionDeniedError,
 } from 'logic-qcm-plus';
-import  HTTP_STATUS  from 'back-qcm-plus';
 
 type CreateUserResponse = {
   isOk: boolean;
