@@ -14,8 +14,8 @@ import StatisticsPage from './pages/statistics/StatisticsPage';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './routes/ProtectedRoute';
 import AuthPage from './pages/auth/AuthPage';
-import QuestionPage from './pages/question/QuestionPage';
 import CreateUserPage from './pages/users/CreateUserPage';
+import QuestionPage from './pages/question/QuestionPage';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
@@ -24,7 +24,6 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         {/* Sidebar*/}
         <CustomSidebar />
 
-        {/* Routes */}
         <Routes>
           <Route
             path="/"
@@ -63,7 +62,6 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           <Route path="new" element={<CreateUserPage />} />
         </Routes>
 
-        {/* Footer */}
         <Footer />
       </BrowserRouter>
     </AuthProvider>
