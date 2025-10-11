@@ -34,33 +34,25 @@ const CustomSidebar: React.FC = () => {
     }
   };
 
-  const claims = localStorage.getItem('authClaims');
-  const currentUserRoleId = claims ? JSON.parse(claims).roleId : null;
-
-  const menuItems =
-    currentUserRoleId == 2
-      ? [
-          { icon: 'pi pi-user', label: 'Profil', path: '/profil' },
-          {
-            icon: 'pi pi-question-circle',
-            label: 'Questionnaires',
-            path: '/questionnaires',
-          },
-          {
-            icon: 'pi pi-chart-bar',
-            label: 'Statistiques',
-            path: '/statistics',
-          },
-        ]
-      : [
-          { icon: 'pi pi-user', label: 'Profil', path: '/profil' },
-          { icon: 'pi pi-users', label: 'Stagiaires', path: '/users' },
-          {
-            icon: 'pi pi-question-circle',
-            label: 'Questionnaires',
-            path: '/questionnaires',
-          },
-        ];
+  const menuItems = role
+    ? [
+        { icon: 'pi pi-user', label: 'Profil', path: '/me' },
+        {
+          icon: 'pi pi-question-circle',
+          label: 'Question',
+          path: '/question',
+        },
+        { icon: 'pi pi-chart-bar', label: 'Statistiques', path: '/statistics' },
+      ]
+    : [
+        { icon: 'pi pi-user', label: 'Profil', path: '/me' },
+        { icon: 'pi pi-users', label: 'Stagiaires', path: '/users' },
+        {
+          icon: 'pi pi-question-circle',
+          label: 'Question',
+          path: '/question',
+        },
+      ];
 
   return (
     <div className="custom-sidebar-container">
@@ -93,7 +85,6 @@ const CustomSidebar: React.FC = () => {
         dismissable={false}
         modal={false}
       >
-        {/* Header avec logo et bouton retour */}
         <div className="sidebar-header">
           <span className="logo">
             <img src="src/assets/images/LogoQCM+Premiuim.PNG" alt="Logo" />
@@ -119,7 +110,6 @@ const CustomSidebar: React.FC = () => {
           ))}
         </div>
 
-        {/*Déconnexion */}
         <div className="sidebar-logout">
           <a className="p-ripple" onClick={handleLogout}>
             <i className="pi pi-sign-out"></i>

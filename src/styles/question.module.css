@@ -1,0 +1,213 @@
+/* === CONTAINER & STRUCTURE === */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #fbf9f5;
+  margin-left: 6.5rem;
+  padding: 4rem 3rem 3rem;
+  background-image: url('../assets/images/fond.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #a19e9e;
+  text-align: start;
+  margin-bottom: 3rem;
+}
+
+.topRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2.5rem;
+}
+
+.inputs {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.input {
+  width: 14rem;
+  border: 1px solid #ccc;
+}
+
+.inputLarge {
+  width: 20rem;
+  border: 1px solid #ccc;
+}
+
+.label {
+  color: #666;
+  font-size: 0.85rem;
+}
+
+/* === BOUTONS === */
+
+/* Style de base commun à tous les boutons */
+button,
+.saveButton,
+.addQuestionBtn,
+.addAnswerBtn {
+  font-size: 0.85rem;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: none;
+  outline: none;
+  color: white;
+  font-weight: 500;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Boutons bleus */
+.saveButton,
+.addQuestionBtn {
+  background-color: #0d1b4c;
+}
+
+.saveButton:hover,
+.addQuestionBtn:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  transform: translateY(-1px);
+}
+
+.saveButton:focus,
+.addQuestionBtn:focus {
+  box-shadow: 0 0 0 3px rgba(13, 27, 76, 0.3);
+  outline: none;
+}
+
+
+.addAnswerBtn {
+  background-color: #1d7a1f;
+}
+
+.addAnswerBtn:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  transform: translateY(-1px);
+}
+
+.addAnswerBtn:focus {
+  box-shadow: 0 0 0 3px rgba(29, 122, 31, 0.3);
+  outline: none;
+}
+
+/* Wrapper du bouton “Voir les questions” */
+.addQuestionWrapper {
+  margin-bottom: 1.5rem;
+}
+
+/* === CARD PRINCIPALE === */
+
+.card {
+  width: 60%;
+  margin: 3rem auto 2rem;
+  border: 1px solid #dcdcdc;
+  border-radius: 10px;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  padding-bottom: 1.5rem;
+}
+
+/* === QUESTION === */
+
+.questionBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.questionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.2rem;
+  width: 100%;
+}
+
+
+.questionInput {
+  flex: 1;
+  border: 1px solid #ccc;
+  padding: 0.5rem;
+  border-radius: 4px;
+}
+
+/* === ANSWERS === */
+
+.answers {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.answer {
+  width: 45%;
+  border-radius: 8px;
+  padding: 0.7rem;
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+}
+
+.answerInput {
+  width: 100%;
+  height: 3rem;
+  border: none;
+  border-radius: 6px;
+  resize: none;
+  background-color: transparent;
+  color: inherit;
+  font-family: inherit;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.answerBlue {
+  background-color: #465490;
+}
+
+.answerYellow {
+  background-color: #d8bf78;
+  color: #1a1a1a;
+}
+
+.answerRed {
+  background-color: #b16967;
+}
+
+.answerPurple {
+  background-color: #5b3e6a;
+}
+
+.answerFooter {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 0.3rem;
+}
+
+/* === BOUTONS DU BAS === */
+
+.addAnswerWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12rem;
+  margin-top: 2.5rem;
+  padding: 0 1.5rem;
+}

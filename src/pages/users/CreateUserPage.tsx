@@ -83,56 +83,62 @@ const CreateUserPage: React.FC = () => {
 
     if (validateForm()) {
       const userData = { login, firstName, lastName, email, company, password };
-
-      createUser(userData, currentUserRoleId)
-        .then((response) => {
-          alert('Utilisateur créé avec succès !');
-
-          setLogin('');
-          setFirstName('');
-          setLastName('');
-          setEmail('');
-          setPassword('');
-          setCompany('');
-          setConfirmPassword('');
-          setErrors([]);
-        })
-        .catch((error: AppError) => {
-
-          if (error instanceof ValidationError) {
+  
+      const result = await createUser(userData, currentUserRoleId);
+  
+      if (result.success) {
+        alert('Utilisateur créé avec succès !');
+  
+        setLogin('');
+        setFirstName('');
+        setLastName('');
+        setEmail('');
+        setPassword('');
+        setCompany('');
+        setConfirmPassword('');
+        setErrors([]);
+      }if (!result.success) {
+        const error = result.error;
+      
+        switch (true) {
+          case error instanceof ValidationError:
             alert(`Erreur de validation : ${error.message}`);
-          } else if (error instanceof AlreadyExistError) {
+            break;
+      
+          case error instanceof AlreadyExistError:
             alert(`Erreur : ${error.message}`);
-          } else if (error instanceof TechnicalError) {
+            break;
+      
+          case error instanceof TechnicalError:
             alert(`Erreur technique : ${error.message}`);
-          } else if (error instanceof UnknownError) {
+            break;
+      
+          case error instanceof UnknownError:
             alert(`Erreur inconnue : ${error.message}`);
-          } else {
+            break;
+      
+          default:
             alert('Une erreur inattendue est survenue.');
-          }
-        });
+            break;
+        }
+      }
+      }
     }
   };
 
   return (
     <div className="create-user-page">
-      {/* Image de fond */}
       <img
         src="src/assets/images/fond.png"
         alt="Background"
         className="background-image"
       />
-      {/* Logo en haut à droite */}
       <img
         src="src/assets/images/LogoQCM+SansLabelSansFond.png"
         alt="Logo"
         className="logo-top-right"
       />
-
-      {/* Titre en haut à gauche */}
       <h1 className="page-title">Nouveau Stagiaire</h1>
-
-      {/* Formulaire au centre */}
       <div className="form-container">
         <form className="user-form" onSubmit={handleSubmit}>
           <div className="form-group">
@@ -220,8 +226,6 @@ const CreateUserPage: React.FC = () => {
             Créer
           </button>
         </form>
-
-        {/* Affichage des erreurs */}
         {errors.length > 0 && (
           <div className="error-messages">
             {errors.map((error, index) => (

@@ -1,7 +1,15 @@
 /* Conteneur principal */
 .custom-sidebar-container {
-    position: relative;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 4rem;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    z-index: 1000;
 }
+
 
 /* Sidebar réduite */
 .collapsed-sidebar {
@@ -110,13 +118,21 @@
 .sidebar-logout {
     position: absolute;
     bottom: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 2.5rem;
+
 }
+
 
 .sidebar-logout .p-ripple {
     display: flex;
     align-items: center;
     cursor: pointer;
-    padding: 3px;
+    gap: 4px;
     color: rgba(192, 192, 192, 0.596);
 }
 
