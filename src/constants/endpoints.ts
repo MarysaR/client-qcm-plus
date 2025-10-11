@@ -4,3 +4,4 @@ export const LOGIN = `${API_URL}/auth/login`;
 export const ME = `${API_URL}/auth/me`;
 export const LOGOUT = `${API_URL}/auth/logout`;
 export const USERS = `${API_URL}/users`;
+export const CREATE_QUESTION = `${API_URL}/questions`;
