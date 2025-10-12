@@ -7,6 +7,9 @@ import styles from '../../../styles/question.module.css';
 import { Toast } from 'primereact/toast';
 import { CreateQuestionDto } from '../../../types/questionTypes';
 import { questionService } from '../../../services/question/questionService';
+import { useAuth } from '../../../context/AuthContext';
+import { RoleEnum } from 'logic-qcm-plus';
+
 // import { useNavigate } from 'react-router-dom';
 
 // TODO: Récupérer le questionnaireId dynamiquement et redigirer vers la liste des questions
@@ -14,6 +17,7 @@ import { questionService } from '../../../services/question/questionService';
 
 const Question: React.FC = () => {
   const toast = useRef<Toast>(null);
+  const { user } = useAuth();
 
   const [label, setLabel] = useState('');
   const [answers, setAnswers] = useState([
@@ -26,6 +30,15 @@ const Question: React.FC = () => {
   const questionnaireId = 1;
 
   const handleCreateQuestion = async () => {
+    if (!user || user.roleId != RoleEnum.ADMIN) {
+      toast.current?.show({
+        severity: 'warn',
+        summary: 'Permission refusée',
+        detail: 'Seul un administrateur peut créer une question.',
+        life: 4000,
+      });
+      return;
+    }
     const command: CreateQuestionDto = {
       label,
       questionnaireId,
