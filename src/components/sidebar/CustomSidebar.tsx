@@ -5,10 +5,10 @@ import { Ripple } from 'primereact/ripple';
 import { Toast } from 'primereact/toast';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/style.css';
-
 import { useAuth } from '../../context/AuthContext';
+import { RoleEnum } from 'logic-qcm-plus';
 
-const CustomSidebar: React.FC<{ role: string }> = ({ role }) => {
+const CustomSidebar: React.FC = () => {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const toast = useRef<Toast>(null);
   const navigate = useNavigate();
@@ -33,8 +33,19 @@ const CustomSidebar: React.FC<{ role: string }> = ({ role }) => {
       });
     }
   };
+  const { user: currentUser } = useAuth() || {};
+  if (!currentUser) {
+    navigate('/login');
+    return null;
 
-  const menuItems = role
+  }
+
+  let payload = currentUser;
+
+  const role = payload.roleId;
+
+  const menuItems =
+    role == RoleEnum.STAGIAIRE
     ? [
         { icon: 'pi pi-user', label: 'Profil', path: '/me' },
         {
