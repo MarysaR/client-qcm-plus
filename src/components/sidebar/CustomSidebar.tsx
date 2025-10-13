@@ -37,7 +37,6 @@ const CustomSidebar: React.FC = () => {
   if (!currentUser) {
     navigate('/login');
     return null;
-
   }
 
   let payload = currentUser;
@@ -46,24 +45,28 @@ const CustomSidebar: React.FC = () => {
 
   const menuItems =
     role == RoleEnum.STAGIAIRE
-    ? [
-        { icon: 'pi pi-user', label: 'Profil', path: '/me' },
-        {
-          icon: 'pi pi-question-circle',
-          label: 'Question',
-          path: '/question',
-        },
-        { icon: 'pi pi-chart-bar', label: 'Statistiques', path: '/statistics' },
-      ]
-    : [
-        { icon: 'pi pi-user', label: 'Profil', path: '/me' },
-        { icon: 'pi pi-users', label: 'Stagiaires', path: '/users' },
-        {
-          icon: 'pi pi-question-circle',
-          label: 'Question',
-          path: '/question',
-        },
-      ];
+      ? [
+          { icon: 'pi pi-user', label: 'Profil', path: '/me' },
+          {
+            icon: 'pi pi-question-circle',
+            label: 'Question',
+            path: '/question',
+          },
+          {
+            icon: 'pi pi-chart-bar',
+            label: 'Statistiques',
+            path: '/statistics',
+          },
+        ]
+      : [
+          { icon: 'pi pi-user', label: 'Profil', path: '/me' },
+          { icon: 'pi pi-users', label: 'Stagiaires', path: '/users' },
+          {
+            icon: 'pi pi-question-circle',
+            label: 'Question',
+            path: '/question',
+          },
+        ];
 
   return (
     <div className="custom-sidebar-container">

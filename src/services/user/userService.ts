@@ -6,7 +6,6 @@ import {
   UnknownError,
   ValidationError,
   PermissionDeniedError,
-
 } from 'logic-qcm-plus';
 import { CreateUserPayload } from 'src/components/user/createUserPayload';
 import { authService } from '../auth/authService';
@@ -17,15 +16,15 @@ type CreateUserResponse = {
 };
 
 export const createUser = async (
-  userData: CreateUserPayload,
+  userData: CreateUserPayload
 ): Promise<CreateUserResponse | Error> => {
-    const token = authService.getToken();
-    if (!token) {
-        return {
-            isOk: false,
-            message: 'Utilisateur non authentifié (token manquant)',
-        };
-    }
+  const token = authService.getToken();
+  if (!token) {
+    return {
+      isOk: false,
+      message: 'Utilisateur non authentifié (token manquant)',
+    };
+  }
   const response = await fetch(USERS, {
     method: 'POST',
     headers: {
@@ -33,7 +32,7 @@ export const createUser = async (
       Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
-      ...userData
+      ...userData,
     }),
   });
 

@@ -22,7 +22,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       <BrowserRouter>
         {/* TODO: Passer le role en props dynamiquement */}
         {/* Sidebar*/}
-        <CustomSidebar/>
+        <CustomSidebar />
 
         <Routes>
           <Route
