@@ -6,7 +6,7 @@ import {
   UnknownError,
   ValidationError,
   PermissionDeniedError,
-  Err,
+
 } from 'logic-qcm-plus';
 import { CreateUserPayload } from 'src/components/user/createUserPayload';
 import { authService } from '../auth/authService';
@@ -37,7 +37,8 @@ export const createUser = async (
     }),
   });
 
-  const result = await response.json();
+  const rawText = await response.text();
+  const result = rawText.trim() !== '' ? JSON.parse(rawText) : {};
 
   switch (response.status) {
     case HTTP_STATUS.BAD_REQUEST:
