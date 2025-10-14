@@ -1,17 +1,17 @@
 /* === CONTAINER & STRUCTURE === */
-
 .container {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   background-color: #fbf9f5;
-  margin-left: 6.5rem;
+  margin-left: var(--sidebar-width, 6.5rem);
   padding: 4rem 3rem 3rem;
   background-image: url('../assets/images/fond.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
+  transition: margin-left 0.3s ease;
 }
 
 .title {
@@ -50,8 +50,6 @@
 }
 
 /* === BOUTONS === */
-
-/* Style de base commun à tous les boutons */
 button,
 .saveButton,
 .addQuestionBtn,
@@ -118,7 +116,6 @@ button,
 }
 
 /* === QUESTION === */
-
 .questionBlock {
   display: flex;
   flex-direction: column;
@@ -142,7 +139,6 @@ button,
 }
 
 /* === ANSWERS === */
-
 .answers {
   display: flex;
   flex-wrap: wrap;
@@ -202,7 +198,6 @@ button,
 }
 
 /* === BOUTONS DU BAS === */
-
 .addAnswerWrapper {
   display: flex;
   justify-content: center;

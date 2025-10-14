@@ -1,79 +1,30 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import { Card } from 'primereact/card';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { Checkbox } from 'primereact/checkbox';
-import styles from '../../../styles/question.module.css';
 import { Toast } from 'primereact/toast';
-import { CreateQuestionDto } from '../../../types/questionTypes';
-import { questionService } from '../../../services/question/questionService';
-import { useAuth } from '../../../context/AuthContext';
-import { RoleEnum } from 'logic-qcm-plus';
-
-// import { useNavigate } from 'react-router-dom';
-
-// TODO: Récupérer le questionnaireId dynamiquement et redigirer vers la liste des questions
-// const navigate = useNavigate();
+import styles from '../../../styles/question.module.css';
+import { useQuestionForm } from '../../../hooks/useQuestionForm';
 
 const Question: React.FC = () => {
-  const toast = useRef<Toast>(null);
-  const { user } = useAuth();
-
-  const [label, setLabel] = useState('');
-  const [answers, setAnswers] = useState([
-    { text: '', isCorrect: false },
-    { text: '', isCorrect: false },
-    { text: '', isCorrect: false },
-    { text: '', isCorrect: false },
-  ]);
-
-  const questionnaireId = 1;
-
-  const handleCreateQuestion = async () => {
-    if (!user || user.roleId != RoleEnum.ADMIN) {
-      toast.current?.show({
-        severity: 'warn',
-        summary: 'Permission refusée',
-        detail: 'Seul un administrateur peut créer une question.',
-        life: 4000,
-      });
-      return;
-    }
-    const command: CreateQuestionDto = {
-      label,
-      questionnaireId,
-      answers,
-    };
-
-    const result = await questionService.createQuestion(command);
-    if (result.isOk()) {
-      toast.current?.show({
-        severity: 'success',
-        summary: 'Succès',
-        detail: 'Question créée avec succès.',
-        life: 3000,
-      });
-
-      setLabel('');
-      setAnswers([
-        { text: '', isCorrect: false },
-        { text: '', isCorrect: false },
-        { text: '', isCorrect: false },
-        { text: '', isCorrect: false },
-      ]);
-    } else {
-      toast.current?.show({
-        severity: 'error',
-        summary: 'Erreur',
-        detail: result.error.message,
-        life: 4000,
-      });
-    }
-  };
+  const {
+    toast,
+    navigate,
+    label,
+    setLabel,
+    answers,
+    setAnswers,
+    handleAddAnswer,
+    handleCreateQuestion,
+    questionnaireId,
+  } = useQuestionForm();
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>Nouveau Questionnaire</h1>
+      <Toast ref={toast} />
+
+      <h1 className={styles.title}>Nouvelle question</h1>
 
       <div className={styles.topRow}>
         <div className={styles.inputs}>
@@ -99,9 +50,9 @@ const Question: React.FC = () => {
         <Button
           label="Voir les questions"
           className={styles.addQuestionBtn}
-          //TODO pour le GET Question et non pas Questionnaire: onClick={() =>
-          //   navigate(`/questions/${questionnaireId}`)
-          // }
+          onClick={() =>
+            navigate(`/questionnaire/${questionnaireId}/questions`)
+          }
         />
       </div>
 
@@ -126,12 +77,11 @@ const Question: React.FC = () => {
               <div
                 key={i}
                 className={`${styles.answer} ${
-                  [
-                    styles.answerBlue,
-                    styles.answerYellow,
-                    styles.answerRed,
-                    styles.answerPurple,
-                  ][i]
+                  styles[
+                    `answer${
+                      a.color.charAt(0).toUpperCase() + a.color.slice(1)
+                    }`
+                  ]
                 }`}
               >
                 <textarea
@@ -162,9 +112,7 @@ const Question: React.FC = () => {
             <Button
               label="Ajouter une réponse"
               className={styles.addAnswerBtn}
-              onClick={() =>
-                setAnswers([...answers, { text: '', isCorrect: false }])
-              }
+              onClick={handleAddAnswer}
             />
           </div>
         </div>
