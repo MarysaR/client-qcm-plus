@@ -64,43 +64,19 @@ const CustomSidebar: React.FC = () => {
     }
   };
 
-  const menuItems = role
-    ? [
-        { icon: 'pi pi-user', label: 'Profil', path: '/me' },
-        {
-          icon: 'pi pi-book',
-          label: 'Questionnaires',
-          path: '/questionnaires',
-        },
-        {
-          icon: 'pi pi-question-circle',
-          label: 'Questions',
-          action: handleQuestionNavigation,
-        },
-        { icon: 'pi pi-chart-bar', label: 'Statistiques', path: '/statistics' },
-      ]
-    : [
-        { icon: 'pi pi-user', label: 'Profil', path: '/me' },
-        { icon: 'pi pi-users', label: 'Stagiaires', path: '/users' },
-        {
-          icon: 'pi pi-book',
-          label: 'Questionnaires',
-          path: '/questionnaires',
-        },
-        {
-          icon: 'pi pi-question-circle',
-          label: 'Questions',
-          action: handleQuestionNavigation,
-        },
-      ];
   const menuItems =
     role == RoleEnum.STAGIAIRE
       ? [
           { icon: 'pi pi-user', label: 'Profil', path: '/me' },
           {
+            icon: 'pi pi-book',
+            label: 'Questionnaires',
+            path: '/questionnaires',
+          },
+          {
             icon: 'pi pi-question-circle',
-            label: 'Question',
-            path: '/question',
+            label: 'Questions',
+            action: handleQuestionNavigation,
           },
           {
             icon: 'pi pi-chart-bar',
@@ -112,9 +88,14 @@ const CustomSidebar: React.FC = () => {
           { icon: 'pi pi-user', label: 'Profil', path: '/me' },
           { icon: 'pi pi-users', label: 'Stagiaires', path: '/users' },
           {
+            icon: 'pi pi-book',
+            label: 'Questionnaires',
+            path: '/questionnaires',
+          },
+          {
             icon: 'pi pi-question-circle',
-            label: 'Question',
-            path: '/question',
+            label: 'Questions',
+            action: handleQuestionNavigation,
           },
         ];
 
