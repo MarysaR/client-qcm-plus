@@ -37,7 +37,7 @@ export const questionnaireService = {
         body = res.data;
       } else {
         const json = await (res as Response).json();
-        if (typeof json === 'object' && json !== null) {
+        if (typeof json == 'object' && json != null) {
           body = json;
         }
       }
