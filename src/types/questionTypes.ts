@@ -1,10 +1,10 @@
-export interface CreateAnswerDto {
+export interface CreateAnswerType {
   text: string;
   isCorrect: boolean;
 }
 
-export interface CreateQuestionDto {
+export interface CreateQuestionType {
   label: string;
   questionnaireId: number;
-  answers: CreateAnswerDto[];
+  answers: CreateAnswerType[];
 }
