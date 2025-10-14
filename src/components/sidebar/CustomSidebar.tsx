@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Sidebar } from 'primereact/sidebar';
 import { Button } from 'primereact/button';
 import { Ripple } from 'primereact/ripple';
@@ -12,7 +12,14 @@ const CustomSidebar: React.FC = () => {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const toast = useRef<Toast>(null);
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { logout, currentQuestionnaireId } = useAuth();
+
+  useEffect(() => {
+    document.documentElement.style.setProperty(
+      '--sidebar-width',
+      isCollapsed ? '3rem' : '6.5rem'
+    );
+  }, [isCollapsed]);
 
   const handleLogout = async () => {
     const result = await logout();
@@ -43,14 +50,33 @@ const CustomSidebar: React.FC = () => {
 
   const role = payload.roleId;
 
+  const handleQuestionNavigation = () => {
+    if (currentQuestionnaireId && !isNaN(currentQuestionnaireId)) {
+      navigate(`/questionnaire/${currentQuestionnaireId}/questions`);
+    } else {
+      toast.current?.show({
+        severity: 'warn',
+        summary: 'Aucun questionnaire sélectionné',
+        detail:
+          'Veuillez d’abord choisir un questionnaire avant d’accéder aux questions.',
+        life: 4000,
+      });
+    }
+  };
+
   const menuItems =
     role == RoleEnum.STAGIAIRE
       ? [
           { icon: 'pi pi-user', label: 'Profil', path: '/me' },
           {
+            icon: 'pi pi-book',
+            label: 'Questionnaires',
+            path: '/questionnaires',
+          },
+          {
             icon: 'pi pi-question-circle',
-            label: 'Question',
-            path: '/question',
+            label: 'Questions',
+            action: handleQuestionNavigation,
           },
           {
             icon: 'pi pi-chart-bar',
@@ -62,14 +88,21 @@ const CustomSidebar: React.FC = () => {
           { icon: 'pi pi-user', label: 'Profil', path: '/me' },
           { icon: 'pi pi-users', label: 'Stagiaires', path: '/users' },
           {
+            icon: 'pi pi-book',
+            label: 'Questionnaires',
+            path: '/questionnaires',
+          },
+          {
             icon: 'pi pi-question-circle',
-            label: 'Question',
-            path: '/question',
+            label: 'Questions',
+            action: handleQuestionNavigation,
           },
         ];
 
   return (
     <div className="custom-sidebar-container">
+      <Toast ref={toast} />
+
       {/* Sidebar réduite */}
       {isCollapsed && (
         <div className="collapsed-sidebar">
@@ -115,7 +148,12 @@ const CustomSidebar: React.FC = () => {
         <div className="sidebar-menu">
           {menuItems.map((item, index) => (
             <div key={index} className="menu-item">
-              <a className="p-ripple" onClick={() => navigate(item.path)}>
+              <a
+                className="p-ripple"
+                onClick={() =>
+                  item.action ? item.action() : navigate(item.path!)
+                }
+              >
                 <i className={item.icon}></i>
                 <span>{item.label}</span>
                 <Ripple />

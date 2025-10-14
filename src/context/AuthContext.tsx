@@ -1,3 +1,4 @@
+// src/context/AuthContext.tsx
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { User, AppError, Result } from 'logic-qcm-plus';
 import { AuthContextType } from '../types/AuthContextType';
@@ -9,6 +10,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [user, setUser] = useState<User | null>(null);
+
+  const [currentQuestionnaireId, setCurrentQuestionnaireId] = useState<
+    number | null
+  >(null);
 
   useEffect(() => {
     const token = authService.getToken();
@@ -42,6 +47,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     const result = await authService.logout();
     if (result.isOk()) {
       setUser(null);
+      setCurrentQuestionnaireId(null);
     }
 
     return result;
@@ -52,6 +58,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       value={{
         user,
         isAuthenticated: !!user,
+        currentQuestionnaireId,
+        setCurrentQuestionnaireId,
         login,
         logout,
       }}
@@ -64,6 +72,5 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 export function useAuth() {
   const ctx = useContext(AuthContext);
   if (!ctx) throw new Error('useAuth must be used inside AuthProvider');
-
   return ctx;
 }

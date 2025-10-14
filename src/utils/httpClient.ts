@@ -1,20 +1,29 @@
-import { Result, TechnicalError } from 'logic-qcm-plus';
+import axios, { AxiosResponse, AxiosError, AxiosInstance } from 'axios';
+import { Result, Ok, Err, TechnicalError } from 'logic-qcm-plus';
 
-export async function httpRequest(
-  input: RequestInfo,
-  init?: RequestInit
-): Promise<Result<Response, TechnicalError>> {
-  try {
-    const res = await fetch(input, init);
-    return { isOk: () => true, isErr: () => false, value: res } as Result<
-      Response,
-      TechnicalError
-    >;
-  } catch {
-    return {
-      isOk: () => false,
-      isErr: () => true,
-      error: new TechnicalError('Erreur réseau'),
-    } as Result<Response, TechnicalError>;
-  }
+const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:3000';
+
+export const httpClient: AxiosInstance = axios.create({
+  baseURL: API_URL,
+  headers: { 'Content-Type': 'application/json' },
+});
+
+export function httpRequest<T>(
+  promise: Promise<AxiosResponse<T>>
+): Promise<Result<AxiosResponse<T>, TechnicalError>> {
+  return promise
+    .then(
+      (res: AxiosResponse<T>): Result<AxiosResponse<T>, TechnicalError> =>
+        Ok.of(res)
+    )
+    .catch(
+      (err: AxiosError): Result<AxiosResponse<T>, TechnicalError> =>
+        Err.of(
+          new TechnicalError(
+            (err.response?.data as { message?: string })?.message ||
+              err.message ||
+              'Erreur Axios'
+          )
+        )
+    );
 }
