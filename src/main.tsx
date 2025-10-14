@@ -15,6 +15,8 @@ import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './routes/ProtectedRoute';
 import AuthPage from './pages/auth/AuthPage';
 import QuestionPage from './pages/question/QuestionPage';
+import QuestionsList from './components/questionnaires/question/QuestionsList';
+import Questionnaires from './components/questionnaires/Questionnaires';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
@@ -51,13 +53,32 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
             }
           />
           <Route
-            path="/question"
+            path="/questionnaires"
+            element={
+              <ProtectedRoute>
+                <Questionnaires />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/questionnaire/:id/new-question"
             element={
               <ProtectedRoute>
                 <QuestionPage />
               </ProtectedRoute>
             }
           />
+
+          <Route
+            path="/questionnaire/:id/questions"
+            element={
+              <ProtectedRoute>
+                <QuestionsList />
+              </ProtectedRoute>
+            }
+          />
+
           <Route path="/statistics" element={<StatisticsPage />} />
         </Routes>
 
