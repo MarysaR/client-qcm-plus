@@ -5,10 +5,10 @@ import { Ripple } from 'primereact/ripple';
 import { Toast } from 'primereact/toast';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/style.css';
-
 import { useAuth } from '../../context/AuthContext';
+import { RoleEnum } from 'logic-qcm-plus';
 
-const CustomSidebar: React.FC<{ role: string }> = ({ role }) => {
+const CustomSidebar: React.FC = () => {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const toast = useRef<Toast>(null);
   const navigate = useNavigate();
@@ -33,26 +33,40 @@ const CustomSidebar: React.FC<{ role: string }> = ({ role }) => {
       });
     }
   };
+  const { user: currentUser } = useAuth() || {};
+  if (!currentUser) {
+    navigate('/login');
+    return null;
+  }
 
-  const menuItems = role
-    ? [
-        { icon: 'pi pi-user', label: 'Profil', path: '/me' },
-        {
-          icon: 'pi pi-question-circle',
-          label: 'Question',
-          path: '/question',
-        },
-        { icon: 'pi pi-chart-bar', label: 'Statistiques', path: '/statistics' },
-      ]
-    : [
-        { icon: 'pi pi-user', label: 'Profil', path: '/me' },
-        { icon: 'pi pi-users', label: 'Stagiaires', path: '/users' },
-        {
-          icon: 'pi pi-question-circle',
-          label: 'Question',
-          path: '/question',
-        },
-      ];
+  let payload = currentUser;
+
+  const role = payload.roleId;
+
+  const menuItems =
+    role == RoleEnum.STAGIAIRE
+      ? [
+          { icon: 'pi pi-user', label: 'Profil', path: '/me' },
+          {
+            icon: 'pi pi-question-circle',
+            label: 'Question',
+            path: '/question',
+          },
+          {
+            icon: 'pi pi-chart-bar',
+            label: 'Statistiques',
+            path: '/statistics',
+          },
+        ]
+      : [
+          { icon: 'pi pi-user', label: 'Profil', path: '/me' },
+          { icon: 'pi pi-users', label: 'Stagiaires', path: '/users' },
+          {
+            icon: 'pi pi-question-circle',
+            label: 'Question',
+            path: '/question',
+          },
+        ];
 
   return (
     <div className="custom-sidebar-container">
