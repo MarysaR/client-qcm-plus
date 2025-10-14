@@ -5,4 +5,6 @@ export interface AuthContextType {
   isAuthenticated: boolean;
   login: (email: string, password: string) => Promise<Result<void, AppError>>;
   logout: () => Promise<Result<void, AppError>>;
+  currentQuestionnaireId: number | null;
+  setCurrentQuestionnaireId: (id: number | null) => void;
 }
