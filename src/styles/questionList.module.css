@@ -1,0 +1,115 @@
+/* === CONTAINER GLOBAL === */
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #fbf9f5;
+  margin-left: var(--sidebar-width, 6.5rem);
+  padding: 4rem 3rem 3rem;
+  background-image: url('../assets/images/fond.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  transition: margin-left 0.3s ease;
+}
+
+
+/* === TITRE === */
+.title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #a19e9e;
+  text-align: start;
+  margin-bottom: 3rem;
+}
+
+/* === BARRE D’ACTION === */
+.topRow {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+/* === BOUTON NOUVELLE QUESTION === */
+.addQuestionBtn {
+  background-color: #0d1b4c;
+  color: white;
+  font-size: 0.85rem;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.addQuestionBtn:hover {
+  background-color: #13266d;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  transform: translateY(-1px);
+}
+
+/* === TEXTE DE CHARGEMENT OU VIDE === */
+.loadingText,
+.emptyText {
+  font-size: 1rem;
+  color: #6e6e6e;
+  text-align: center;
+  margin-top: 4rem;
+}
+
+/* === CONTENEUR DES CARTES === */
+.cardsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+/* === CARD QUESTION === */
+.card {
+  width: 45%;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  padding: 1rem 1.2rem;
+  transition: all 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* === LABEL DE QUESTION === */
+.questionLabel {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #0d1b4c;
+  margin-bottom: 0.5rem;
+}
+
+/* === INFO SUR LES RÉPONSES === */
+.answersCount {
+  font-size: 0.9rem;
+  color: #666;
+  text-align: right;
+  font-style: italic;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 1024px) {
+  .card {
+    width: 90%;
+  }
+
+  .cardsContainer {
+    flex-direction: column;
+    align-items: center;
+  }
+}
