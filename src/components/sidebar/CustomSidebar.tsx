@@ -1,4 +1,3 @@
-// src/components/sidebar/CustomSidebar.tsx
 import React, { useEffect, useRef, useState } from 'react';
 import { Sidebar } from 'primereact/sidebar';
 import { Button } from 'primereact/button';
@@ -7,8 +6,9 @@ import { Toast } from 'primereact/toast';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/style.css';
 import { useAuth } from '../../context/AuthContext';
+import { RoleEnum } from 'logic-qcm-plus';
 
-const CustomSidebar: React.FC<{ role: string }> = ({ role }) => {
+const CustomSidebar: React.FC = () => {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const toast = useRef<Toast>(null);
   const navigate = useNavigate();
@@ -40,6 +40,15 @@ const CustomSidebar: React.FC<{ role: string }> = ({ role }) => {
       });
     }
   };
+  const { user: currentUser } = useAuth() || {};
+  if (!currentUser) {
+    navigate('/login');
+    return null;
+  }
+
+  let payload = currentUser;
+
+  const role = payload.roleId;
 
   const handleQuestionNavigation = () => {
     if (currentQuestionnaireId && !isNaN(currentQuestionnaireId)) {
@@ -62,7 +71,7 @@ const CustomSidebar: React.FC<{ role: string }> = ({ role }) => {
           icon: 'pi pi-book',
           label: 'Questionnaires',
           path: '/questionnaires',
-        }, // <-- AJOUT ICI
+        },
         {
           icon: 'pi pi-question-circle',
           label: 'Questions',
@@ -84,6 +93,30 @@ const CustomSidebar: React.FC<{ role: string }> = ({ role }) => {
           action: handleQuestionNavigation,
         },
       ];
+  const menuItems =
+    role == RoleEnum.STAGIAIRE
+      ? [
+          { icon: 'pi pi-user', label: 'Profil', path: '/me' },
+          {
+            icon: 'pi pi-question-circle',
+            label: 'Question',
+            path: '/question',
+          },
+          {
+            icon: 'pi pi-chart-bar',
+            label: 'Statistiques',
+            path: '/statistics',
+          },
+        ]
+      : [
+          { icon: 'pi pi-user', label: 'Profil', path: '/me' },
+          { icon: 'pi pi-users', label: 'Stagiaires', path: '/users' },
+          {
+            icon: 'pi pi-question-circle',
+            label: 'Question',
+            path: '/question',
+          },
+        ];
 
   return (
     <div className="custom-sidebar-container">
