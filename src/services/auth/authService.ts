@@ -61,7 +61,7 @@ export const authService = {
   async me(): Promise<Result<User, AppError>> {
     const token = this.getToken();
     if (!token) {
-      return Err.of(new PermissionDeniedError());
+      return Err.of(new PermissionDeniedError('Aucun token présent'));
     }
 
     const resResult = await httpRequest(
