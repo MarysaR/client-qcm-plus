@@ -1,103 +1,31 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Sidebar } from 'primereact/sidebar';
 import { Button } from 'primereact/button';
 import { Ripple } from 'primereact/ripple';
 import { Toast } from 'primereact/toast';
-import { useNavigate } from 'react-router-dom';
 import '../../styles/style.css';
 import { useAuth } from '../../context/AuthContext';
-import { RoleEnum } from 'logic-qcm-plus';
+import { useSidebarAuth } from '../../hooks/useSidebarAuth';
+import { useSidebarQuestionNavigation } from '../../hooks/useSidebarQuestionNavigation';
+import { useSidebarMenu } from '../../hooks/useSidebarMenu';
 
 const CustomSidebar: React.FC = () => {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const toast = useRef<Toast>(null);
-  const navigate = useNavigate();
-  const { logout, currentQuestionnaireId } = useAuth();
 
-  useEffect(() => {
-    document.documentElement.style.setProperty(
-      '--sidebar-width',
-      isCollapsed ? '3rem' : '6.5rem'
-    );
-  }, [isCollapsed]);
+  const { currentQuestionnaireId } = useAuth();
+  const { currentUser: user, handleLogout } = useSidebarAuth(toast);
+  const { goTo, handleQuestionNavigation } = useSidebarQuestionNavigation(
+    currentQuestionnaireId,
+    toast
+  );
+  const { menuItems } = useSidebarMenu(user?.roleId ?? 0, {
+    handleQuestionNavigation,
+  });
 
-  const handleLogout = async () => {
-    const result = await logout();
-    if (result.isOk()) {
-      toast.current?.show({
-        severity: 'success',
-        summary: 'Succès',
-        detail: 'Vous avez été déconnecté',
-        life: 3000,
-      });
-      navigate('/login');
-    } else {
-      toast.current?.show({
-        severity: 'error',
-        summary: 'Erreur',
-        detail: result.error.message,
-        life: 4000,
-      });
-    }
-  };
-  const { user: currentUser } = useAuth() || {};
-  if (!currentUser) {
-    navigate('/login');
+  if (!user) {
     return null;
   }
-
-  let payload = currentUser;
-
-  const role = payload.roleId;
-
-  const handleQuestionNavigation = () => {
-    if (currentQuestionnaireId && !isNaN(currentQuestionnaireId)) {
-      navigate(`/questionnaire/${currentQuestionnaireId}/questions`);
-    } else {
-      toast.current?.show({
-        severity: 'warn',
-        summary: 'Aucun questionnaire sélectionné',
-        detail:
-          'Veuillez d’abord choisir un questionnaire avant d’accéder aux questions.',
-        life: 4000,
-      });
-    }
-  };
-
-  const menuItems =
-    role == RoleEnum.STAGIAIRE
-      ? [
-          { icon: 'pi pi-user', label: 'Profil', path: '/me' },
-          {
-            icon: 'pi pi-book',
-            label: 'Questionnaires',
-            path: '/questionnaires',
-          },
-          {
-            icon: 'pi pi-question-circle',
-            label: 'Questions',
-            action: handleQuestionNavigation,
-          },
-          {
-            icon: 'pi pi-chart-bar',
-            label: 'Statistiques',
-            path: '/statistics',
-          },
-        ]
-      : [
-          { icon: 'pi pi-user', label: 'Profil', path: '/me' },
-          { icon: 'pi pi-users', label: 'Stagiaires', path: '/users' },
-          {
-            icon: 'pi pi-book',
-            label: 'Questionnaires',
-            path: '/questionnaires',
-          },
-          {
-            icon: 'pi pi-question-circle',
-            label: 'Questions',
-            action: handleQuestionNavigation,
-          },
-        ];
 
   return (
     <div className="custom-sidebar-container">
@@ -150,9 +78,7 @@ const CustomSidebar: React.FC = () => {
             <div key={index} className="menu-item">
               <a
                 className="p-ripple"
-                onClick={() =>
-                  item.action ? item.action() : navigate(item.path!)
-                }
+                onClick={() => (item.action ? item.action() : goTo(item.path!))}
               >
                 <i className={item.icon}></i>
                 <span>{item.label}</span>

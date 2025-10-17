@@ -1,4 +1,3 @@
-// src/components/questionnaire/Questionnaires.tsx
 import React from 'react';
 import { Button } from 'primereact/button';
 import { Toast } from 'primereact/toast';
@@ -39,7 +38,7 @@ const Questionnaires: React.FC = () => {
                 Créé le {new Date(q.createdAt).toLocaleDateString()}
               </p>
 
-              {user?.roleId === RoleEnum.ADMIN && (
+              {user?.roleId == RoleEnum.ADMIN && (
                 <div className={styles.actions}>
                   <Button
                     icon="pi pi-pencil"

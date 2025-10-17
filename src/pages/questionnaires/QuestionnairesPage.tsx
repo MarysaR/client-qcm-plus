@@ -1,12 +1,9 @@
+// src/pages/questionnaires/QuestionnairesPage.tsx
 import React from 'react';
+import QuestionnairesList from '../../components/questionnaires/QuestionnairesList';
 
-const Questionnaires: React.FC = () => {
-  return (
-    <div style={{ marginLeft: '50%' }}>
-      <h1>Page Questionnaires</h1>
-      <p>Ceci est la page de questionnaires.</p>
-    </div>
-  );
+const QuestionnairesPage: React.FC = () => {
+  return <QuestionnairesList />;
 };
 
-export default Questionnaires;
+export default QuestionnairesPage;
