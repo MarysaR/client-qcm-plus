@@ -14,7 +14,7 @@ export function useQuestionnairesList() {
 
   useEffect(() => {
     const fetchQuestionnaires = async () => {
-      const result = await questionnaireService.getAll();
+      const result = await questionnaireService.getAllQuestionnaires();
       if (result.isOk()) {
         const list = result.value as Questionnaire[];
         const filtered =
