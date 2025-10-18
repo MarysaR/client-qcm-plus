@@ -70,7 +70,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           />
 
           <Route
-            path="/users/new"
+            path="/users"
             element={
               <ProtectedRoute>
                 <CreateUserPage />

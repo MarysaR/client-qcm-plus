@@ -7,7 +7,7 @@ import {
   ValidationError,
   PermissionDeniedError,
 } from 'logic-qcm-plus';
-import { CreateUserPayload } from 'src/types/createUserTypes';
+import { CreateUserTypes } from 'src/types/createUserTypes';
 import { authService } from '../auth/authService';
 
 type CreateUserResponse = {
@@ -16,7 +16,7 @@ type CreateUserResponse = {
 };
 
 export const createUser = async (
-  userData: CreateUserPayload
+  userData: CreateUserTypes
 ): Promise<CreateUserResponse | Error> => {
   const token = authService.getToken();
   if (!token) {

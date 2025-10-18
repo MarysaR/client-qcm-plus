@@ -10,6 +10,7 @@ import {
 import { CreateUserTypes } from 'src/types/createUserTypes';
 import { Toast } from 'primereact/toast';
 import { useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export function useCreateUserForm() {
   const [login, setLogin] = useState('');
@@ -20,6 +21,7 @@ export function useCreateUserForm() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const toast = useRef<Toast>(null);
+  const navigate = useNavigate();
 
   const [errors, setErrors] = useState<string[]>([]);
 
@@ -86,6 +88,8 @@ export function useCreateUserForm() {
         setCompany('');
         setConfirmPassword('');
         setErrors([]);
+
+        navigate(`/users`);
       } else {
         const error =
           result instanceof Error ? result : new UnknownError(result.message);
@@ -162,4 +166,4 @@ export function useCreateUserForm() {
     toast,
     handleSubmit,
   };
-};
+}

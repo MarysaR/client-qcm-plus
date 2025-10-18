@@ -1,10 +1,11 @@
-
 import React from 'react';
 import '../../styles/style.css';
 import { Toast } from 'primereact/toast';
-import {useCreateUserForm} from '../../hooks/useCreateUserForm';
+import { useCreateUserForm } from '../../hooks/useCreateUserForm';
 
 const User: React.FC = () => {
+  const randomIndex = Math.floor(Math.random() * 3) + 1;
+  const randomAvatar = `src/assets/avatars/avatar${randomIndex}.PNG`;
   const {
     login,
     setLogin,
@@ -25,7 +26,6 @@ const User: React.FC = () => {
     handleSubmit,
   } = useCreateUserForm();
 
-
   return (
     <div className="create-user-page">
       <Toast ref={toast} />
@@ -43,8 +43,7 @@ const User: React.FC = () => {
       <div className="form-container">
         <form className="user-form" onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>Photo</label>
-            <img src="" alt="" />
+            <img src={randomAvatar} alt="Avatar" className="avatar-preview" />
           </div>
           <div className="form-group">
             <label htmlFor="login">Login</label>
