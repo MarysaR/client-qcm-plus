@@ -41,7 +41,7 @@ export const createUser = async (
   });
 
   const rawText = await response.text();
-  const result = rawText.trim() !== '' ? JSON.parse(rawText) : {};
+  const result = rawText.trim() != '' ? JSON.parse(rawText) : {};
 
   switch (response.status) {
     case HTTP_STATUS.BAD_REQUEST:

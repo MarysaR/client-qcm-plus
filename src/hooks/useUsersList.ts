@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getAllUsers } from '../services/user/userService'; // à adapter selon ton service
+import { getAllUsers } from '../services/user/userService';
 import { User } from 'logic-qcm-plus';
 
 export function useUsersList() {
