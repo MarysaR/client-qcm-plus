@@ -1,4 +1,4 @@
-export type CreateUserPayload = {
+export type CreateUserTypes = {
   login: string;
   firstName: string;
   lastName: string;

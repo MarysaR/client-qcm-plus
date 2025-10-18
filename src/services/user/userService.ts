@@ -7,7 +7,7 @@ import {
   ValidationError,
   PermissionDeniedError,
 } from 'logic-qcm-plus';
-import { CreateUserPayload } from 'src/components/user/createUserPayload';
+import { CreateUserPayload } from 'src/types/createUserTypes';
 import { authService } from '../auth/authService';
 
 type CreateUserResponse = {
