@@ -105,7 +105,7 @@ export const questionnaireService = {
       return Ok.of(undefined);
     });
   },
-  
+
   async getQuestionnaireById(
     id: number
   ): Promise<Result<{ name: string; description?: string }, AppError>> {
