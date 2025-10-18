@@ -53,8 +53,8 @@
   .user-card {
     display: flex;
     align-items: center;
-    width: 800px;
-    max-width: 900px; 
+    width:900px;
+    max-width: 1000px; 
     background-color: #ffffff;
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -130,4 +130,8 @@
     height: 50px;
     object-fit: cover;
     border-radius: 50%;
+  }
+
+  .user-info p.email {
+    margin-bottom: 1rem;
   }

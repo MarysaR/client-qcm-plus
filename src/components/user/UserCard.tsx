@@ -20,10 +20,10 @@ const UserCard: React.FC<Props> = ({ user, onEdit, onDelete }) => {
   return (
     <div className="user-card">
       <img src={randomAvatar} alt="Avatar" className="avatar-preview" />
-      <p><strong>Identité:</strong> {user.firstName}</p>
-      <p>{user.lastName}</p>
+      <p><strong>Nom:</strong> {user.lastName}</p>
+      <p><strong>Prénom:</strong> {user.firstName}</p>
       <p><strong>Login:</strong> {user.login}</p>
-      <p><strong>Email:</strong> {user.email}</p>
+      <p className="email"><strong>Email:</strong> {user.email}</p>
       <p><strong>Entreprise:</strong> {user.company}</p>
       <p><strong>Créé le:</strong> {new Date(user.createdAt).toLocaleDateString()}</p>
       <div className="actions">

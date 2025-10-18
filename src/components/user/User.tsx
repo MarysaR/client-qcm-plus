@@ -33,10 +33,10 @@ const User: React.FC = () => {
     <div className="create-user-page">
       <Toast ref={toast} />
       <img
-                src="src/assets/images/LogoQCM+SansLabelSansFond.png"
-                alt="Logo"
-                className="logo-top-right"
-            />
+        src="src/assets/images/fond.png"
+        alt="Background"
+        className="background-image"
+      />
       <img
         src="src/assets/images/LogoQCM+SansLabelSansFond.png"
         alt="Logo"
