@@ -1,4 +1,3 @@
-// src/pages/questionnaires/QuestionnairesPage.tsx
 import React from 'react';
 import QuestionnairesList from '../../components/questionnaires/QuestionnairesList';
 

@@ -1,4 +1,3 @@
-// src/context/AuthContext.tsx
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { User, AppError, Result } from 'logic-qcm-plus';
 import { AuthContextType } from '../types/AuthContextType';
