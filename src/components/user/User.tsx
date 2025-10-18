@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import '../../styles/style.css';
+import '../../styles/userNew.css';
 import { Toast } from 'primereact/toast';
 import { useCreateUserForm } from '../../hooks/useCreateUserForm';
 
