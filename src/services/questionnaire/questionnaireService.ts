@@ -18,7 +18,7 @@ import { CREATE_QUESTIONNAIRE } from '../../constants/endpoints';
 const BASE_URL = '/questionnaires';
 
 export const questionnaireService = {
-  async getAll() {
+  async getAllQuestionnaires() {
     const token = authService.getToken();
     if (!token) {
       return Err.of(
@@ -105,6 +105,7 @@ export const questionnaireService = {
       return Ok.of(undefined);
     });
   },
+  
   async getQuestionnaireById(
     id: number
   ): Promise<Result<{ name: string; description?: string }, AppError>> {

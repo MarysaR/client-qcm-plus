@@ -1,11 +1,11 @@
-// src/hooks/useQuestionForm.ts
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Toast } from 'primereact/toast';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { CreateQuestionType } from '../types/questionTypes';
 import { questionService } from '../services/question/questionService';
-import { RoleEnum } from 'logic-qcm-plus';
+import { questionnaireService } from '../services/questionnaire/questionnaireService';
+import { RoleEnum, Result, AppError } from 'logic-qcm-plus';
 import { COLORS } from '../constants/colors';
 
 export function useQuestionForm() {
@@ -14,12 +14,49 @@ export function useQuestionForm() {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
 
+  const questionnaireId = Number(id);
+  if (isNaN(questionnaireId) || questionnaireId <= 0) {
+    toast.current?.show({
+      severity: 'error',
+      summary: 'Erreur',
+      detail: 'Identifiant de questionnaire invalide ou manquant.',
+      life: 4000,
+    });
+    navigate('/questionnaires');
+  }
+
   const [label, setLabel] = useState('');
   const [answers, setAnswers] = useState<
     { text: string; isCorrect: boolean; color: string }[]
   >([{ text: '', isCorrect: false, color: 'red' }]);
 
+  const [questionnaireName, setQuestionnaireName] = useState('');
+  const [questionnaireDescription, setQuestionnaireDescription] = useState('');
+
   const MAX_ANSWERS = 5;
+
+  useEffect(() => {
+    const loadQuestionnaire = async () => {
+      const result: Result<{ name: string; description?: string }, AppError> =
+        await questionnaireService.getQuestionnaireById(questionnaireId);
+
+      if (result.isErr()) {
+        toast.current?.show({
+          severity: 'error',
+          summary: 'Erreur',
+          detail: result.error.message,
+          life: 4000,
+        });
+        navigate('/questionnaires');
+        return;
+      }
+
+      setQuestionnaireName(result.value.name);
+      setQuestionnaireDescription(result.value.description ?? '');
+    };
+
+    void loadQuestionnaire();
+  }, [questionnaireId]);
 
   const handleAddAnswer = () => {
     if (answers.length >= MAX_ANSWERS) {
@@ -39,7 +76,7 @@ export function useQuestionForm() {
   };
 
   const handleCreateQuestion = async () => {
-    if (!user || user.roleId !== RoleEnum.ADMIN) {
+    if (!user || user.roleId != RoleEnum.ADMIN) {
       toast.current?.show({
         severity: 'warn',
         summary: 'Permission refusée',
@@ -49,17 +86,6 @@ export function useQuestionForm() {
       return;
     }
 
-    if (!id || isNaN(Number(id))) {
-      toast.current?.show({
-        severity: 'error',
-        summary: 'Erreur',
-        detail: 'Aucun questionnaire sélectionné ou identifiant invalide.',
-        life: 4000,
-      });
-      return;
-    }
-
-    const questionnaireId = Number(id);
     const command: CreateQuestionType = { label, questionnaireId, answers };
 
     const result = await questionService.createQuestion(command);
@@ -74,8 +100,7 @@ export function useQuestionForm() {
       setLabel('');
       setAnswers([{ text: '', isCorrect: false, color: 'red' }]);
 
-      // ✅ Retour automatique vers la liste
-      navigate(`/questionnaire/${id}/questions`);
+      navigate(`/questionnaire/${questionnaireId}/questions`);
     } else {
       toast.current?.show({
         severity: 'error',
@@ -87,7 +112,6 @@ export function useQuestionForm() {
   };
 
   const isAddDisabled = answers.length >= MAX_ANSWERS;
-  const questionnaireId = id ? Number(id) : undefined; // ✅ exposé au composant
 
   return {
     toast,
@@ -100,5 +124,7 @@ export function useQuestionForm() {
     handleCreateQuestion,
     isAddDisabled,
     questionnaireId,
+    questionnaireName,
+    questionnaireDescription,
   };
 }

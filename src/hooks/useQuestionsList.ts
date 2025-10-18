@@ -1,4 +1,3 @@
-// src/hooks/useQuestionsList.ts
 import { useEffect, useRef, useState } from 'react';
 import { Toast } from 'primereact/toast';
 import { useNavigate, useParams } from 'react-router-dom';

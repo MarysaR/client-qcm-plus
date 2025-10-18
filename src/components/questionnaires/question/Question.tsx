@@ -18,6 +18,8 @@ const Question: React.FC = () => {
     handleAddAnswer,
     handleCreateQuestion,
     questionnaireId,
+    questionnaireName,
+    questionnaireDescription,
   } = useQuestionForm();
 
   return (
@@ -29,14 +31,24 @@ const Question: React.FC = () => {
       <div className={styles.topRow}>
         <div className={styles.inputs}>
           <span className="p-float-label">
-            <InputText id="nom" className={styles.input} />
+            <InputText
+              id="nom"
+              className={styles.input}
+              value={questionnaireName}
+              disabled
+            />
             <label htmlFor="nom" className={styles.label}>
               Nom du Questionnaire
             </label>
           </span>
 
           <span className="p-float-label">
-            <InputText id="description" className={styles.inputLarge} />
+            <InputText
+              id="description"
+              className={styles.inputLarge}
+              value={questionnaireDescription}
+              disabled
+            />
             <label htmlFor="description" className={styles.label}>
               Description
             </label>
