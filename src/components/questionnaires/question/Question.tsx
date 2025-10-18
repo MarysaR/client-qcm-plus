@@ -5,7 +5,7 @@ import { Button } from 'primereact/button';
 import { Checkbox } from 'primereact/checkbox';
 import { Toast } from 'primereact/toast';
 import styles from '../../../styles/question.module.css';
-import { useQuestionForm } from '../../../hooks/useQuestionForm';
+import { useQuestionForm } from '../../../hooks/question/useQuestionForm';
 
 const Question: React.FC = () => {
   const {

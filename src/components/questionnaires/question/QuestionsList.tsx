@@ -3,7 +3,7 @@ import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
 import { Toast } from 'primereact/toast';
 import styles from '../../../styles/questionList.module.css';
-import { useQuestionsList } from '../../../hooks/useQuestionsList';
+import { useQuestionsList } from '../../../hooks/question/useQuestionsList';
 
 const QuestionsList: React.FC = () => {
   const { toast, questions, isLoading, handleNavigateToNewQuestion } =

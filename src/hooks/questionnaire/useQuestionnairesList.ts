@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { Toast } from 'primereact/toast';
 import { useNavigate } from 'react-router-dom';
 import { Questionnaire, RoleEnum } from 'logic-qcm-plus';
-import { questionnaireService } from '../services/questionnaire/questionnaireService';
-import { useAuth } from '../context/AuthContext';
+import { questionnaireService } from '../../services/questionnaire/questionnaireService';
+import { useAuth } from '../../context/AuthContext';
 
 export function useQuestionnairesList() {
   const [questionnaires, setQuestionnaires] = useState<Questionnaire[]>([]);

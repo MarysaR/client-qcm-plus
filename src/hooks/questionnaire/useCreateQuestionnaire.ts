@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
-import { questionnaireService } from '../services/questionnaire/questionnaireService';
-import { CreateQuestionnairePayload } from '../payload/questionnairePayload';
+import { questionnaireService } from '../../services/questionnaire/questionnaireService';
+import { CreateQuestionnairePayload } from '../../payload/questionnairePayload';
 import { Toast } from 'primereact/toast';
 import { useNavigate } from 'react-router-dom';
 

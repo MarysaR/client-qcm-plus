@@ -1,13 +1,13 @@
 import React from 'react';
 import { Button } from 'primereact/button';
 import { Toast } from 'primereact/toast';
-import { useQuestionnairesList } from '../../hooks/useQuestionnairesList';
+import { useQuestionnairesList } from '../../hooks/questionnaire/useQuestionnairesList';
 import { Questionnaire, RoleEnum } from 'logic-qcm-plus';
 import styles from '../../styles/questionnaireList.module.css';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import CreateQuestionnaireModal from './CreateQuestionnaireModal';
-import { useCreateQuestionnaire } from '../../hooks/useCreateQuestionnaire';
+import { useCreateQuestionnaire } from '../../hooks/questionnaire/useCreateQuestionnaire';
 
 const Questionnaires: React.FC = () => {
   const { toast, questionnaires, isLoading, user } = useQuestionnairesList();

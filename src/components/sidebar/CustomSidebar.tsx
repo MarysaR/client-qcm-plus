@@ -5,9 +5,9 @@ import { Ripple } from 'primereact/ripple';
 import { Toast } from 'primereact/toast';
 import '../../styles/style.css';
 import { useAuth } from '../../context/AuthContext';
-import { useSidebarAuth } from '../../hooks/useSidebarAuth';
-import { useSidebarQuestionNavigation } from '../../hooks/useSidebarQuestionNavigation';
-import { useSidebarMenu } from '../../hooks/useSidebarMenu';
+import { useSidebarAuth } from '../../hooks/sidebar/useSidebarAuth';
+import { useSidebarQuestionNavigation } from '../../hooks/sidebar/useSidebarQuestionNavigation';
+import { useSidebarMenu } from '../../hooks/sidebar/useSidebarMenu';
 
 const CustomSidebar: React.FC = () => {
   const [isCollapsed, setIsCollapsed] = useState(true);

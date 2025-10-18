@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Toast } from 'primereact/toast';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Question } from 'logic-qcm-plus';
-import { questionService } from '../services/question/questionService';
+import { questionService } from '../../services/question/questionService';
 
 export function useQuestionsList() {
   const { id } = useParams<{ id: string }>();
