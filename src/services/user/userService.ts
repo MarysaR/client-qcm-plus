@@ -33,7 +33,7 @@ export const createUser = async (
 
   const result = await httpRequest(
     httpClient.post(CREATE_USERS, userData, {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: { Authorization: 'Bearer ' + token },
     })
   );
 
@@ -76,7 +76,7 @@ export const getAllUsers = async (): Promise<Result<User[], Error>> => {
 
   const result = await httpRequest(
     httpClient.get(USERS, {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: { Authorization: 'Bearer ' + token },
     })
   );
 
