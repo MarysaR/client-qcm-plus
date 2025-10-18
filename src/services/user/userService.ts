@@ -1,5 +1,5 @@
 import { HTTP_STATUS } from '../../constants/httpStatus';
-import { USERS } from '../../constants/endpoints';
+import { CREATE_USERS, USERS } from '../../constants/endpoints';
 import {
   AlreadyExistError,
   TechnicalError,
@@ -13,6 +13,7 @@ import {
 } from 'logic-qcm-plus';
 import { CreateUserTypes } from 'src/types/createUserTypes';
 import { authService } from '../auth/authService';
+import { httpClient, httpRequest } from '../../utils/httpClient';
 
 type CreateUserResponse = {
   isOk: boolean;
@@ -29,38 +30,40 @@ export const createUser = async (
       message: 'Utilisateur non authentifié (token manquant)',
     };
   }
-  const response = await fetch(USERS, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({
-      ...userData,
-    }),
-  });
 
-  const rawText = await response.text();
-  const result = rawText.trim() != '' ? JSON.parse(rawText) : {};
+  const result = await httpRequest(
+    httpClient.post(CREATE_USERS, userData, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+  );
 
-  switch (response.status) {
-    case HTTP_STATUS.BAD_REQUEST:
-      return new ValidationError(result.message || 'Données invalides.');
-    case HTTP_STATUS.CONFLICT:
-      return new AlreadyExistError(result.message || 'Email déjà utilisé.');
-    case HTTP_STATUS.FORBIDDEN:
-      return new PermissionDeniedError(result.message || 'Permission refusée.');
-    case HTTP_STATUS.INTERNAL_SERVER_ERROR:
-      return new TechnicalError(result.message || 'Erreur serveur.');
-    default:
-      if (!response.ok) {
-        return new UnknownError(result.message || 'Erreur inconnue.');
-      }
-      return {
-        isOk: true,
-        message: result.message || 'Utilisateur créé avec succès.',
-      };
+  if (result.isErr()) {
+    const error = result.error;
+    const status = (error as { response?: { status?: number } })?.response
+      ?.status;
+    const message =
+      (error as { response?: { data?: { message?: string } } })?.response?.data
+        ?.message || 'Erreur inconnue';
+
+    switch (status) {
+      case HTTP_STATUS.BAD_REQUEST:
+        return new ValidationError(message);
+      case HTTP_STATUS.CONFLICT:
+        return new AlreadyExistError(message);
+      case HTTP_STATUS.FORBIDDEN:
+        return new PermissionDeniedError(message);
+      case HTTP_STATUS.INTERNAL_SERVER_ERROR:
+        return new TechnicalError(message);
+      default:
+        return new UnknownError(message);
+    }
   }
+
+  const responseData = result.value.data;
+  return {
+    isOk: true,
+    message: responseData.message || 'Utilisateur créé avec succès.',
+  };
 };
 
 export const getAllUsers = async (): Promise<Result<User[], Error>> => {
@@ -71,28 +74,29 @@ export const getAllUsers = async (): Promise<Result<User[], Error>> => {
     );
   }
 
-  const response = await fetch(USERS, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Cache-Control': 'no-cache',
-    },
-  });
-  const rawText = await response.text();
-  const result = rawText.trim() !== '' ? JSON.parse(rawText) : [];
+  const result = await httpRequest(
+    httpClient.get(USERS, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+  );
 
-  if (!response.ok) {
-    switch (response.status) {
+  if (result.isErr()) {
+    const error = result.error as {
+      response?: { status?: number; data?: { message?: string } };
+    };
+    const status = error.response?.status;
+    const message = error.response?.data?.message || 'Erreur inconnue';
+
+    switch (status) {
       case HTTP_STATUS.FORBIDDEN:
-        return Err.of(
-          new PermissionDeniedError(result.message || 'Accès refusé')
-        );
+        return Err.of(new PermissionDeniedError(message));
       case HTTP_STATUS.INTERNAL_SERVER_ERROR:
-        return Err.of(new TechnicalError(result.message || 'Erreur serveur'));
+        return Err.of(new TechnicalError(message));
       default:
-        return Err.of(new UnknownError(result.message || 'Erreur inconnue'));
+        return Err.of(new UnknownError(message));
     }
   }
 
-  return Ok.of(result as User[]);
+  const users = result.value.data;
+  return Ok.of(users as User[]);
 };
