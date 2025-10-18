@@ -1,11 +1,9 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import '../../styles/style.css';
 import { Toast } from 'primereact/toast';
 import { useCreateUserForm } from '../../hooks/useCreateUserForm';
 
 const User: React.FC = () => {
-  const randomIndex = Math.floor(Math.random() * 3) + 1;
-  const randomAvatar = `src/assets/avatars/avatar${randomIndex}.PNG`;
   const {
     login,
     setLogin,
@@ -25,6 +23,11 @@ const User: React.FC = () => {
     toast,
     handleSubmit,
   } = useCreateUserForm();
+
+  const randomAvatar = useMemo(() => {
+    const index = Math.floor(Math.random() * 3) + 1;
+    return `src/assets/avatars/avatar${index}.PNG`;
+  }, []);
 
   return (
     <div className="create-user-page">
