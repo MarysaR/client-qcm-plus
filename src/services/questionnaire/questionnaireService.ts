@@ -10,7 +10,7 @@ import { mapHttpResult } from '../../utils/httpResultMapper';
 import { mapHttpError } from '../../utils/httpUtils';
 import { authService } from '../auth/authService';
 import { HTTP_STATUS } from '../../constants/httpStatus';
-import { CreateQuestionnairePayload } from 'src/types/questionnaireTypes';
+import { CreateQuestionnairePayload } from 'src/payload/questionnairePayload';
 import { CREATE_QUESTIONNAIRE } from '../../constants/endpoints';
 
 const BASE_URL = '/questionnaires';

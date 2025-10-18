@@ -7,9 +7,11 @@ import styles from '../../styles/questionnaireList.module.css';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import CreateQuestionnaireModal from './CreateQuestionnaireModal';
+import { useCreateQuestionnaire } from '../../hooks/useCreateQuestionnaire';
 
 const Questionnaires: React.FC = () => {
   const { toast, questionnaires, isLoading, user } = useQuestionnairesList();
+  const { handleCreated } = useCreateQuestionnaire();
   const { setCurrentQuestionnaireId } = useAuth();
   const navigate = useNavigate();
   const [showCreate, setShowCreate] = React.useState(false);
@@ -17,17 +19,6 @@ const Questionnaires: React.FC = () => {
   const handleCardClick = (q: Questionnaire) => {
     setCurrentQuestionnaireId(q.id);
     navigate(`/questionnaire/${q.id}/questions`);
-  };
-  const handleCreated = async () => {
-    if (typeof window !== 'undefined') {
-      navigate('/questionnaires');
-    }
-    toast.current?.show({
-      severity: 'success',
-      summary: 'Succès',
-      detail: 'Questionnaire créé',
-      life: 3000,
-    });
   };
 
   return (
