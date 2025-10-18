@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import '../../styles/style.css';
+import '../../styles/userNew.css';
 import { Toast } from 'primereact/toast';
 import { useCreateUserForm } from '../../hooks/useCreateUserForm';
 
@@ -33,10 +33,10 @@ const User: React.FC = () => {
     <div className="create-user-page">
       <Toast ref={toast} />
       <img
-        src="src/assets/images/fond.png"
-        alt="Background"
-        className="background-image"
-      />
+                src="src/assets/images/LogoQCM+SansLabelSansFond.png"
+                alt="Logo"
+                className="logo-top-right"
+            />
       <img
         src="src/assets/images/LogoQCM+SansLabelSansFond.png"
         alt="Logo"

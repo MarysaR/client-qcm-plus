@@ -17,6 +17,7 @@ import QuestionPage from './pages/question/QuestionPage';
 import QuestionsList from './components/questionnaires/question/QuestionsList';
 import Questionnaires from './components/questionnaires/QuestionnairesList';
 import CreateUserPage from './pages/users/CreateUserPage';
+import UserListPage from './pages/users/UserListPage';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
@@ -70,10 +71,18 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           />
 
           <Route
-            path="/users"
+            path="/users/new"
             element={
               <ProtectedRoute>
                 <CreateUserPage />
+              </ProtectedRoute>
+            }
+          />
+                    <Route
+            path="/users"
+            element={
+              <ProtectedRoute>
+                <UserListPage />
               </ProtectedRoute>
             }
           />
