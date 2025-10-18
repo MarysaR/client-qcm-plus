@@ -63,11 +63,12 @@ export const createUser = async (
   }
 };
 
-
 export const getAllUsers = async (): Promise<Result<User[], Error>> => {
   const token = authService.getToken();
   if (!token) {
-    return Err.of(new PermissionDeniedError('Token d’authentification manquant'));
+    return Err.of(
+      new PermissionDeniedError('Token d’authentification manquant')
+    );
   }
 
   const response = await fetch(USERS, {
@@ -76,21 +77,22 @@ export const getAllUsers = async (): Promise<Result<User[], Error>> => {
       Authorization: `Bearer ${token}`,
       'Cache-Control': 'no-cache',
     },
-  })
-      const rawText = await response.text();
-      const result = rawText.trim() !== '' ? JSON.parse(rawText) : [];
+  });
+  const rawText = await response.text();
+  const result = rawText.trim() !== '' ? JSON.parse(rawText) : [];
 
-      if (!response.ok) {
-        switch (response.status) {
-          case HTTP_STATUS.FORBIDDEN:
-            return Err.of(new PermissionDeniedError(result.message || 'Accès refusé'));
-          case HTTP_STATUS.INTERNAL_SERVER_ERROR:
-            return Err.of(new TechnicalError(result.message || 'Erreur serveur'));
-          default:
-            return Err.of(new UnknownError(result.message || 'Erreur inconnue'));
-        }
-      }
+  if (!response.ok) {
+    switch (response.status) {
+      case HTTP_STATUS.FORBIDDEN:
+        return Err.of(
+          new PermissionDeniedError(result.message || 'Accès refusé')
+        );
+      case HTTP_STATUS.INTERNAL_SERVER_ERROR:
+        return Err.of(new TechnicalError(result.message || 'Erreur serveur'));
+      default:
+        return Err.of(new UnknownError(result.message || 'Erreur inconnue'));
+    }
+  }
 
-      return Ok.of(result as User[]);
+  return Ok.of(result as User[]);
 };
-
