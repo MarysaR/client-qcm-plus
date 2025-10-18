@@ -18,6 +18,7 @@ import QuestionsList from './components/questionnaires/question/QuestionsList';
 import Questionnaires from './components/questionnaires/QuestionnairesList';
 import CreateUserPage from './pages/users/CreateUserPage';
 import UserListPage from './pages/users/UserListPage';
+import QuestionnaireCreatePage from './pages/questionnaires/QuestionnaireCreatePage';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
@@ -51,7 +52,14 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
               </ProtectedRoute>
             }
           />
-
+          <Route
+            path="/questionnaires/create"
+            element={
+              <ProtectedRoute>
+                <QuestionnaireCreatePage />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/questionnaire/:id/new-question"
             element={
