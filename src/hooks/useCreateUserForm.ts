@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import '../../styles/style.css';
 import { createUser } from '../services/user/userService';
 import {
   ValidationError,
