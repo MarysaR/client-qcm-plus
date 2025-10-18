@@ -10,8 +10,9 @@ export const useCreateQuestionnaire = () => {
   const [success, setSuccess] = useState(false);
   const toast = useRef<Toast>(null);
   const navigate = useNavigate();
+
   const handleCreated = async () => {
-    if (typeof window !== 'undefined') {
+    if (typeof window != 'undefined') {
       navigate('/questionnaires');
     }
     toast.current?.show({
