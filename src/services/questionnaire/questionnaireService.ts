@@ -1,9 +1,17 @@
-import { Ok, Err, PermissionDeniedError, TechnicalError } from 'logic-qcm-plus';
+import {
+  Ok,
+  Err,
+  PermissionDeniedError,
+  TechnicalError,
+  ValidationError,
+} from 'logic-qcm-plus';
 import { httpRequest, httpClient } from '../../utils/httpClient';
 import { mapHttpResult } from '../../utils/httpResultMapper';
 import { mapHttpError } from '../../utils/httpUtils';
 import { authService } from '../auth/authService';
 import { HTTP_STATUS } from '../../constants/httpStatus';
+import { CreateQuestionnairePayload } from 'src/types/questionnaireTypes';
+import { CREATE_QUESTIONNAIRE } from '../../constants/endpoints';
 
 const BASE_URL = '/questionnaires';
 
@@ -60,6 +68,39 @@ export const questionnaireService = {
       }
 
       return Ok.of(body);
+    });
+  },
+
+  async createQuestionnaire(payload: CreateQuestionnairePayload) {
+    const token = authService.getToken();
+    if (!token) {
+      return Err.of(
+        new PermissionDeniedError(
+          'Utilisateur non authentifié (token manquant)'
+        )
+      );
+    }
+    if (!payload.name || !payload.name.trim()) {
+      return Err.of(new ValidationError('Le nom du questionnaire est requis'));
+    }
+
+    const resResult = await httpRequest(
+      httpClient.post(
+        CREATE_QUESTIONNAIRE,
+        {
+          name: payload.name.trim(),
+          description: payload.description?.trim() || undefined,
+        },
+        { headers: { Authorization: 'Bearer ' + token } }
+      )
+    );
+
+    return mapHttpResult(resResult, async (res) => {
+      const status = 'status' in res ? res.status : (res as Response).status;
+      if (status < HTTP_STATUS.OK || status >= HTTP_STATUS.BAD_REQUEST) {
+        return Err.of(mapHttpError(status));
+      }
+      return Ok.of(undefined);
     });
   },
 };

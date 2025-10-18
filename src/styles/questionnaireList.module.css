@@ -149,3 +149,15 @@ button.p-disabled.inactiveBtn:hover {
     grid-template-columns: 1fr;
   }
 }
+
+.headerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.empty {
+  color: #666;
+  font-size: 0.9rem;
+  padding: 0.75rem;
+}

@@ -6,21 +6,44 @@ import { Questionnaire, RoleEnum } from 'logic-qcm-plus';
 import styles from '../../styles/questionnaireList.module.css';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import CreateQuestionnaireModal from './CreateQuestionnaireModal';
 
 const Questionnaires: React.FC = () => {
   const { toast, questionnaires, isLoading, user } = useQuestionnairesList();
   const { setCurrentQuestionnaireId } = useAuth();
   const navigate = useNavigate();
+  const [showCreate, setShowCreate] = React.useState(false);
 
   const handleCardClick = (q: Questionnaire) => {
     setCurrentQuestionnaireId(q.id);
     navigate(`/questionnaire/${q.id}/questions`);
   };
+  const handleCreated = async () => {
+    if (typeof window !== 'undefined') {
+      navigate('/questionnaires');
+    }
+    toast.current?.show({
+      severity: 'success',
+      summary: 'Succès',
+      detail: 'Questionnaire créé',
+      life: 3000,
+    });
+  };
 
   return (
     <div className={styles.container}>
       <Toast ref={toast} className={styles.toast} />
-      <h1 className={styles.title}>Liste des questionnaires</h1>
+      <div className={styles.headerRow}>
+        <h1 className={styles.title}>Liste des questionnaires</h1>
+        {user?.roleId === RoleEnum.ADMIN && (
+          <Button
+            label="Ajouter questionnaire"
+            icon="pi pi-plus"
+            className="p-button-sm"
+            onClick={() => setShowCreate(true)}
+          />
+        )}
+      </div>
 
       {isLoading ? (
         <p className={styles.loading}>Chargement...</p>
@@ -38,7 +61,7 @@ const Questionnaires: React.FC = () => {
                 Créé le {new Date(q.createdAt).toLocaleDateString()}
               </p>
 
-              {user?.roleId == RoleEnum.ADMIN && (
+              {user?.roleId === RoleEnum.ADMIN && (
                 <div className={styles.actions}>
                   <Button
                     icon="pi pi-pencil"
@@ -61,8 +84,17 @@ const Questionnaires: React.FC = () => {
               )}
             </div>
           ))}
+          {questionnaires.length === 0 && (
+            <div className={styles.empty}>Aucun questionnaire.</div>
+          )}
         </div>
       )}
+
+      <CreateQuestionnaireModal
+        visible={showCreate}
+        onHide={() => setShowCreate(false)}
+        onCreated={handleCreated}
+      />
     </div>
   );
 };
