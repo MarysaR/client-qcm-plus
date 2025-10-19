@@ -89,7 +89,7 @@ export function useCreateUserForm() {
         setConfirmPassword('');
         setErrors([]);
 
-        navigate(`/users`);
+        navigate(`/stagiaires`);
       } else {
         const error =
           result instanceof Error ? result : new UnknownError(result.message);

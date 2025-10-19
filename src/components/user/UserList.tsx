@@ -27,7 +27,7 @@ const UserList: React.FC = () => {
         <button
           type="button"
           className={btnStyles.appActionBtn}
-          onClick={() => navigate('/users/new')}
+          onClick={() => navigate('/stagiaires/new')}
         >
           Nouveau stagiaire
         </button>
