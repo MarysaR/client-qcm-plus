@@ -179,3 +179,25 @@
   .user-info p.email {
     margin-bottom: 1rem;
   }
+
+  .actions-bar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 900px;
+  margin: 1.25rem auto 0;
+  padding: 0 .5rem;
+}
+
+@media (max-width: 768px) {
+  .actions-bar {
+    justify-content: center;
+  }
+  .actions-bar :global(button) {
+    width: 100%;
+  }
+}
+
+.actions-bar { margin: 70px 0 0 0; max-width: none; width: auto; }

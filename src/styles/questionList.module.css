@@ -1,4 +1,4 @@
-/* === CONTAINER GLOBAL === */
+/* === CONTAINER & STRUCTURE === */
 .container {
   display: flex;
   flex-direction: column;
@@ -14,76 +14,80 @@
   transition: margin-left 0.3s ease;
 }
 
-
-/* === TITRE === */
-.title {
-  font-size: 2rem;
-  font-weight: 600;
-  color: #a19e9e;
-  text-align: start;
-  margin-bottom: 3rem;
-}
-
-/* === BARRE D’ACTION === */
-.topRow {
+/* === HEADER (titre + bouton) === */
+.headerRow {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
 }
 
+.title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #a19e9e;
+}
+
 /* === BOUTON NOUVELLE QUESTION === */
-.addQuestionBtn {
-  background-color: #0d1b4c;
-  color: white;
-  font-size: 0.85rem;
-  padding: 0.6rem 1.2rem;
+.addBtn {
+  padding: 0.85rem 1.6rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #162b7b 0%, #204bb3 60%, #295fd4 100%);
   border: none;
-  border-radius: 6px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  color: #fff;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.18);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  transition: transform 0.18s ease, box-shadow 0.28s ease, filter 0.28s ease;
 }
 
-.addQuestionBtn:hover {
-  background-color: #13266d;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
-  transform: translateY(-1px);
-}
-
-/* === TEXTE DE CHARGEMENT OU VIDE === */
-.loadingText,
-.emptyText {
+.addBtn .p-button-icon {
   font-size: 1rem;
-  color: #6e6e6e;
-  text-align: center;
-  margin-top: 4rem;
+}
+
+.addBtn:hover {
+  transform: translateY(-3px);
+  filter: brightness(1.08);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
+}
+
+.addBtn:active {
+  transform: translateY(0);
+  filter: brightness(0.95);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.addBtn:focus-visible {
+  outline: 3px solid rgba(44, 129, 255, 0.45);
+  outline-offset: 2px;
 }
 
 /* === CONTENEUR DES CARTES === */
 .cardsContainer {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1.5rem;
-  margin-top: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  width: 100%;
 }
 
 /* === CARD QUESTION === */
 .card {
-  width: 45%;
-  background: #fff;
-  border: 1px solid #ddd;
+  position: relative;
+  background-color: white;
   border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-  padding: 1rem 1.2rem;
-  transition: all 0.2s ease;
+  border: 1px solid #e5e5e5;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+  padding: 1.5rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  transform: translateY(-3px);
+  box-shadow: 0 5px 14px rgba(0, 0, 0, 0.12);
 }
 
 /* === LABEL DE QUESTION === */
@@ -91,7 +95,8 @@
   font-size: 1rem;
   font-weight: 600;
   color: #0d1b4c;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.6rem;
+  line-height: 1.4;
 }
 
 /* === INFO SUR LES RÉPONSES === */
@@ -127,15 +132,67 @@
   transform: translateY(-1px);
 }
 
-
 /* === RESPONSIVE === */
-@media (max-width: 1024px) {
-  .card {
-    width: 90%;
+@media (max-width: 1100px) {
+  .cardsContainer {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* === MOBILE === */
+@media (max-width: 768px) {
+  .container {
+    padding: 2rem 1.2rem;
+    justify-content: center;
+  }
+
+  .headerRow {
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .title {
+    font-size: 1.6rem;
+    text-align: center;
+  }
+
+  .addBtn {
+    width: 100%;
+    justify-content: center;
   }
 
   .cardsContainer {
-    flex-direction: column;
-    align-items: center;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 1.5rem;
+  }
+
+  /* === CENTRAGE VERTICAL UNIQUEMENT SI 1 OU 2 CARTES === */
+  @supports selector(:has(*)) {
+    .cardsContainer:not(:has(.card + .card)) {
+      min-height: calc(100vh - 15rem);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+  }
+
+  .card {
+    width: 100%;
+    max-width: 22rem;
+  }
+
+  .questionLabel {
+    font-size: 0.95rem;
+  }
+
+  .answersCount {
+    font-size: 0.85rem;
+  }
+
+  .editBtn {
+    width: 100%;
+    justify-content: center;
   }
 }

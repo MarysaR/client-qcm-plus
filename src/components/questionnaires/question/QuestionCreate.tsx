@@ -6,8 +6,8 @@ import { Checkbox } from 'primereact/checkbox';
 import { Toast } from 'primereact/toast';
 import styles from '../../../styles/question.module.css';
 import { useQuestionForm } from '../../../hooks/question/useQuestionForm';
-
-const Question: React.FC = () => {
+import btnStyles from '../../../styles/buttons.module.css';
+const QuestionCreate: React.FC = () => {
   const {
     toast,
     navigate,
@@ -54,14 +54,12 @@ const Question: React.FC = () => {
             </label>
           </span>
         </div>
-
-        <Button label="Enregistrer" className={styles.saveButton} />
       </div>
 
       <div className={styles.addQuestionWrapper}>
         <Button
           label="Voir les questions"
-          className={styles.addQuestionBtn}
+          className={btnStyles.appActionBtnSm}
           onClick={() =>
             navigate(`/questionnaire/${questionnaireId}/questions`)
           }
@@ -79,7 +77,7 @@ const Question: React.FC = () => {
             />
             <Button
               label="Ajouter une question"
-              className={styles.createQuestionBtn}
+              className={btnStyles.appActionBtnSuccess}
               onClick={handleCreateQuestion}
             />
           </div>
@@ -122,8 +120,15 @@ const Question: React.FC = () => {
 
           <div className={styles.addAnswerWrapper}>
             <Button
+              label="Annuler"
+              className="p-button-danger"
+              onClick={() =>
+                navigate(`/questionnaire/${questionnaireId}/questions`)
+              }
+            />
+            <Button
               label="Ajouter une réponse"
-              className={styles.addAnswerBtn}
+              className={btnStyles.appActionBtnGhost}
               onClick={handleAddAnswer}
             />
           </div>
@@ -133,4 +138,4 @@ const Question: React.FC = () => {
   );
 };
 
-export default Question;
+export default QuestionCreate;

@@ -1,8 +1,8 @@
 import React from 'react';
-import Question from '../../components/questionnaires/question/Question';
+import QuestionCreate from '../../components/questionnaires/question/QuestionCreate';
 
 const QuestionPage: React.FC = () => {
-  return <Question />;
+  return <QuestionCreate />;
 };
 
 export default QuestionPage;

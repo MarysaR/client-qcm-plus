@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import '../../styles/userNew.css';
 import { Toast } from 'primereact/toast';
 import { useCreateUserForm } from '../../hooks/user/useCreateUserForm';
+import btnStyles from '../../styles/buttons.module.css';
 import logo from '../../assets/images/LogoQCM+SansLabelSansFond.png';
 
 const User: React.FC = () => {
@@ -119,7 +120,7 @@ const User: React.FC = () => {
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
           </div>
-          <button type="submit" className="create-button">
+          <button type="submit" className={btnStyles.appActionBtnSuccess}>
             Créer
           </button>
         </form>

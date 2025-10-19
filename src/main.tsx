@@ -87,20 +87,19 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
               </ProtectedRoute>
             }
           />
-
           <Route
-            path="/users/new"
+            path="/stagiaires"
             element={
               <ProtectedRoute>
-                <CreateUserPage />
+                <UserListPage />
               </ProtectedRoute>
             }
           />
           <Route
-            path="/users"
+            path="/stagiaires/new"
             element={
               <ProtectedRoute>
-                <UserListPage />
+                <CreateUserPage />
               </ProtectedRoute>
             }
           />

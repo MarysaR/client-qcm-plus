@@ -5,6 +5,7 @@ import { Toast } from 'primereact/toast';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../../styles/questionList.module.css';
 import { useQuestionsList } from '../../../hooks/question/useQuestionsList';
+import btnStyles from '../../../styles/buttons.module.css';
 
 const QuestionsList: React.FC = () => {
   const { toast, questions, isLoading, handleNavigateToNewQuestion } =
@@ -16,12 +17,12 @@ const QuestionsList: React.FC = () => {
     <div className={styles.container}>
       <Toast ref={toast} />
 
-      <h1 className={styles.title}>Questions du questionnaire</h1>
-
-      <div className={styles.topRow}>
+      <div className={styles.headerRow}>
+        <h1 className={styles.title}>Questions du questionnaire</h1>
         <Button
           label="Nouvelle question"
-          className={styles.addQuestionBtn}
+          icon="pi pi-plus"
+          className={btnStyles.appActionBtn}
           onClick={handleNavigateToNewQuestion}
         />
       </div>
