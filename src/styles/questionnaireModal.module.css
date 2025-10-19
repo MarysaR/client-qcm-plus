@@ -34,12 +34,58 @@
 
 .btnCancel {
   min-width: 120px;
-  transform: scale(1.05);
-  color: #c55b48;
+  font-weight: 600;
+  background: linear-gradient(135deg, #a12f29 0%, #801d18 60%, #a1322c 100%);
+  color: #fff;
+  border: 1px solid #9c2f29;
+  box-shadow: 0 2px 4px rgba(0,0,0,.15);
+  transition: transform .15s ease, box-shadow .25s ease, filter .25s ease;
+}
+
+.btnCancel:hover:not(:disabled) {
+  filter: brightness(1.05);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,.25);
+}
+
+.btnCancel:active:not(:disabled) {
+  transform: translateY(0);
+  filter: brightness(.95);
+  box-shadow: 0 2px 6px rgba(0,0,0,.2);
+}
+
+.btnCancel:focus-visible {
+  outline: 3px solid rgba(255,140,130,.55);
+  outline-offset: 2px;
+}
+
+.btnCancel:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 .btnPrimary {
   min-width: 140px;
+  transition: transform .15s ease, box-shadow .25s ease, filter .25s ease;
+}
+
+.btnPrimary:hover:not(:disabled) {
+  filter: brightness(1.06);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,.22);
+}
+
+.btnPrimary:active:not(:disabled) {
+  transform: translateY(0);
+  filter: brightness(.95);
+  box-shadow: 0 2px 6px rgba(0,0,0,.18);
+}
+
+.btnPrimary:focus-visible {
+  outline: 3px solid rgba(10,233,155,.45);
+  outline-offset: 2px;
 }
 
 .error {

@@ -7,11 +7,10 @@ import styles from '../../styles/questionnaireList.module.css';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import CreateQuestionnaireModal from './CreateQuestionnaireModal';
-import { useCreateQuestionnaire } from '../../hooks/questionnaire/useCreateQuestionnaire';
 
 const Questionnaires: React.FC = () => {
-  const { toast, questionnaires, isLoading, user } = useQuestionnairesList();
-  const { handleCreated } = useCreateQuestionnaire();
+  const { toast, questionnaires, isLoading, user, reload } =
+    useQuestionnairesList();
   const { setCurrentQuestionnaireId } = useAuth();
   const navigate = useNavigate();
   const [showCreate, setShowCreate] = React.useState(false);
@@ -21,6 +20,15 @@ const Questionnaires: React.FC = () => {
     navigate(`/questionnaire/${q.id}/questions`);
   };
 
+  const handleCreated = async () => {
+    await reload();
+    toast.current?.show({
+      severity: 'success',
+      summary: 'Succès',
+      detail: 'Questionnaire créé avec succès',
+      life: 3000,
+    });
+  };
   return (
     <div className={styles.container}>
       <Toast ref={toast} className={styles.toast} />
@@ -30,7 +38,7 @@ const Questionnaires: React.FC = () => {
           <Button
             label="Ajouter questionnaire"
             icon="pi pi-plus"
-            className="p-button-sm"
+            className={`p-button-sm ${styles.addBtn}`}
             onClick={() => setShowCreate(true)}
           />
         )}
