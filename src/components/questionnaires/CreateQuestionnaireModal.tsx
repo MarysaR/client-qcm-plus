@@ -45,7 +45,6 @@ const CreateQuestionnaireModal: React.FC<Props> = ({
         label="Annuler"
         icon="pi pi-times"
         className={styles.btnCancel}
-        outlined
         onClick={onHide}
         disabled={loading}
       />

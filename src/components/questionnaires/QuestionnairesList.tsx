@@ -30,7 +30,7 @@ const Questionnaires: React.FC = () => {
           <Button
             label="Ajouter questionnaire"
             icon="pi pi-plus"
-            className="p-button-sm"
+            className={`p-button-sm ${styles.addBtn}`}
             onClick={() => setShowCreate(true)}
           />
         )}
