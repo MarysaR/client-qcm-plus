@@ -5,11 +5,10 @@ import { useNavigate } from 'react-router-dom';
 import '../../styles/usersList.css';
 
 const UserList: React.FC = () => {
-  const { users, loading, error } = useUsersList();
+  const { users, loading } = useUsersList();
   const navigate = useNavigate();
 
   if (loading) return <p>Chargement...</p>;
-  if (error) return <p>Erreur : {error}</p>;
 
   return (
     <div className="user-list-page">
