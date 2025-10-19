@@ -236,7 +236,7 @@
 /* Très petits écrans */
 @media (max-width: 360px) {
   .collapsed-sidebar {
-    width: 40px;
+    width: 100%;
   }
 
   .create-user-page {

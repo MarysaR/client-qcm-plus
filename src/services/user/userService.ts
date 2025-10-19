@@ -22,8 +22,6 @@ type CreateUserResponse = {
   message?: string;
 };
 
-const BASE_URL = '/users';
-
 export const createUser = async (
   userData: CreateUserTypes
 ): Promise<CreateUserResponse | Error> => {
@@ -73,14 +71,13 @@ export const createUser = async (
 export const getAllUsers = async (): Promise<Result<User[], Error>> => {
   const token = authService.getToken();
   if (!token) {
-    return Err.of(new PermissionDeniedError(
-      'Utilisateur non authentifié (token manquant)'));
+    return Err.of(
+      new PermissionDeniedError('Utilisateur non authentifié (token manquant)')
+    );
   }
 
   const resResult = await httpRequest(
-    httpClient.get(BASE_URL, 
-      {headers: { Authorization: 'Bearer ' + token },
-    })
+    httpClient.get(USERS, { headers: { Authorization: 'Bearer ' + token } })
   );
 
   return mapHttpResult(resResult, async (res) => {
@@ -103,7 +100,7 @@ export const getAllUsers = async (): Promise<Result<User[], Error>> => {
 
     const statusInvalide =
       status < HTTP_STATUS.OK ||
-      (status >= HTTP_STATUS.BAD_REQUEST && 
+      (status >= HTTP_STATUS.BAD_REQUEST &&
         status < HTTP_STATUS.INTERNAL_SERVER_ERROR);
 
     if (statusInvalide) {
@@ -111,11 +108,13 @@ export const getAllUsers = async (): Promise<Result<User[], Error>> => {
     }
 
     if (!Array.isArray(body)) {
-      return Err.of(new TechnicalError(
-        'Réponse invalide du serveur (utilisateurs manquants)'));
+      return Err.of(
+        new TechnicalError(
+          'Réponse invalide du serveur (utilisateurs manquants)'
+        )
+      );
     }
 
     return Ok.of(body);
   });
 };
-

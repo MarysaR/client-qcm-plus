@@ -3,7 +3,6 @@ import '../../styles/userNew.css';
 import { Toast } from 'primereact/toast';
 import { useCreateUserForm } from '../../hooks/user/useCreateUserForm';
 import logo from '../../assets/images/LogoQCM+SansLabelSansFond.png';
-import logoFond from '../../assets/images/fond.png';
 
 const User: React.FC = () => {
   const {
@@ -30,17 +29,13 @@ const User: React.FC = () => {
 
   const randomAvatar = useMemo(() => {
     const index = Math.floor(Math.random() * 3) + 1;
-    return avatars+`/avatar${index}.PNG`;
+    return avatars + `/avatar${index}.PNG`;
   }, []);
 
   return (
     <div className="create-user-page">
       <Toast ref={toast} />
-      <img
-        src={logo}
-        alt="Logo"
-        className="logo-top-right"
-      />
+      <img src={logo} alt="Logo" className="logo-top-right" />
       <h1 className="page-title">Nouveau Stagiaire</h1>
       <div className="form-container">
         <form className="user-form" onSubmit={handleSubmit}>
