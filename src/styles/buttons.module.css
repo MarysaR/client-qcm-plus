@@ -66,14 +66,12 @@
 
 .appActionBtnSuccess {
   composes: appActionBtn;
-  /* Vert adouci (moins saturé) */
   background: linear-gradient(135deg,#0ba56f 0%, #08925f 55%, #067a4d 100%);
   color: #f3fdf8;
   border: 1px solid #088b5a;
   box-shadow: 0 3px 10px -4px rgba(0,0,0,.22), 0 2px 4px rgba(0,0,0,.14);
 }
 
-/* états spécifiques pour conserver confort visuel */
 .appActionBtnSuccess:hover:not(:disabled) {
   filter: brightness(1.05);
   transform: translateY(-3px);
