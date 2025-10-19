@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { createUser } from '../services/user/userService';
+import { createUser } from '../../services/user/userService';
 import {
   ValidationError,
   AlreadyExistError,
