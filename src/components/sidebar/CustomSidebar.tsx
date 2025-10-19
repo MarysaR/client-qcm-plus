@@ -8,6 +8,8 @@ import { useAuth } from '../../context/AuthContext';
 import { useSidebarAuth } from '../../hooks/sidebar/useSidebarAuth';
 import { useSidebarQuestionNavigation } from '../../hooks/sidebar/useSidebarQuestionNavigation';
 import { useSidebarMenu } from '../../hooks/sidebar/useSidebarMenu';
+import logoFull from '../../assets/images/LogoPremium.png';
+import logoCompact from '../../assets/images/LogoQCMPremiumSansLabel.png';
 
 const CustomSidebar: React.FC = () => {
   const [isCollapsed, setIsCollapsed] = useState(true);
@@ -22,6 +24,12 @@ const CustomSidebar: React.FC = () => {
   const { menuItems } = useSidebarMenu(user?.roleId ?? 0, {
     handleQuestionNavigation,
   });
+  React.useEffect(() => {
+    document.body.style.setProperty(
+      '--sidebar-width',
+      isCollapsed ? '4rem' : '6.5rem'
+    );
+  }, [isCollapsed]);
 
   if (!user) {
     return null;
@@ -36,13 +44,9 @@ const CustomSidebar: React.FC = () => {
         <div className="collapsed-sidebar">
           <div className="sidebar-header">
             <span className="logo">
-              <img
-                src="src/assets/images/LogoQCM+PremiumSansLabel.PNG"
-                alt="Logo"
-              />
+              <img src={logoCompact} alt="Logo" />
             </span>
           </div>
-
           <i
             className="pi pi-align-justify"
             onClick={() => setIsCollapsed(false)}
@@ -62,7 +66,7 @@ const CustomSidebar: React.FC = () => {
       >
         <div className="sidebar-header">
           <span className="logo">
-            <img src="src/assets/images/LogoQCM+Premiuim.PNG" alt="Logo" />
+            <img src={logoFull} alt="Logo" />
           </span>
           <Button
             icon="pi pi-arrow-left"
