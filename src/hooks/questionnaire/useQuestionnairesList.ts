@@ -37,7 +37,7 @@ export function useQuestionnairesList() {
     fetchQuestionnaires();
   }, [fetchQuestionnaires]);
 
-  const reload = fetchQuestionnaires; // EXPOSE
+  const reload = fetchQuestionnaires;
 
   const handleSelect = (q: Questionnaire) => {
     if (user?.roleId == RoleEnum.STAGIAIRE) {
@@ -58,6 +58,6 @@ export function useQuestionnairesList() {
     isLoading,
     handleSelect,
     user,
-    reload, // RETURN
+    reload,
   };
 }
