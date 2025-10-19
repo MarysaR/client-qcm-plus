@@ -1,27 +1,48 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { getAllUsers } from '../services/user/userService';
-import { User } from 'logic-qcm-plus';
+import { PermissionDeniedError, User } from 'logic-qcm-plus';
+import { useNavigate } from 'react-router-dom';
+import { Toast } from 'primereact/toast';
+import { useAuth } from '../context/AuthContext';
 
 export function useUsersList() {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const toast = useRef<Toast>(null);
+  const navigate = useNavigate();
+  const { user } = useAuth();
 
   useEffect(() => {
+    console.log('useUsersList hook mounted, fetching users');
     const fetchUsers = async () => {
       const result = await getAllUsers();
 
       if (result.isOk()) {
         setUsers(result.value);
       } else {
-        setError(result.error.message);
-      }
+        toast.current?.show({
+          severity: 'error',
+          summary: 'Erreur',
+          detail: result.error.message,
+          life: 4000,
+        });
 
+        if (result.error instanceof PermissionDeniedError) {
+          navigate('/login');
+        }
+      }
       setLoading(false);
     };
 
-    fetchUsers();
-  }, []);
+    if (user) {
+      fetchUsers();
+    }
+  }, [user]);
 
-  return { users, loading, error };
+  return {
+    toast,
+    users,
+    loading,
+    user,
+  };
 }

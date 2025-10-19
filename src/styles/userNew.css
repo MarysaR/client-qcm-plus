@@ -1,118 +1,299 @@
-/* Page de création d'utilisateur */
 .create-user-page {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    width: 100%;
-    position: relative;
-    overflow: hidden;
-}
-
-/* Titre en haut à gauche */
-.create-user-page .page-title {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    color: #FFFFFF;
-    font-size: 24px;
-    font-family: 'Inter', sans-serif;
-    z-index: 1;
+  margin-left: 50px;
+  background-image: url('/src/assets/images/fond.png');
+  background-repeat: no-repeat; 
+  background-size: cover; 
+  background-position: center; 
+  height: 100vh;
 }
 
 /* Conteneur du formulaire */
-.create-user-page .form-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgba(255, 255, 255, 0.9);
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    z-index: 1;
-    height: auto;
-    width: 500px;
+.form-container {
+  margin: 3rem auto 2rem;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  width: 90%;
+  max-width: 600px;
+  box-sizing: border-box;
 }
+
+
 
 /* Formulaire */
-.create-user-page .user-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+.user-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
-/* Champs du formulaire */
-.create-user-page .form-group {
-    display: flex;
-    flex-direction: column;
+/* Champs */
+.form-group {
+  display: flex;
+  flex-direction: column;
 }
 
-.create-user-page .form-group label {
-    margin-bottom: 5px;
-    font-size: 14px;
-    color: #333;
+.form-group label {
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
 }
 
-.create-user-page .form-group input {
-    padding: 10px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+.form-group input {
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #176113;
+}
+
+/* Avatar */
+.avatar-preview {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin: 0 auto;
+  display: block;
+}
+
+/* Messages d'erreur */
+.error-messages {
+  margin-top: 1rem;
+  padding: 0.5rem;
+}
+
+.error-text {
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin: 0.25rem 0;
 }
 
 /* Bouton Créer */
-.create-user-page .create-button {
-    background-color: #176113;
-    color: white;
-    font-size: 0.85rem;
-    padding: 0.6rem 1.2rem;
-    border: none;
-    border-radius: 6px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-    margin-top: 50px;
-    width: 100px;
-    align-self: center;
+.create-button {
+  background-color: #176113;
+  color: white;
+  font-size: 1rem;
+  padding: 0.8rem 1.6rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  margin-top: 30px;
+  width: 100%;
+  text-align: center;
+  width: 100px;
+  align-self: center;
 }
 
-.create-user-page .create-button:hover {
-    background-color: #054d10;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
-    transform: translateY(-1px);
+.create-button:hover {
+  background-color: #054d10;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  transform: translateY(-1px);
 }
 
-/* Logo en haut à droite */
-.logo-top-right {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    width: 200px;
-    height: auto;
-    z-index: 1;
+.create-button:active {
+  transform: translateY(0);
 }
 
-/* Titre en haut à gauche */
-.create-user-page .page-title {
-    font-size: 2rem;
-    font-weight: 600;
-    color: #a19e9e;
-    text-align: start;
-    margin-bottom: 3rem;
-    margin-top: 70px;
-    margin-left: 125px;
-    z-index: 1;
-}
+/* === RESPONSIVE === */
 
-
-.avatar-preview {
+/* Tablettes et mobiles - sidebar masquée ou en overlay */
+@media (max-width: 768px) {
+  .collapsed-sidebar {
     width: 50px;
-    height: 50px;
-    object-fit: cover;
-    border-radius: 50%;
   }
 
-  
+  .create-user-page {
+    margin-left: 7rem;
+    padding: 0 5rem;
+  }
 
-  
+
+  /* Quand sidebar ouverte sur mobile, elle est en overlay */
+  body:has(.p-sidebar-left.p-sidebar-active) .create-user-page {
+    margin-left: 50px; /* Ne bouge pas */
+  }
+
+  .page-title {
+    font-size: 1.5rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    margin-top: 70px;
+    padding-left: 0.5rem;
+  }
+
+  .logo-top-right {
+    width: 120px;
+    top: 12px;
+    right: 12px;
+  }
+
+  .form-container {
+    width: 90%;
+    max-width: 400px;
+    padding: 25px 20px;
+    margin: 2rem auto;
+  }
+
+  .user-form {
+    gap: 12px;
+  }
+
+  .form-group label {
+    font-size: 13px;
+  }
+
+  .form-group input {
+    font-size: 14px;
+    padding: 9px;
+  }
+
+  .create-button {
+    font-size: 0.95rem;
+    padding: 0.75rem;
+    margin-top: 20px;
+    width: 100px;
+    align-self: center;
+  }
+
+  .avatar-preview {
+    width: 55px;
+    height: 55px;
+  }
+}
+
+/* Smartphones */
+@media (max-width: 480px) {
+  .collapsed-sidebar {
+    width: 45px;
+  }
+
+  .create-user-page {
+    margin-left: 7rem;
+    padding: 0 5rem;
+  }
+
+  .page-title {
+    font-size: 1.25rem;
+    margin-top: 65px;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    padding-left: 0;
+  }
+
+  .logo-top-right {
+    width: 90px;
+    top: 10px;
+    right: 10px;
+  }
+
+  .form-container {
+    width: 92%;
+    max-width: 100%;
+    padding: 18px 15px;
+    margin: 1.5rem auto;
+  }
+
+  .user-form {
+    gap: 10px;
+  }
+
+  .form-group label {
+    font-size: 12px;
+    margin-bottom: 3px;
+  }
+
+  .form-group input {
+    font-size: 16px;
+    padding: 8px;
+  }
+
+  .create-button {
+    font-size: 0.9rem;
+    padding: 0.7rem;
+    margin-top: 15px;
+    width: 100px;
+    align-self: center;
+  }
+
+  .avatar-preview {
+    width: 48px;
+    height: 48px;
+  }
+
+  .error-text {
+    font-size: 0.8rem;
+  }
+}
+
+/* Très petits écrans */
+@media (max-width: 360px) {
+  .collapsed-sidebar {
+    width: 100%;
+  }
+
+  .create-user-page {
+    margin-left: 7rem;
+  }
+
+  .page-title {
+    font-size: 1.1rem;
+    margin-top: 60px;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+  }
+
+  .logo-top-right {
+    width: 75px;
+    top: 8px;
+    right: 8px;
+  }
+
+  .form-container {
+    width: 95%;
+    padding: 15px 12px;
+    margin: 1.5rem auto;
+  }
+
+  .user-form {
+    gap: 8px;
+  }
+
+  .form-group label {
+    font-size: 11px;
+  }
+
+  .form-group input {
+    padding: 7px;
+    font-size: 16px;
+  }
+
+  .create-button {
+    padding: 0.65rem;
+    font-size: 0.85rem;
+    margin-top: 12px;
+    width: 100px;
+    align-self: center;
+
+  }
+
+  .avatar-preview {
+    width: 42px;
+    height: 42px;
+  }
+
+
+}

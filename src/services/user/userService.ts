@@ -14,6 +14,8 @@ import {
 import { CreateUserTypes } from 'src/types/createUserTypes';
 import { authService } from '../auth/authService';
 import { httpClient, httpRequest } from '../../utils/httpClient';
+import { mapHttpResult } from '../../utils/httpResultMapper';
+import { mapHttpError } from '../../utils/httpUtils';
 
 type CreateUserResponse = {
   isOk: boolean;
@@ -70,33 +72,49 @@ export const getAllUsers = async (): Promise<Result<User[], Error>> => {
   const token = authService.getToken();
   if (!token) {
     return Err.of(
-      new PermissionDeniedError('Token d’authentification manquant')
+      new PermissionDeniedError('Utilisateur non authentifié (token manquant)')
     );
   }
 
-  const result = await httpRequest(
-    httpClient.get(USERS, {
-      headers: { Authorization: 'Bearer ' + token },
-    })
+  const resResult = await httpRequest(
+    httpClient.get(USERS, { headers: { Authorization: 'Bearer ' + token } })
   );
 
-  if (result.isErr()) {
-    const error = result.error as {
-      response?: { status?: number; data?: { message?: string } };
-    };
-    const status = error.response?.status;
-    const message = error.response?.data?.message || 'Erreur inconnue';
-
-    switch (status) {
-      case HTTP_STATUS.FORBIDDEN:
-        return Err.of(new PermissionDeniedError(message));
-      case HTTP_STATUS.INTERNAL_SERVER_ERROR:
-        return Err.of(new TechnicalError(message));
-      default:
-        return Err.of(new UnknownError(message));
+  return mapHttpResult(resResult, async (res) => {
+    let status;
+    if ('status' in res) {
+      status = res.status;
+    } else {
+      status = (res as Response).status;
     }
-  }
 
-  const users = result.value.data;
-  return Ok.of(users as User[]);
+    let body = {};
+    if ('data' in res) {
+      body = res.data;
+    } else {
+      const json = await (res as Response).json();
+      if (typeof json === 'object' && json !== null) {
+        body = json;
+      }
+    }
+
+    const statusInvalide =
+      status < HTTP_STATUS.OK ||
+      (status >= HTTP_STATUS.BAD_REQUEST &&
+        status < HTTP_STATUS.INTERNAL_SERVER_ERROR);
+
+    if (statusInvalide) {
+      return Err.of(mapHttpError(status));
+    }
+
+    if (!Array.isArray(body)) {
+      return Err.of(
+        new TechnicalError(
+          'Réponse invalide du serveur (utilisateurs manquants)'
+        )
+      );
+    }
+
+    return Ok.of(body);
+  });
 };
