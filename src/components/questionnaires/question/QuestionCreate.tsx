@@ -7,7 +7,7 @@ import { Toast } from 'primereact/toast';
 import styles from '../../../styles/question.module.css';
 import { useQuestionForm } from '../../../hooks/question/useQuestionForm';
 import btnStyles from '../../../styles/buttons.module.css';
-const Question: React.FC = () => {
+const QuestionCreate: React.FC = () => {
   const {
     toast,
     navigate,
@@ -54,8 +54,6 @@ const Question: React.FC = () => {
             </label>
           </span>
         </div>
-
-        <Button label="Enregistrer" className={styles.saveButton} />
       </div>
 
       <div className={styles.addQuestionWrapper}>
@@ -122,6 +120,13 @@ const Question: React.FC = () => {
 
           <div className={styles.addAnswerWrapper}>
             <Button
+              label="Annuler"
+              className="p-button-danger"
+              onClick={() =>
+                navigate(`/questionnaire/${questionnaireId}/questions`)
+              }
+            />
+            <Button
               label="Ajouter une réponse"
               className={btnStyles.appActionBtnGhost}
               onClick={handleAddAnswer}
@@ -133,4 +138,4 @@ const Question: React.FC = () => {
   );
 };
 
-export default Question;
+export default QuestionCreate;

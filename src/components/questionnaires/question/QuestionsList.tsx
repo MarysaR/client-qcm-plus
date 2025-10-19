@@ -17,11 +17,11 @@ const QuestionsList: React.FC = () => {
     <div className={styles.container}>
       <Toast ref={toast} />
 
-      <h1 className={styles.title}>Questions du questionnaire</h1>
-
-      <div className={styles.topRow}>
+      <div className={styles.headerRow}>
+        <h1 className={styles.title}>Questions du questionnaire</h1>
         <Button
           label="Nouvelle question"
+          icon="pi pi-plus"
           className={btnStyles.appActionBtn}
           onClick={handleNavigateToNewQuestion}
         />
