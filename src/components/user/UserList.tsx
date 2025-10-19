@@ -28,11 +28,13 @@ const UserList: React.FC = () => {
           ) : (
             <p>Aucun utilisateur trouvé.</p>
           )}
-        </div>
-      </div>
-      <button className="button-new" onClick={() => navigate('/users/new')}>
+                <button className="button-new" onClick={() => navigate('/users/new')}>
         Nouveau
       </button>
+        </div>
+        
+      </div>
+
     </div>
   );
 };

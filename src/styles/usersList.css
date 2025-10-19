@@ -1,5 +1,30 @@
 /* Liste des utilisateurs */
 
+.user-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  width: 100%;
+  max-width: 1200px;
+  margin-left: 7rem;
+}
+
+@media (max-width: 1100px) {
+  .user-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+
+@media (max-width: 768px) {
+  .user-card {
+    flex-direction: column;
+    margin: 3rem auto;
+    padding: 0.8rem 1.6rem;
+  }
+
+}
+
 
 .user-list-page {
     min-height: 100vh;
@@ -10,6 +35,7 @@
     background-position: center;
     background-repeat: no-repeat;
     position: relative;
+    padding-left: auto;
   }
   
   /* Logo en haut à droite */
@@ -48,33 +74,41 @@
     flex-direction: column;
     gap: 1.5rem;
     width: 100%;
-    max-width: 900px;
+    max-width: 1000px;
   }
-  .user-card {
-    display: flex;
-    align-items: center;
-    width:900px;
-    max-width: 1000px; 
-    background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    padding: 1rem;
-    transition: transform 0.2s ease;
-    margin-left: auto;
-  }
+
+
+ 
+.user-card {
+  display: flex;
+  align-items: center;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  transition: transform 0.2s ease;
+  width: 100%;
+  max-width: 100%;
+  gap: 2rem;
+  box-sizing: border-box;
+}
+
+  
+  
   
   .user-card:hover {
     transform: scale(1.02);
   }
   
   
-  .user-info {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
-    overflow-wrap: break-word;
-  }
+.user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+  
   
   .user-info h3 {
     margin: 0;
@@ -88,18 +122,21 @@
     color: #555;
   }
   
+
+
+
   .actions {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-    margin-left: 1rem;
+    gap: 1rem;
+    align-items: flex-end;
   }
   
   .actions button {
     background: none;
     border: none;
     cursor: pointer;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     color: #555;
     transition: color 0.2s ease;
   }
@@ -107,23 +144,30 @@
   .actions button:hover {
     color: #007bff;
   }
+  
 
   
-.button-new {
+  .button-new {
     background-color: #176113;
     color: white;
-    font-size: 0.85rem;
-    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    padding: 0.8rem 1.6rem;
     border: none;
-    border-radius: 6px;
-    font-weight: 500;
+    border-radius: 8px;
+    font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-    margin-top: 100px;
-    width: 100px;
-    margin-left: 50%;
-
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    margin: 3rem auto;
+    display: block;
+    width: 160px;
+    text-align: center;
+    padding-left: auto;
+  }
+  
+  .button-new:hover {
+    background-color: #054d10;
+    transform: translateY(-2px);
   }
   .avatar-preview {
     width: 50px;
