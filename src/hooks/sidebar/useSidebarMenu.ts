@@ -35,7 +35,7 @@ export function useSidebarMenu(
         ]
       : [
           { icon: 'pi pi-user', label: 'Profil', path: '/me' },
-          { icon: 'pi pi-users', label: 'Stagiaires', path: '/users' },
+          { icon: 'pi pi-users', label: 'Stagiaires', path: '/stagiaires' },
           {
             icon: 'pi pi-book',
             label: 'Questionnaires',
