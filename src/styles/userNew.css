@@ -94,6 +94,8 @@
   margin-top: 30px;
   width: 100%;
   text-align: center;
+  width: 100px;
+  align-self: center;
 }
 
 .create-button:hover {
@@ -163,6 +165,8 @@
     font-size: 0.95rem;
     padding: 0.75rem;
     margin-top: 20px;
+    width: 100px;
+    align-self: center;
   }
 
   .avatar-preview {
@@ -221,6 +225,8 @@
     font-size: 0.9rem;
     padding: 0.7rem;
     margin-top: 15px;
+    width: 100px;
+    align-self: center;
   }
 
   .avatar-preview {
@@ -279,6 +285,9 @@
     padding: 0.65rem;
     font-size: 0.85rem;
     margin-top: 12px;
+    width: 100px;
+    align-self: center;
+
   }
 
   .avatar-preview {
