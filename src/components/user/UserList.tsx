@@ -3,6 +3,7 @@ import { useUsersList } from '../../hooks/useUsersList';
 import UserCard from './UserCard';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/usersList.css';
+import btnStyles from '../../styles/buttons.module.css';
 
 const UserList: React.FC = () => {
   const { users, loading, error } = useUsersList();
@@ -21,6 +22,17 @@ const UserList: React.FC = () => {
       <div className="user-list-header">
         <h1 className="page-title">Liste des Stagiaires</h1>
       </div>
+
+      <div className="actions-bar">
+        <button
+          type="button"
+          className={btnStyles.appActionBtn}
+          onClick={() => navigate('/users/new')}
+        >
+          Nouveau stagiaire
+        </button>
+      </div>
+
       <div className="user-list-container">
         <div className="user-list">
           {users && users.length > 0 ? (
@@ -30,9 +42,6 @@ const UserList: React.FC = () => {
           )}
         </div>
       </div>
-      <button className="button-new" onClick={() => navigate('/users/new')}>
-        Nouveau
-      </button>
     </div>
   );
 };

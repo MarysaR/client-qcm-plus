@@ -6,7 +6,7 @@ import { Checkbox } from 'primereact/checkbox';
 import { Toast } from 'primereact/toast';
 import styles from '../../../styles/question.module.css';
 import { useQuestionForm } from '../../../hooks/question/useQuestionForm';
-
+import btnStyles from '../../../styles/buttons.module.css';
 const Question: React.FC = () => {
   const {
     toast,
@@ -61,7 +61,7 @@ const Question: React.FC = () => {
       <div className={styles.addQuestionWrapper}>
         <Button
           label="Voir les questions"
-          className={styles.addQuestionBtn}
+          className={btnStyles.appActionBtnSm}
           onClick={() =>
             navigate(`/questionnaire/${questionnaireId}/questions`)
           }
@@ -79,7 +79,7 @@ const Question: React.FC = () => {
             />
             <Button
               label="Ajouter une question"
-              className={styles.createQuestionBtn}
+              className={btnStyles.appActionBtnSuccess}
               onClick={handleCreateQuestion}
             />
           </div>
@@ -123,7 +123,7 @@ const Question: React.FC = () => {
           <div className={styles.addAnswerWrapper}>
             <Button
               label="Ajouter une réponse"
-              className={styles.addAnswerBtn}
+              className={btnStyles.appActionBtnGhost}
               onClick={handleAddAnswer}
             />
           </div>

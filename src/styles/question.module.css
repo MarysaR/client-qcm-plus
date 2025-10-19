@@ -174,20 +174,44 @@ button,
 }
 
 .answerBlue {
-  background-color: #465490;
+  background: linear-gradient(135deg,#5363ab 0%, #465490 70%, #3b477d 100%);
+  color: #ffffff;
+  box-shadow: 0 3px 6px rgba(70,84,144,.35);
 }
 
 .answerYellow {
-  background-color: #d8bf78;
+  background: linear-gradient(135deg,#e4cc8f 0%, #d8bf78 65%, #c4a862 100%);
   color: #1a1a1a;
+  box-shadow: 0 3px 6px rgba(212,190,120,.4);
 }
 
 .answerRed {
-  background-color: #b16967;
+  background: linear-gradient(135deg,#c57b78 0%, #b16967 65%, #985652 100%);
+  color: #fff;
+  box-shadow: 0 3px 6px rgba(177,105,103,.4);
 }
 
 .answerPurple {
-  background-color: #5b3e6a;
+  background: linear-gradient(135deg,#6c4d7d 0%, #5b3e6a 65%, #4a3057 100%);
+  color: #fff;
+  box-shadow: 0 3px 6px rgba(91,62,106,.38);
+}
+
+.answerBlue:hover,
+.answerYellow:hover,
+.answerRed:hover,
+.answerPurple:hover {
+  filter: brightness(1.06);
+  transform: translateY(-2px);
+  transition: filter .25s ease, transform .25s ease;
+}
+
+.answerBlue:focus-within,
+.answerYellow:focus-within,
+.answerRed:focus-within,
+.answerPurple:focus-within {
+  outline: 2px solid rgba(255,255,255,.35);
+  outline-offset: 2px;
 }
 
 .answerFooter {
