@@ -7,6 +7,7 @@ import { Toast } from 'primereact/toast';
 import styles from '../../../styles/question.module.css';
 import { useQuestionEdit } from '../../../hooks/question/useQuestionEdit';
 import { EditableAnswer } from '../../../types/questionTypes';
+import btnStyles from '../../../styles/buttons.module.css';
 
 interface QuestionEditProps {
   questionId: number;
@@ -107,7 +108,7 @@ export const QuestionEdit: React.FC<QuestionEditProps> = ({
           <div className={styles.addAnswerWrapper}>
             <Button
               label="Ajouter une réponse"
-              className={styles.addAnswerBtn}
+              className={btnStyles.appActionBtnGhost}
               onClick={handleAddAnswer}
               disabled={isAddDisabled}
             />

@@ -7,6 +7,7 @@ import styles from '../../styles/questionnaireList.module.css';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import CreateQuestionnaireModal from './CreateQuestionnaireModal';
+import btnStyles from '../../styles/buttons.module.css';
 
 const Questionnaires: React.FC = () => {
   const { toast, questionnaires, isLoading, user, reload } =
@@ -38,7 +39,7 @@ const Questionnaires: React.FC = () => {
           <Button
             label="Ajouter questionnaire"
             icon="pi pi-plus"
-            className={`p-button-sm ${styles.addBtn}`}
+            className={btnStyles.appActionBtn}
             onClick={() => setShowCreate(true)}
           />
         )}

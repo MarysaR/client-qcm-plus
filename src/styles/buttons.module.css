@@ -1,0 +1,93 @@
+.appActionBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .55rem;
+  padding: .85rem 1.55rem;
+  min-height: 2.75rem;
+  font-size: .95rem;
+  font-weight: 600;
+  letter-spacing: .35px;
+  border-radius: 8px;
+  border: none;
+  background: linear-gradient(135deg,#162b7b 0%, #204bb3 55%, #295fd4 100%);
+  color: #fff;
+  box-shadow: 0 4px 14px -4px rgba(0,0,0,.25), 0 2px 4px rgba(0,0,0,.18);
+  transition: transform .18s ease, box-shadow .28s ease, filter .28s ease;
+}
+
+.appActionBtn:hover:not(:disabled) {
+  transform: translateY(-3px);
+  filter: brightness(1.08);
+  box-shadow: 0 8px 20px -6px rgba(0,0,0,.35), 0 3px 8px rgba(0,0,0,.25);
+}
+
+.appActionBtn:active:not(:disabled) {
+  transform: translateY(0);
+  filter: brightness(.94);
+  box-shadow: 0 3px 10px rgba(0,0,0,.25);
+}
+
+.appActionBtn:focus-visible {
+  outline: 3px solid rgba(44,129,255,.5);
+  outline-offset: 2px;
+}
+
+.appActionBtn:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.appActionBtnSm {
+  composes: appActionBtn;
+  padding: .6rem 1.15rem;
+  font-size: .85rem;
+  min-height: 2.4rem;
+}
+
+.appActionBtnGhost {
+  composes: appActionBtn;
+  background: linear-gradient(135deg,#ffffff 0%, #f6f9ff 100%);
+  color: #1d3d73;
+  border: 1px solid #d6e3ff;
+  box-shadow: 0 2px 6px rgba(0,0,0,.12);
+}
+
+.appActionBtnGhost:hover:not(:disabled) {
+  filter: brightness(1.06);
+}
+
+.appActionBtnWarn {
+  composes: appActionBtn;
+  background: linear-gradient(135deg,#ff9f43 0%, #ff7d15 55%, #e55f00 100%);
+}
+
+.appActionBtnSuccess {
+  composes: appActionBtn;
+  /* Vert adouci (moins saturé) */
+  background: linear-gradient(135deg,#0ba56f 0%, #08925f 55%, #067a4d 100%);
+  color: #f3fdf8;
+  border: 1px solid #088b5a;
+  box-shadow: 0 3px 10px -4px rgba(0,0,0,.22), 0 2px 4px rgba(0,0,0,.14);
+}
+
+/* états spécifiques pour conserver confort visuel */
+.appActionBtnSuccess:hover:not(:disabled) {
+  filter: brightness(1.05);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 18px -6px rgba(0,0,0,.28), 0 3px 8px rgba(0,0,0,.22);
+  background-position: 40% 60%;
+}
+
+.appActionBtnSuccess:active:not(:disabled) {
+  transform: translateY(0);
+  filter: brightness(.94);
+  box-shadow: 0 3px 10px rgba(0,0,0,.22);
+}
+
+.appActionBtnSuccess:focus-visible {
+  outline: 3px solid rgba(11,165,111,.45);
+  outline-offset: 2px;
+}
