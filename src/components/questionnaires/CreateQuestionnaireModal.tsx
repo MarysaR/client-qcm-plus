@@ -3,7 +3,7 @@ import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { Button } from 'primereact/button';
-import { useCreateQuestionnaire } from '../../hooks/useCreateQuestionnaire';
+import { useCreateQuestionnaire } from '../../hooks/questionnaire/useCreateQuestionnaire';
 import styles from '../../styles/questionnaireModal.module.css';
 
 interface Props {

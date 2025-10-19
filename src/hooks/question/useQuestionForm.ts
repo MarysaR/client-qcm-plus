@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { Toast } from 'primereact/toast';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import { CreateQuestionType } from '../types/questionTypes';
-import { questionService } from '../services/question/questionService';
-import { questionnaireService } from '../services/questionnaire/questionnaireService';
+import { useAuth } from '../../context/AuthContext';
+import { CreateQuestionType } from '../../types/questionTypes';
+import { questionService } from '../../services/question/questionService';
+import { questionnaireService } from '../../services/questionnaire/questionnaireService';
 import { RoleEnum, Result, AppError } from 'logic-qcm-plus';
-import { COLORS } from '../constants/colors';
+import { COLORS } from '../../constants/colors';
 
 export function useQuestionForm() {
   const toast = useRef<Toast>(null);

@@ -15,6 +15,7 @@ import ProtectedRoute from './routes/ProtectedRoute';
 import AuthPage from './pages/auth/AuthPage';
 import QuestionPage from './pages/question/QuestionPage';
 import QuestionsList from './components/questionnaires/question/QuestionsList';
+import QuestionEditPage from './pages/question/QuestionEditPage';
 import Questionnaires from './components/questionnaires/QuestionnairesList';
 import CreateUserPage from './pages/users/CreateUserPage';
 import UserListPage from './pages/users/UserListPage';
@@ -65,6 +66,15 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
             element={
               <ProtectedRoute>
                 <QuestionPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/questions/:questionId/edit"
+            element={
+              <ProtectedRoute>
+                <QuestionEditPage />
               </ProtectedRoute>
             }
           />

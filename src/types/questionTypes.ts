@@ -8,3 +8,12 @@ export interface CreateQuestionType {
   questionnaireId: number;
   answers: CreateAnswerType[];
 }
+
+export interface EditableAnswer extends CreateAnswerType {
+  id?: number;
+}
+
+export interface EditQuestionType extends CreateQuestionType {
+  id: number;
+  answers: EditableAnswer[];
+}

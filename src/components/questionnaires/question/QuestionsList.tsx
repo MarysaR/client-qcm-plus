@@ -2,12 +2,15 @@ import React from 'react';
 import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
 import { Toast } from 'primereact/toast';
+import { useNavigate } from 'react-router-dom';
 import styles from '../../../styles/questionList.module.css';
-import { useQuestionsList } from '../../../hooks/useQuestionsList';
+import { useQuestionsList } from '../../../hooks/question/useQuestionsList';
 
 const QuestionsList: React.FC = () => {
   const { toast, questions, isLoading, handleNavigateToNewQuestion } =
     useQuestionsList();
+
+  const navigate = useNavigate();
 
   return (
     <div className={styles.container}>
@@ -33,6 +36,7 @@ const QuestionsList: React.FC = () => {
         <div className={styles.cardsContainer}>
           {questions.map((question) => {
             const correctAnswers = question.answers.filter((a) => a.isCorrect);
+
             return (
               <Card key={question.id} className={styles.card}>
                 <div className={styles.questionLabel}>
@@ -61,6 +65,15 @@ const QuestionsList: React.FC = () => {
                     Aucune réponse correcte définie.
                   </div>
                 )}
+
+                <div className={styles.footerRow}>
+                  <Button
+                    label="Modifier"
+                    icon="pi pi-pencil"
+                    className={styles.editBtn}
+                    onClick={() => navigate(`/questions/${question.id}/edit`)}
+                  />
+                </div>
               </Card>
             );
           })}
