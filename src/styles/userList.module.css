@@ -1,0 +1,315 @@
+/* === CONTAINER GLOBAL === */
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #fbf9f5;
+  margin-left: var(--sidebar-width, 6.5rem);
+  padding: 4rem 3rem 3rem;
+  background-image: url('../assets/images/fond.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  transition: margin-left 0.3s ease;
+}
+
+/* === TITRE === */
+.title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #a19e9e;
+  text-align: start;
+  margin-bottom: 3rem;
+}
+
+/* === HEADER (titre + bouton) === */
+.headerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2.5rem;
+  width: 100%;
+}
+
+/* === BOUTON NOUVEAU STAGIAIRE === */
+.addBtn {
+  padding: 0.85rem 1.6rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #162b7b 0%, #204bb3 60%, #295fd4 100%);
+  border: none;
+  color: #fff;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.18);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.28s ease, filter 0.28s ease;
+}
+
+.addBtn:hover {
+  transform: translateY(-3px);
+  filter: brightness(1.08);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
+}
+
+/* === LISTE === */
+.grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+  width: 100%;
+  max-width: 1250px; 
+  margin: 0 auto;
+}
+
+/* === CARD === */
+.card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #fff;
+  border-radius: 12px;
+  border: 1px solid #e5e5e5;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 2rem 2.5rem; /* un peu plus d’espace interne */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
+  max-width: 100%;
+}
+
+
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+}
+
+/* === AVATAR === */
+.avatarWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+/* === INFOS STAGIAIRE === */
+.info {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  flex: 1;
+}
+
+/* === GRILLE DÉTAILS === */
+.details {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1rem 2rem;
+  width: 100%;
+  align-items: start;
+}
+
+/* === BLOC LABEL + VALEUR === */
+.detailItem {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  font-size: 0.95rem;
+  color: #333;
+  line-height: 1.4;
+  min-width: 100px;
+}
+
+.detailItem strong {
+  color: #0d1b4c;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 0.35rem;
+}
+
+
+/* === ACTIONS === */
+.actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.8rem;
+  margin-left: 1rem;
+}
+
+.actions button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  color: #555;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.actions button:hover {
+  color: #204bb3;
+  transform: scale(1.1);
+}
+
+
+/* === RESPONSIVE TABLETTE === */
+@media (max-width: 1024px) {
+  .container {
+    padding: 3rem 2rem;
+  }
+
+  .details {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem 1.5rem;
+  }
+
+  .card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.8rem 2rem;
+  }
+
+  .info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+    width: 100%;
+  }
+
+  .actions {
+    flex-direction: row;
+    justify-content: flex-end;
+    width: 100%;
+    margin-top: 1.2rem;
+  }
+
+  .avatar {
+    width: 60px;
+    height: 60px;
+  }
+
+  .title {
+    font-size: 1.8rem;
+  }
+
+  .addBtn {
+    padding: 0.75rem 1.4rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* ============================================================= */
+/* === RESPONSIVE MOBILE === */
+@media (max-width: 768px) {
+  .container {
+    margin-left: 7rem;
+    padding: 2.5rem 1.5rem;
+  }
+
+  .headerRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .grid {
+    gap: 1.4rem;
+  }
+
+  .card {
+    padding: 1.5rem;
+  }
+
+  .details {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .detailItem {
+    font-size: 0.9rem;
+  }
+
+  .avatar {
+    width: 50px;
+    height: 50px;
+  }
+
+  .actions {
+    flex-direction: row;
+    justify-content: flex-end;
+    width: 100%;
+    margin-top: 1rem;
+    gap: 1.2rem;
+  }
+
+  .addBtn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ============================================================= */
+/* === RESPONSIVE PETIT MOBILE (≤480px) === */
+@media (max-width: 480px) {
+  .container {
+    margin-left: 5.5rem;
+    padding: 2rem 1rem;
+  }
+
+  .title {
+    font-size: 1.3rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .grid {
+    gap: 1rem;
+  }
+
+  .card {
+    padding: 1.2rem;
+  }
+
+  .details {
+    grid-template-columns: 1fr;
+  }
+
+  .detailItem {
+    font-size: 0.9rem;
+    width: 100%;
+  }
+
+  .actions {
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 1rem;
+  }
+
+  .avatar {
+    width: 45px;
+    height: 45px;
+  }
+
+  .addBtn {
+    width: 100%;
+    padding: 0.8rem 1.2rem;
+    font-size: 0.85rem;
+  }
+}

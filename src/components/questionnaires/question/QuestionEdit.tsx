@@ -19,6 +19,7 @@ export const QuestionEdit: React.FC<QuestionEditProps> = ({
   onUpdated,
 }) => {
   const {
+    navigate,
     toast,
     label,
     setLabel,
@@ -26,6 +27,7 @@ export const QuestionEdit: React.FC<QuestionEditProps> = ({
     setAnswers,
     handleAddAnswer,
     handleUpdateQuestion,
+    questionnaireId,
     isAddDisabled,
   } = useQuestionEdit(questionId);
 
@@ -35,9 +37,9 @@ export const QuestionEdit: React.FC<QuestionEditProps> = ({
 
       <h1 className={styles.title}>Modifier la question</h1>
 
-      <div className={styles.topRow}>
-        <div className={styles.inputs}>
-          <span className="p-float-label">
+      <Card className={styles.card}>
+        <div className={styles.questionBlock}>
+          <div className={styles.questionHeader}>
             <InputText
               id="questionLabel"
               className={styles.questionInput}
@@ -45,27 +47,18 @@ export const QuestionEdit: React.FC<QuestionEditProps> = ({
               onChange={(e) => setLabel(e.target.value)}
               placeholder="Éditer la question"
             />
+            <Button
+              label="Modifier une question"
+              className={btnStyles.appActionBtnSuccess}
+              onClick={async () => {
+                await handleUpdateQuestion();
+                if (onUpdated) {
+                  onUpdated();
+                }
+              }}
+            />
+          </div>
 
-            <label htmlFor="questionLabel" className={styles.label}>
-              Question
-            </label>
-          </span>
-        </div>
-
-        <Button
-          label="Enregistrer"
-          className={styles.saveButton}
-          onClick={async () => {
-            await handleUpdateQuestion();
-            if (onUpdated) {
-              onUpdated();
-            }
-          }}
-        />
-      </div>
-
-      <Card className={styles.card}>
-        <div className={styles.questionBlock}>
           <div className={styles.answers}>
             {answers.map(
               (a: EditableAnswer & { color?: string }, i: number) => (
@@ -106,6 +99,13 @@ export const QuestionEdit: React.FC<QuestionEditProps> = ({
           </div>
 
           <div className={styles.addAnswerWrapper}>
+            <Button
+              label="Annuler"
+              className={btnStyles.appActionBtnDanger}
+              onClick={() =>
+                navigate(`/questionnaire/${questionnaireId}/questions`)
+              }
+            />
             <Button
               label="Ajouter une réponse"
               className={btnStyles.appActionBtnGhost}

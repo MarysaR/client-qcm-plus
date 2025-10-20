@@ -59,7 +59,7 @@ const QuestionCreate: React.FC = () => {
       <div className={styles.addQuestionWrapper}>
         <Button
           label="Voir les questions"
-          className={btnStyles.appActionBtnSm}
+          className={btnStyles.appActionBtn}
           onClick={() =>
             navigate(`/questionnaire/${questionnaireId}/questions`)
           }
@@ -121,7 +121,7 @@ const QuestionCreate: React.FC = () => {
           <div className={styles.addAnswerWrapper}>
             <Button
               label="Annuler"
-              className="p-button-danger"
+              className={btnStyles.appActionBtnDanger}
               onClick={() =>
                 navigate(`/questionnaire/${questionnaireId}/questions`)
               }
