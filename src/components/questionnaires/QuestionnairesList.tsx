@@ -46,7 +46,7 @@ const Questionnaires: React.FC = () => {
       <Toast ref={toast} className={styles.toast} />
       <div className={styles.headerRow}>
         <h1 className={styles.title}>Liste des questionnaires</h1>
-        {user?.roleId === RoleEnum.ADMIN && (
+        {user?.roleId == RoleEnum.ADMIN && (
           <Button
             label="Ajouter questionnaire"
             icon="pi pi-plus"
@@ -72,7 +72,7 @@ const Questionnaires: React.FC = () => {
                 Créé le {new Date(q.createdAt).toLocaleDateString()}
               </p>
 
-              {user?.roleId === RoleEnum.ADMIN && (
+              {user?.roleId == RoleEnum.ADMIN && (
                 <div className={styles.actions}>
                   <Button
                     icon="pi pi-pencil"
@@ -99,7 +99,7 @@ const Questionnaires: React.FC = () => {
             </div>
           ))}
 
-          {questionnaires.length === 0 && (
+          {questionnaires.length == 0 && (
             <div className={styles.empty}>Aucun questionnaire.</div>
           )}
         </div>
