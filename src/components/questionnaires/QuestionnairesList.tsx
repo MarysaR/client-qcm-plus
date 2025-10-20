@@ -8,17 +8,21 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import CreateQuestionnaireModal from './CreateQuestionnaireModal';
 import btnStyles from '../../styles/buttons.module.css';
+import UpdateQuestionnaireModal from './UpdateQuestionnaireModal';
 
 const Questionnaires: React.FC = () => {
   const { toast, questionnaires, isLoading, user, reload } =
     useQuestionnairesList();
   const { setCurrentQuestionnaireId } = useAuth();
   const navigate = useNavigate();
-  const [showCreate, setShowCreate] = React.useState(false);
 
-  const handleCardClick = (q: Questionnaire) => {
-    setCurrentQuestionnaireId(q.id);
-    navigate(`/questionnaire/${q.id}/questions`);
+  const [showCreate, setShowCreate] = React.useState(false);
+  const [editVisible, setEditVisible] = React.useState(false);
+  const [editId, setEditId] = React.useState<number | null>(null);
+
+  const openEdit = (id: number) => {
+    setEditId(id);
+    setEditVisible(true);
   };
 
   const handleCreated = async () => {
@@ -30,6 +34,13 @@ const Questionnaires: React.FC = () => {
       life: 3000,
     });
   };
+
+  const handleCardClick = (q: Questionnaire) => {
+    if (editVisible) return;
+    setCurrentQuestionnaireId(q.id);
+    navigate(`/questionnaire/${q.id}/questions`);
+  };
+
   return (
     <div className={styles.container}>
       <Toast ref={toast} className={styles.toast} />
@@ -66,7 +77,10 @@ const Questionnaires: React.FC = () => {
                   <Button
                     icon="pi pi-pencil"
                     className="p-button-text p-button-sm"
-                    disabled
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      openEdit(q.id);
+                    }}
                   />
                   <Button
                     icon="pi pi-trash"
@@ -84,6 +98,7 @@ const Questionnaires: React.FC = () => {
               )}
             </div>
           ))}
+
           {questionnaires.length == 0 && (
             <div className={styles.empty}>Aucun questionnaire.</div>
           )}
@@ -94,6 +109,13 @@ const Questionnaires: React.FC = () => {
         visible={showCreate}
         onHide={() => setShowCreate(false)}
         onCreated={handleCreated}
+      />
+
+      <UpdateQuestionnaireModal
+        questionnaireId={editId}
+        visible={editVisible}
+        onHide={() => setEditVisible(false)}
+        onUpdated={reload}
       />
     </div>
   );

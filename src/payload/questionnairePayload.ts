@@ -8,3 +8,7 @@ export interface QuestionnaireCreationState {
   error: string | null;
   success: boolean;
 }
+
+export interface UpdateQuestionnairePayload extends CreateQuestionnairePayload {
+  id: number;
+}
