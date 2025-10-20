@@ -58,7 +58,7 @@ export function useQuestionnaireEdit(
       return false;
     }
 
-    if (!user || user.roleId !== RoleEnum.ADMIN) {
+    if (!user || user.roleId != RoleEnum.ADMIN) {
       toast.current?.show({
         severity: 'warn',
         summary: 'Permission refusée',
