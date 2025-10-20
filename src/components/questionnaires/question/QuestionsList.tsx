@@ -2,20 +2,36 @@ import React from 'react';
 import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
 import { Toast } from 'primereact/toast';
-import { useNavigate } from 'react-router-dom';
-import styles from '../../../styles/questionList.module.css';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useQuestionsList } from '../../../hooks/question/useQuestionsList';
+import { useQuestionDelete } from '../../../hooks/question/useQuestionDelete';
 import btnStyles from '../../../styles/buttons.module.css';
+import styles from '../../../styles/questionList.module.css';
 
 const QuestionsList: React.FC = () => {
-  const { toast, questions, isLoading, handleNavigateToNewQuestion } =
-    useQuestionsList();
+  const {
+    toast,
+    questions,
+    setQuestions,
+    isLoading,
+    handleNavigateToNewQuestion,
+  } = useQuestionsList();
+
+  const { id } = useParams<{ id: string }>();
+  const questionnaireId = id ? Number(id) : null;
+
+  const { toast: deleteToast, handleDeleteQuestion } = useQuestionDelete(
+    questionnaireId,
+    (deletedId) =>
+      setQuestions((prev) => prev.filter((q) => q.id !== deletedId))
+  );
 
   const navigate = useNavigate();
 
   return (
     <div className={styles.container}>
       <Toast ref={toast} />
+      <Toast ref={deleteToast} />
 
       <div className={styles.headerRow}>
         <h1 className={styles.title}>Questions du questionnaire</h1>
@@ -68,6 +84,14 @@ const QuestionsList: React.FC = () => {
                 )}
 
                 <div className={styles.footerRow}>
+                  <Button
+                    label="Supprimer"
+                    icon="pi pi-trash"
+                    className={btnStyles.appActionBtnDanger}
+                    onClick={() =>
+                      question.id && handleDeleteQuestion(question.id)
+                    }
+                  />
                   <Button
                     label="Modifier"
                     icon="pi pi-pencil"

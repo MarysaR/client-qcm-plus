@@ -53,6 +53,7 @@ export function useQuestionsList() {
   return {
     toast,
     questions,
+    setQuestions,
     isLoading,
     handleNavigateToNewQuestion,
   };

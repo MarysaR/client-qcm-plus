@@ -7,17 +7,17 @@ import {
   Result,
   AppError,
 } from 'logic-qcm-plus';
-import { httpRequest, httpClient } from '../../utils/httpClient';
-import { mapHttpResult } from '../../utils/httpResultMapper';
-import { mapHttpError } from '../../utils/httpUtils';
-import { authService } from '../auth/authService';
 import {
   CREATE_QUESTION,
   GET_QUESTIONS_OF_QUESTIONNAIRE,
   UPDATE_QUESTION,
 } from '../../constants/endpoints';
-import { HTTP_STATUS } from '../../constants/httpStatus';
+import { authService } from '../auth/authService';
 import { CreateQuestionType, EditQuestionType } from 'src/types/questionTypes';
+import { httpRequest, httpClient } from '../../utils/httpClient';
+import { mapHttpResult } from '../../utils/httpResultMapper';
+import { mapHttpError } from '../../utils/httpUtils';
+import { HTTP_STATUS } from '../../constants/httpStatus';
 
 export const questionService = {
   async getQuestionsOfQuestionnaire(questionnaireId: number) {
@@ -185,6 +185,42 @@ export const questionService = {
 
     const resResult = await httpRequest(
       httpClient.put(`${UPDATE_QUESTION}/${questionId}`, payload, {
+        headers: { Authorization: 'Bearer ' + token },
+      })
+    );
+
+    return mapHttpResult(resResult, async (res) => {
+      let status: number;
+      if ('status' in res) {
+        status = res.status;
+      } else {
+        status = (res as Response).status;
+      }
+
+      if (status == HTTP_STATUS.NOT_FOUND) {
+        return Err.of(new NotFoundError('Question introuvable'));
+      }
+
+      if (status < HTTP_STATUS.OK || status >= HTTP_STATUS.BAD_REQUEST) {
+        return Err.of(mapHttpError(status));
+      }
+
+      return Ok.of(undefined);
+    });
+  },
+
+  async deleteQuestion(questionId: number): Promise<Result<void, AppError>> {
+    const token = authService.getToken();
+    if (!token) {
+      return Err.of(
+        new PermissionDeniedError(
+          'Utilisateur non authentifié (token manquant)'
+        )
+      );
+    }
+
+    const resResult = await httpRequest(
+      httpClient.delete(`/questions/${questionId}`, {
         headers: { Authorization: 'Bearer ' + token },
       })
     );
