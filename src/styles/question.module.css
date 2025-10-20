@@ -136,17 +136,23 @@ button,
 .questionInput {
   width: 100%;
   border: 1px solid #ccc;
-  padding: 0.6rem 0.8rem;
-  border-radius: 6px;
+  padding: 0.85rem 1.55rem;
+  min-height: 2.75rem;
+  border-radius: 8px;
   background-color: #fff;
-  font-size: 1rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.35px;
+  color: #333;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .questionInput:focus {
   border-color: #4f46e5;
-  box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.15);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
   outline: none;
 }
+
 
 /* === RÉPONSES === */
 .answers {

@@ -41,11 +41,6 @@ export function useSidebarMenu(
             label: 'Questionnaires',
             path: '/questionnaires',
           },
-          {
-            icon: 'pi pi-question-circle',
-            label: 'Questions',
-            action: handleQuestionNavigation,
-          },
         ];
 
   return { menuItems };

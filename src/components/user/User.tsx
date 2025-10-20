@@ -3,7 +3,6 @@ import '../../styles/userNew.css';
 import { Toast } from 'primereact/toast';
 import { useCreateUserForm } from '../../hooks/user/useCreateUserForm';
 import btnStyles from '../../styles/buttons.module.css';
-import logo from '../../assets/images/LogoQCM+SansLabelSansFond.png';
 
 const User: React.FC = () => {
   const {
@@ -36,7 +35,7 @@ const User: React.FC = () => {
   return (
     <div className="create-user-page">
       <Toast ref={toast} />
-      <img src={logo} alt="Logo" className="logo-top-right" />
+
       <h1 className="page-title">Nouveau Stagiaire</h1>
       <div className="form-container">
         <form className="user-form" onSubmit={handleSubmit}>

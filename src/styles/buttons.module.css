@@ -89,3 +89,31 @@
   outline: 3px solid rgba(11,165,111,.45);
   outline-offset: 2px;
 }
+
+.appActionBtnDanger {
+  composes: appActionBtn;
+  background: linear-gradient(135deg, #d43c3c 0%, #b53030 55%, #992626 100%);
+  color: #fff;
+  border: 1px solid #a52828;
+  box-shadow: 0 3px 10px -4px rgba(0,0,0,.22), 0 2px 4px rgba(0,0,0,.14);
+   width: 210px;
+}
+
+.appActionBtnDanger:hover:not(:disabled) {
+  filter: brightness(1.06);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 18px -6px rgba(0,0,0,.28), 0 3px 8px rgba(0,0,0,.22);
+  background-position: 40% 60%;
+}
+
+.appActionBtnDanger:active:not(:disabled) {
+  transform: translateY(0);
+  filter: brightness(.94);
+  box-shadow: 0 3px 10px rgba(0,0,0,.22);
+}
+
+.appActionBtnDanger:focus-visible {
+  outline: 3px solid rgba(212,60,60,.45);
+  outline-offset: 2px;
+}
+
