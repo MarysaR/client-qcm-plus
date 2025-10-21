@@ -10,7 +10,7 @@ import { LOGIN, LOGOUT, ME } from '../../constants/endpoints';
 import { TOKEN_KEY } from '../../constants/storage';
 import { httpRequest, httpClient } from '../../utils/httpClient';
 import { mapHttpResult } from '../../utils/httpResultMapper';
-import { mapHttpError, getHttpStatus } from '../../utils/httpUtils';
+import { mapHttpError } from '../../utils/httpUtils';
 import { HTTP_STATUS } from '../../constants/httpStatus';
 
 export const authService = {
@@ -33,18 +33,9 @@ export const authService = {
     const resResult = await httpRequest(httpClient.post(LOGIN, creds));
 
     return mapHttpResult<void>(resResult, async (res) => {
-      const status = getHttpStatus(res);
+      const status = res.status;
 
-      let data: { token?: string } = {};
-      if ('data' in res) {
-        data = res.data;
-      } else {
-        const json = await (res as Response).json();
-        if (typeof json == 'object' && json != null) {
-          data = json;
-        }
-      }
-
+      const data = res.data as { token?: string };
       if (status >= HTTP_STATUS.BAD_REQUEST) {
         return Err.of(mapHttpError(status));
       }
@@ -71,17 +62,8 @@ export const authService = {
     );
 
     return mapHttpResult<User>(resResult, async (res) => {
-      const status = getHttpStatus(res);
-
-      let data: User = {} as User;
-      if ('data' in res) {
-        data = res.data as User;
-      } else {
-        const json = await (res as Response).json();
-        if (typeof json == 'object' && json != null) {
-          data = json as User;
-        }
-      }
+      const status = res.status;
+      const data = res.data as User;
 
       if (status >= HTTP_STATUS.BAD_REQUEST) {
         return Err.of(mapHttpError(status));
@@ -102,7 +84,7 @@ export const authService = {
     const resResult = await httpRequest(httpClient.post(LOGOUT, { token }));
 
     return mapHttpResult<void>(resResult, async (res) => {
-      const status = getHttpStatus(res);
+      const status = res.status;
 
       if (status >= HTTP_STATUS.BAD_REQUEST) {
         return Err.of(mapHttpError(status));

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
 import { Toast } from 'primereact/toast';
@@ -9,21 +9,18 @@ import btnStyles from '../../../styles/buttons.module.css';
 import styles from '../../../styles/questionList.module.css';
 
 const QuestionsList: React.FC = () => {
-  const {
-    toast,
-    questions,
-    setQuestions,
-    isLoading,
-    handleNavigateToNewQuestion,
-  } = useQuestionsList();
+  const toast = useRef<Toast>(null);
+
+  const { questions, setQuestions, isLoading, handleNavigateToNewQuestion } =
+    useQuestionsList(toast);
 
   const { id } = useParams<{ id: string }>();
   const questionnaireId = id ? Number(id) : null;
 
-  const { toast: deleteToast, handleDeleteQuestion } = useQuestionDelete(
+  const { handleDeleteQuestion } = useQuestionDelete(
+    toast,
     questionnaireId,
-    (deletedId) =>
-      setQuestions((prev) => prev.filter((q) => q.id !== deletedId))
+    (deletedId) => setQuestions((prev) => prev.filter((q) => q.id != deletedId))
   );
 
   const navigate = useNavigate();
@@ -31,7 +28,6 @@ const QuestionsList: React.FC = () => {
   return (
     <div className={styles.container}>
       <Toast ref={toast} />
-      <Toast ref={deleteToast} />
 
       <div className={styles.headerRow}>
         <h1 className={styles.title}>Questions du questionnaire</h1>

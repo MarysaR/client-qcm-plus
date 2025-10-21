@@ -38,28 +38,13 @@ export const questionService = {
     );
 
     return mapHttpResult(resResult, async (res) => {
-      let status;
-      if ('status' in res) {
-        status = res.status;
-      } else {
-        status = (res as Response).status;
-      }
-
-      let body = {};
-      if ('data' in res) {
-        body = res.data;
-      } else {
-        const json = await (res as Response).json();
-        if (typeof json == 'object' && json != null) {
-          body = json;
-        }
-      }
+      const status = res.status;
+      const body = res.data;
 
       const statusInvalide =
         status < HTTP_STATUS.OK ||
         (status >= HTTP_STATUS.BAD_REQUEST &&
           status < HTTP_STATUS.INTERNAL_SERVER_ERROR);
-
       if (statusInvalide) {
         return Err.of(mapHttpError(status));
       }
@@ -95,23 +80,9 @@ export const questionService = {
     );
 
     return mapHttpResult(resResult, async (res) => {
-      let status: number;
-      if ('status' in res) {
-        status = res.status;
-      } else {
-        status = (res as Response).status;
-      }
+      const status = res.status;
 
-      let body = {};
-      if ('data' in res) {
-        body = res.data;
-      } else {
-        const json = await (res as Response).json();
-        if (typeof json == 'object' && json !== null) {
-          body = json;
-        }
-      }
-
+      const body = res.data;
       if (status == HTTP_STATUS.NOT_FOUND) {
         return Err.of(new NotFoundError('Question introuvable'));
       }
@@ -150,18 +121,12 @@ export const questionService = {
     );
 
     return mapHttpResult(resResult, async (res) => {
-      let status;
-      if ('status' in res) {
-        status = res.status;
-      } else {
-        status = (res as Response).status;
-      }
+      const status = res.status;
 
       const statusInvalide =
         status < HTTP_STATUS.OK ||
         (status >= HTTP_STATUS.BAD_REQUEST &&
           status < HTTP_STATUS.INTERNAL_SERVER_ERROR);
-
       if (statusInvalide) {
         return Err.of(mapHttpError(status));
       }
@@ -190,13 +155,7 @@ export const questionService = {
     );
 
     return mapHttpResult(resResult, async (res) => {
-      let status: number;
-      if ('status' in res) {
-        status = res.status;
-      } else {
-        status = (res as Response).status;
-      }
-
+      const status = res.status;
       if (status == HTTP_STATUS.NOT_FOUND) {
         return Err.of(new NotFoundError('Question introuvable'));
       }
@@ -226,13 +185,7 @@ export const questionService = {
     );
 
     return mapHttpResult(resResult, async (res) => {
-      let status: number;
-      if ('status' in res) {
-        status = res.status;
-      } else {
-        status = (res as Response).status;
-      }
-
+      const status = res.status;
       if (status == HTTP_STATUS.NOT_FOUND) {
         return Err.of(new NotFoundError('Question introuvable'));
       }

@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
-import '../../styles/userNew.css';
 import { Toast } from 'primereact/toast';
 import { useCreateUserForm } from '../../hooks/user/useCreateUserForm';
+import '../../styles/userNew.css';
 import btnStyles from '../../styles/buttons.module.css';
 
 const User: React.FC = () => {

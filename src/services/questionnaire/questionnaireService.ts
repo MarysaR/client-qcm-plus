@@ -42,28 +42,13 @@ export const questionnaireService = {
     );
 
     return mapHttpResult(resResult, async (res) => {
-      let status;
-      if ('status' in res) {
-        status = res.status;
-      } else {
-        status = (res as Response).status;
-      }
-
-      let body = {};
-      if ('data' in res) {
-        body = res.data;
-      } else {
-        const json = await (res as Response).json();
-        if (typeof json == 'object' && json != null) {
-          body = json;
-        }
-      }
+      const status = res.status;
+      const body = res.data;
 
       const statusInvalide =
         status < HTTP_STATUS.OK ||
         (status >= HTTP_STATUS.BAD_REQUEST &&
           status < HTTP_STATUS.INTERNAL_SERVER_ERROR);
-
       if (statusInvalide) {
         return Err.of(mapHttpError(status));
       }
@@ -105,10 +90,11 @@ export const questionnaireService = {
     );
 
     return mapHttpResult(resResult, async (res) => {
-      const status = 'status' in res ? res.status : (res as Response).status;
+      const status = res.status;
       if (status < HTTP_STATUS.OK || status >= HTTP_STATUS.BAD_REQUEST) {
         return Err.of(mapHttpError(status));
       }
+
       return Ok.of(undefined);
     });
   },
@@ -132,34 +118,18 @@ export const questionnaireService = {
     );
 
     return mapHttpResult(resResult, async (res) => {
-      let status;
-      if ('status' in res) {
-        status = res.status;
-      } else {
-        status = (res as Response).status;
-      }
-
-      let body = {};
-      if ('data' in res) {
-        body = res.data;
-      } else {
-        const json = await (res as Response).json();
-        if (typeof json == 'object' && json !== null) {
-          body = json;
-        }
-      }
+      const status = res.status;
+      const body = res.data;
 
       const statusInvalide =
         status < HTTP_STATUS.OK ||
         (status >= HTTP_STATUS.BAD_REQUEST &&
           status < HTTP_STATUS.INTERNAL_SERVER_ERROR);
-
       if (statusInvalide) {
         return Err.of(mapHttpError(status));
       }
 
       const questionnaire = body as { name?: string; description?: string };
-
       if (!questionnaire.name) {
         return Err.of(
           new TechnicalError(
@@ -206,10 +176,11 @@ export const questionnaireService = {
     );
 
     return mapHttpResult(resResult, async (res) => {
-      const status = 'status' in res ? res.status : (res as Response).status;
+      const status = res.status;
       if (status < HTTP_STATUS.OK || status >= HTTP_STATUS.BAD_REQUEST) {
         return Err.of(mapHttpError(status));
       }
+
       return Ok.of(undefined);
     });
   },
@@ -234,10 +205,11 @@ export const questionnaireService = {
     );
 
     return mapHttpResult(resResult, async (res) => {
-      const status = 'status' in res ? res.status : (res as Response).status;
+      const status = res.status;
       if (status < HTTP_STATUS.OK || status >= HTTP_STATUS.BAD_REQUEST) {
         return Err.of(mapHttpError(status));
       }
+
       return Ok.of(undefined);
     });
   },

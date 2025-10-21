@@ -1,13 +1,12 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Toast } from 'primereact/toast';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Question } from 'logic-qcm-plus';
 import { questionService } from '../../services/question/questionService';
 
-export function useQuestionsList() {
+export function useQuestionsList(toast: React.RefObject<Toast | null>) {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const toast = useRef<Toast>(null);
 
   const [questions, setQuestions] = useState<Question[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -27,9 +26,18 @@ export function useQuestionsList() {
       const result = await questionService.getQuestionsOfQuestionnaire(
         Number(id)
       );
+
       if (result.isOk()) {
-        if (result.isOk()) {
-          setQuestions(result.value as Question[]);
+        const list = result.value as Question[];
+        setQuestions(list);
+
+        if (list.length == 0) {
+          toast.current?.show({
+            severity: 'warn',
+            summary: 'Information',
+            detail: 'Aucune question trouvée pour ce questionnaire.',
+            life: 4000,
+          });
         }
       } else {
         toast.current?.show({
