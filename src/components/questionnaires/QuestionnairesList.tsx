@@ -1,20 +1,34 @@
 import React from 'react';
 import { Button } from 'primereact/button';
 import { Toast } from 'primereact/toast';
+import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 import { useQuestionnairesList } from '../../hooks/questionnaire/useQuestionnairesList';
+import { useQuestionnaireDelete } from '../../hooks/questionnaire/useQuestionnaireDelete';
 import { Questionnaire, RoleEnum } from 'logic-qcm-plus';
 import styles from '../../styles/questionnaireList.module.css';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import CreateQuestionnaireModal from './CreateQuestionnaireModal';
-import btnStyles from '../../styles/buttons.module.css';
 import UpdateQuestionnaireModal from './UpdateQuestionnaireModal';
+import btnStyles from '../../styles/buttons.module.css';
 
 const Questionnaires: React.FC = () => {
   const { toast, questionnaires, isLoading, user, reload } =
     useQuestionnairesList();
   const { setCurrentQuestionnaireId } = useAuth();
   const navigate = useNavigate();
+
+  const { toast: deleteToast, handleDeleteQuestionnaire } =
+    useQuestionnaireDelete((deletedId) => {
+      setLocalQuestionnaires((prev) => prev.filter((q) => q.id !== deletedId));
+    });
+
+  const [localQuestionnaires, setLocalQuestionnaires] =
+    React.useState<Questionnaire[]>(questionnaires);
+  React.useEffect(
+    () => setLocalQuestionnaires(questionnaires),
+    [questionnaires]
+  );
 
   const [showCreate, setShowCreate] = React.useState(false);
   const [editVisible, setEditVisible] = React.useState(false);
@@ -41,9 +55,26 @@ const Questionnaires: React.FC = () => {
     navigate(`/questionnaire/${q.id}/questions`);
   };
 
+  const confirmDelete = (id: number) => {
+    confirmDialog({
+      message: 'Confirmer la suppression de ce questionnaire ?',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Supprimer',
+      rejectLabel: 'Annuler',
+      className: styles.confirmDialog,
+      acceptClassName: btnStyles.appActionBtnDanger,
+      rejectClassName: btnStyles.appActionBtnGhost,
+      accept: () => handleDeleteQuestionnaire(id),
+    });
+  };
+
   return (
     <div className={styles.container}>
       <Toast ref={toast} className={styles.toast} />
+      <Toast ref={deleteToast} />
+      <ConfirmDialog />
+
       <div className={styles.headerRow}>
         <h1 className={styles.title}>Liste des questionnaires</h1>
         {user?.roleId == RoleEnum.ADMIN && (
@@ -60,7 +91,7 @@ const Questionnaires: React.FC = () => {
         <p className={styles.loading}>Chargement...</p>
       ) : (
         <div className={styles.grid}>
-          {questionnaires.map((q) => (
+          {localQuestionnaires.map((q) => (
             <div
               key={q.id}
               className={styles.card}
@@ -85,7 +116,10 @@ const Questionnaires: React.FC = () => {
                   <Button
                     icon="pi pi-trash"
                     className="p-button-text p-button-sm"
-                    disabled
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      confirmDelete(q.id);
+                    }}
                   />
                   <Button
                     icon={q.isActive ? 'pi pi-check' : 'pi pi-times'}
@@ -99,7 +133,7 @@ const Questionnaires: React.FC = () => {
             </div>
           ))}
 
-          {questionnaires.length == 0 && (
+          {localQuestionnaires.length == 0 && (
             <div className={styles.empty}>Aucun questionnaire.</div>
           )}
         </div>
