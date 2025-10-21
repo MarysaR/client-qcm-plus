@@ -96,7 +96,6 @@
   color: #fff;
   border: 1px solid #a52828;
   box-shadow: 0 3px 10px -4px rgba(0,0,0,.22), 0 2px 4px rgba(0,0,0,.14);
-   width: 210px;
 }
 
 .appActionBtnDanger:hover:not(:disabled) {
@@ -117,3 +116,19 @@
   outline-offset: 2px;
 }
 
+.appActionBtnDanger.p-button,
+.appActionBtnGhost.p-button,
+.appActionBtnSuccess.p-button {
+  background-image: inherit;
+  background-color: transparent;
+  border: inherit;
+  box-shadow: inherit;
+  color: inherit;
+  padding: inherit;
+}
+
+.appActionBtnDanger.p-button:not(:disabled):hover,
+.appActionBtnGhost.p-button:not(:disabled):hover,
+.appActionBtnSuccess.p-button:not(:disabled):hover {
+  background-color: transparent;
+}

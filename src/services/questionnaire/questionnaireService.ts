@@ -18,6 +18,7 @@ import {
 } from 'src/payload/questionnairePayload';
 import {
   CREATE_QUESTIONNAIRE,
+  DELETE_QUESTIONNAIRE,
   UPDATE_QUESTIONNAIRE,
 } from '../../constants/endpoints';
 
@@ -202,6 +203,34 @@ export const questionnaireService = {
         },
         { headers: { Authorization: 'Bearer ' + token } }
       )
+    );
+
+    return mapHttpResult(resResult, async (res) => {
+      const status = 'status' in res ? res.status : (res as Response).status;
+      if (status < HTTP_STATUS.OK || status >= HTTP_STATUS.BAD_REQUEST) {
+        return Err.of(mapHttpError(status));
+      }
+      return Ok.of(undefined);
+    });
+  },
+
+  async deleteQuestionnaire(id: number): Promise<Result<void, AppError>> {
+    const token = authService.getToken();
+    if (!token) {
+      return Err.of(
+        new PermissionDeniedError(
+          'Utilisateur non authentifié (token manquant)'
+        )
+      );
+    }
+    if (!id || id <= 0) {
+      return Err.of(new ValidationError('Identifiant questionnaire invalide'));
+    }
+
+    const resResult = await httpRequest(
+      httpClient.delete(`${DELETE_QUESTIONNAIRE}/${id}`, {
+        headers: { Authorization: 'Bearer ' + token },
+      })
     );
 
     return mapHttpResult(resResult, async (res) => {

@@ -10,3 +10,4 @@ export const USERS = `${API_URL}/users`;
 export const CREATE_USERS = `${API_URL}/users/new`;
 export const CREATE_QUESTIONNAIRE = `${API_URL}/questionnaire`;
 export const UPDATE_QUESTIONNAIRE = `${API_URL}/questionnaire`;
+export const DELETE_QUESTIONNAIRE = `${API_URL}/questionnaire`;
