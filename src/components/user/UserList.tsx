@@ -1,6 +1,6 @@
 import React from 'react';
-import { useUsersList } from '../../hooks/useUsersList';
 import { useNavigate } from 'react-router-dom';
+import { useUsersList } from '../../hooks/useUsersList';
 import styles from '../../styles/userList.module.css';
 
 const UserList: React.FC = () => {

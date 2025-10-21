@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { createUser } from '../../services/user/userService';
+import React, { useState, useRef } from 'react';
+import { userService } from '../../services/user/userService';
 import {
   ValidationError,
   AlreadyExistError,
@@ -9,7 +9,6 @@ import {
 } from 'logic-qcm-plus';
 import { CreateUserTypes } from 'src/types/createUserTypes';
 import { Toast } from 'primereact/toast';
-import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export function useCreateUserForm() {
@@ -20,14 +19,12 @@ export function useCreateUserForm() {
   const [company, setCompany] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [errors, setErrors] = useState<string[]>([]);
   const toast = useRef<Toast>(null);
   const navigate = useNavigate();
 
-  const [errors, setErrors] = useState<string[]>([]);
-
   const validateForm = () => {
     const newErrors: string[] = [];
-
     if (!login) newErrors.push('Le champ "Login" est requis.');
     if (!firstName) newErrors.push('Le champ "Nom" est requis.');
     if (!lastName) newErrors.push('Le champ "Prénom" est requis.');
@@ -55,95 +52,72 @@ export function useCreateUserForm() {
     }
 
     setErrors(newErrors);
-    return newErrors.length === 0;
+    return newErrors.length == 0;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (validateForm()) {
-      const userData: CreateUserTypes = {
-        login,
-        firstName,
-        lastName,
-        email,
-        company,
-        password,
-      };
+    if (!validateForm()) return;
 
-      const result = await createUser(userData);
+    const userData: CreateUserTypes = {
+      login,
+      firstName,
+      lastName,
+      email,
+      company,
+      password,
+    };
 
-      if (!(result instanceof Error) && result.isOk) {
+    const result = await userService.createUser(userData);
+    if (result.isOk()) {
+      toast.current?.show({
+        severity: 'success',
+        summary: 'Succès',
+        detail: 'Utilisateur créé avec succès !',
+      });
+
+      setLogin('');
+      setFirstName('');
+      setLastName('');
+      setEmail('');
+      setPassword('');
+      setCompany('');
+      setConfirmPassword('');
+      setErrors([]);
+      navigate(`/stagiaires`);
+      return;
+    }
+
+    const error = result.error;
+
+    switch (true) {
+      case error instanceof ValidationError:
         toast.current?.show({
-          severity: 'success',
-          summary: 'Succès',
-          detail: 'Utilisateur créé avec succès !',
+          severity: 'error',
+          summary: 'Erreur de validation',
+          detail: error.message,
         });
+        break;
 
-        setLogin('');
-        setFirstName('');
-        setLastName('');
-        setEmail('');
-        setPassword('');
-        setCompany('');
-        setConfirmPassword('');
-        setErrors([]);
+      case error instanceof AlreadyExistError:
+      case error instanceof TechnicalError:
+      case error instanceof PermissionDeniedError:
+      case error instanceof UnknownError:
+        toast.current?.show({
+          severity: 'error',
+          summary: 'Erreur',
+          detail: error.message,
+        });
+        break;
 
-        navigate(`/stagiaires`);
-      } else {
-        const error =
-          result instanceof Error ? result : new UnknownError(result.message);
-
-        switch (true) {
-          case error instanceof ValidationError:
-            toast.current?.show({
-              severity: 'error',
-              summary: 'Erreur de validation',
-              detail: error.message,
-            });
-            break;
-
-          case error instanceof AlreadyExistError:
-            toast.current?.show({
-              severity: 'error',
-              summary: 'Erreur',
-              detail: error.message,
-            });
-            break;
-
-          case error instanceof TechnicalError:
-            toast.current?.show({
-              severity: 'error',
-              summary: 'Erreur technique',
-              detail: error.message,
-            });
-            break;
-
-          case error instanceof PermissionDeniedError:
-            toast.current?.show({
-              severity: 'error',
-              summary: 'Erreur',
-              detail: `Permission refusée : ${error.message}`,
-            });
-            break;
-
-          case error instanceof UnknownError:
-            toast.current?.show({
-              severity: 'error',
-              summary: 'Erreur inconnue',
-              detail: error.message,
-            });
-            break;
-
-          default:
-            toast.current?.show({
-              severity: 'error',
-              summary: 'Erreur',
-              detail: 'Une erreur inattendue est survenue.',
-            });
-            break;
-        }
-      }
+      default:
+        toast.current?.show({
+          severity: 'error',
+          summary: 'Erreur',
+          detail: 'Une erreur inattendue est survenue.',
+        });
+        break;
     }
   };
 

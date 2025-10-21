@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import { getAllUsers } from '../services/user/userService';
+import { userService } from '../services/user/userService';
 import { PermissionDeniedError, User } from 'logic-qcm-plus';
 import { useNavigate } from 'react-router-dom';
 import { Toast } from 'primereact/toast';
@@ -15,7 +15,7 @@ export function useUsersList() {
   useEffect(() => {
     console.log('useUsersList hook mounted, fetching users');
     const fetchUsers = async () => {
-      const result = await getAllUsers();
+      const result = await userService.getAllUsers();
 
       if (result.isOk()) {
         setUsers(result.value);

@@ -1,4 +1,3 @@
-import { useRef } from 'react';
 import { Toast } from 'primereact/toast';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
@@ -6,10 +5,10 @@ import { questionService } from '../../services/question/questionService';
 import { RoleEnum, Result, AppError } from 'logic-qcm-plus';
 
 export function useQuestionDelete(
+  toast: React.RefObject<Toast | null>,
   questionnaireId: number | null,
   onDeleted?: (questionId: number) => void
 ) {
-  const toast = useRef<Toast>(null);
   const navigate = useNavigate();
   const { user } = useAuth();
 
@@ -62,7 +61,6 @@ export function useQuestionDelete(
   };
 
   return {
-    toast,
     handleDeleteQuestion,
   };
 }
